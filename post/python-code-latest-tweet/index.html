@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Python code to retrieve the latest tweet from a user &middot; zone13.io</title>
+    <meta name="author" content="Zone13.io">
+    <meta name="description" content="InfoSec blog">
+    <meta name="generator" content="Hugo 0.16" />
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <!-- RSS autodiscovery -->
+    
+
+    <link rel="shortcut icon" href="https://zone13.github.io/test-host/img/favicon.ico">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.2/normalize.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://zone13.github.io/test-host/css/screen.css">
+    <link rel="stylesheet" href="https://zone13.github.io/test-host/css/github.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+
+    <!-- Stylesheet for theme color -->
+    <style type="text/css">
+    a, a:visited {color: #22A7F0;}
+    .pagination a {color: #22A7F0;}
+    .gist .gist-file .gist-meta a:visited {color: #22A7F0 !important;}
+    a:focus, a:hover {color: #000000;}
+    h1.post-title a:focus, h1.post-title a:hover, h1.blog-title a:focus, h1.blog-title a:hover {color: #000000;}
+    .older-posts:hover, .newer-posts:hover {color: #000000;}
+</style>
+</head>
+
+<body class="post-template">
+
+    <header id="site-head">
+	
+	<h1 class="blog-title"><a href="https://zone13.github.io/test-host/">Zone13.io</a></h1>
+	
+	
+	<h1 class="blog-subtitle">InfoSec Blog</h1>
+	
+</header>
+    
+<nav class="menu" role="nav">
+    <ul>
+        
+        	<li class="nav nav-current"><a href="/test-host/info/about-me/">about me</a></li>
+      	
+        	<li class="nav nav-current"><a href="/test-host/info/Disclaimer/">Disclaimer</a></li>
+      	
+    </ul>
+</nav>
+
+
+    <main class="content" role="main">
+	    <article class="post">
+	        <header>
+	        <h1 class="post-title">Python code to retrieve the latest tweet from a user</h1>
+	        <div class="post-meta"><time datetime="17 September 2016">17 September 2016</time></div>
+	        </header>
+
+	        <section class="post-content">
+	            <p>This is a Python code snippet to retrieve the latest tweet from a user by making use of the Twitter developer API.</p>
+
+<p>The Twitter API details can be obtained from the <a href="https://apps.twitter.com/">developer portal</a>.</p>
+
+<pre><code class="language-python">#!/usr/bin/env python
+
+#Python script to retrive the latest tweet from a user
+#Created by zone13.io (https://www.zone13.io)
+#Version 1.0
+#Usage - ./script.py &lt;twitter_handle&gt;
+#e.g. ./script.py rihanna
+#Adapted from https://github.com/bear/python-twitter
+
+#Requirement - pip install python-twitter
+
+import sys,twitter
+
+api = twitter.Api()
+
+#Populate your twitter API details below
+
+consumer_key = ''
+consumer_secret = ''
+access_token_key = ''
+access_token_secret = ''
+
+api = twitter.Api(
+    consumer_key=consumer_key,
+    consumer_secret=consumer_secret,
+    access_token_key=access_token_key,
+    access_token_secret=access_token_secret
+)
+
+def user_tweet(thandle):
+	statuses = api.GetUserTimeline(screen_name=thandle)
+	return statuses[0].text
+	
+if __name__ == &quot;__main__&quot;:
+	latest_tweet = user_tweet(sys.argv[1])
+	print latest_tweet
+</code></pre>
+
+	        </section>
+
+	        <section class="post-tags" style="padding-bottom:60px;">
+	            <div class="post-meta tags">
+	            <i class="fa fa-fw fa-tag"></i>
+	            
+	            </div>
+	        </section>
+			
+			
+	        	<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zone13-io';
+    var disqus_identifier = 'https:\/\/zone13.github.io\/test-host\/post\/python-code-latest-tweet\/';
+    var disqus_title = 'Python code to retrieve the latest tweet from a user';
+    var disqus_url = 'https:\/\/zone13.github.io\/test-host\/post\/python-code-latest-tweet\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	        
+			
+			
+
+	        <section class="share">
+	            <p class="backtotop"><a data-scroll href="#site-head"><i class="fa fa-lg fa-fw fa-angle-double-up"></i></a><a data-scroll class="backtotoptext" href="#site-head"> Back to top</a></p>
+	            <p class="info prompt">Share</p>
+	            <a href="http://twitter.com/share?text=Python%20code%20to%20retrieve%20the%20latest%20tweet%20from%20a%20user&url=https%3a%2f%2fzone13.github.io%2ftest-host%2fpost%2fpython-code-latest-tweet%2f" title="Share on Twitter"
+	                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+	                <i class="fa fa-2x fa-fw fa-twitter-square"></i> <span class="hidden">Twitter</span>
+	            </a>
+	            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.github.io%2ftest-host%2fpost%2fpython-code-latest-tweet%2f" title="Share on Facebook"
+	                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+	                <i class="fa fa-2x fa-fw fa-facebook-square" style="margin-left: -8px"></i> <span class="hidden">Facebook</span>
+	            </a>
+	            <a href="https://plus.google.com/share?url=https%3a%2f%2fzone13.github.io%2ftest-host%2fpost%2fpython-code-latest-tweet%2f" title="Share on Google+"
+	               onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+	                <i class="fa fa-2x fa-fw fa-google-plus-square" style="margin-left: -8px"></i> <span class="hidden">Google+</span>
+	            </a>
+	        </section>
+
+	        <footer class="post-footer">
+	            <section class="author">
+    <div class="authorimage" style="background: url(https://zone13.github.io/test-host/img/avatar.jpg)"></div>
+    <h4>Zone13.io</h4>
+    <p class="bio">Blog dedicated to Information Security, Python, Raspberry Pi..</p>
+    <p class="meta">
+      
+    </p>
+</section>
+	        </footer>
+	    </article>
+	</main>
+
+    <footer class="site-footer">
+	<div class="inner">
+		<section class="footer-social">
+			
+		    <a href="//twitter.com/zone13_io" target="_blank" title="Twitter"><i class="fa fa-2x fa-fw fa-twitter"></i> <span class="hidden">Twitter</span></a>&nbsp;
+		    
+		    
+		    <a href="//github.com/zone13" target="_blank" title="GitHub"><i class="fa fa-2x fa-fw fa-github"></i> <span class="hidden">GitHub</span></a>&nbsp;
+		    
+		
+		</section>
+
+		<section class="copyright">&copy; 2016 <a href="https://zone13.github.io/test-host/">Zone13.io</a>. zone13.io</section>
+	</div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://zone13.github.io/test-host/js/index.js"></script>
+<script src="https://zone13.github.io/test-host/js/smooth-scroll.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+
+<script>
+    smoothScroll.init({
+        speed: 800,
+        easing: 'easeInOutCubic',
+        updateURL: false,
+        offset: 125,
+    });
+</script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>

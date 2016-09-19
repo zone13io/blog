@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://zone13.github.io/test-host/</loc>
+    <lastmod>2016-09-18T12:13:05+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zone13.github.io/test-host/post/Raspberry-Pi-Zero-for-credential-snagging/</loc>
+    <lastmod>2016-09-18T12:13:05+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zone13.github.io/test-host/post/python-code-latest-tweet/</loc>
+    <lastmod>2016-09-17T15:25:24+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zone13.github.io/test-host/info/about-me/</loc>
+    <lastmod>2016-09-15T14:17:17+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zone13.github.io/test-host/info/Disclaimer/</loc>
+    <lastmod>2016-09-15T14:20:51+01:00</lastmod>
+  </url>
+  
+</urlset>

