@@ -129,7 +129,7 @@ sudo apt-get install -y python git python-pip python-dev screen sqlite3 isc-dhcp
 
 sudo mkdir tools
 cd tools
-git clone https://github.com/spiderlabs/responder
+sudo git clone https://github.com/lgandx/Responder.git
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4 id=&#34;configure-a-static-ip&#34;&gt;Configure a static IP&lt;/h4&gt;
