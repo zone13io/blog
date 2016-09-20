@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Network Security on zone13.io</title>
-    <link>https://zone13.io/tags/network-security/</link>
-    <description>Recent content in Network Security on zone13.io</description>
+    <title>Networksecurity on zone13.io</title>
+    <link>https://zone13.io/tags/networksecurity/</link>
+    <description>Recent content in Networksecurity on zone13.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 18 Sep 2016 12:13:05 +0100</lastBuildDate>
-    <atom:link href="https://zone13.io/tags/network-security/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://zone13.io/tags/networksecurity/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Raspberry Pi Zero for credential snagging</title>
