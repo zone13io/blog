@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Cracking NTLMv2 responses captured using responder &middot; zone13.io</title>
+    <meta name="author" content="Zone13.io">
+    <meta name="description" content="Cyber Security blog">
+    <meta name="generator" content="Hugo 0.16" />
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <!-- RSS autodiscovery -->
+    
+
+    <link rel="shortcut icon" href="https://zone13.io/img/favicon.ico">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.2/normalize.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://zone13.io/css/screen.css">
+    <link rel="stylesheet" href="https://zone13.io/css/github.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+
+    <!-- Stylesheet for theme color -->
+    <style type="text/css">
+    a, a:visited {color: #22A7F0;}
+    .pagination a {color: #22A7F0;}
+    .gist .gist-file .gist-meta a:visited {color: #22A7F0 !important;}
+    a:focus, a:hover {color: #000000;}
+    h1.post-title a:focus, h1.post-title a:hover, h1.blog-title a:focus, h1.blog-title a:hover {color: #000000;}
+    .older-posts:hover, .newer-posts:hover {color: #000000;}
+</style>
+</head>
+<script src="https://use.fontawesome.com/017c0af656.js"></script>
+<body class="post-template">
+
+    <header id="site-head">
+	
+	<h1 class="blog-title"><a href="https://zone13.io/">Zone13.io</a></h1>
+	
+	
+	<h1 class="blog-subtitle">InfoSec Blog</h1>
+	
+</header>
+    
+<nav class="menu" role="nav">
+    <ul>
+        
+        	<li class="nav nav-current"><a href="/info/about-me/">about me</a></li>
+      	
+        	<li class="nav nav-current"><a href="/info/Disclaimer/">Disclaimer</a></li>
+      	
+    </ul>
+</nav>
+
+
+    <main class="content" role="main">
+	    <article class="post">
+	        <header>
+	        <h1 class="post-title">Cracking NTLMv2 responses captured using responder</h1>
+	        <div class="post-meta"><time datetime="23 September 2016">23 September 2016</time></div>
+	        </header>
+
+	        <section class="post-content">
+	            
+
+<blockquote>
+<p>Disclaimer: The contents of the post are meant for educational purposes only.</p>
+</blockquote>
+
+<p>In the previous <a href="https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/">post</a>, a Raspberry Pi Zero was modified to capture hashes (or rather NTLMv2 responses from the client).</p>
+
+<p>Let&rsquo;s see how <a href="https://hashcat.net/hashcat/">hashcat</a> can be used to crack these responses to obtain the user password. I will be using dictionary based cracking for this exercise and using a Windows system.</p>
+
+<h3 id="setup">Setup</h3>
+
+<p>Download the latest version of hashcat binaries from <a href="https://hashcat.net/hashcat/">here</a> - v3.10 at the time of writing.</p>
+
+<p>Unzip the 7z file and open a command prompt at the unzipped location.</p>
+
+<p>For convenience, I have created two directories in the hashcat folder:</p>
+
+<p><strong>hashes</strong> - to store the responses that need to be cracked</p>
+
+<p><strong>cracked</strong> - to store the cracked passwords</p>
+
+<h3 id="captured-responses">Captured responses</h3>
+
+<p>The client response captured by Responder was:</p>
+
+<pre><code>[HTTP] NTLMv2 Client   : 192.168.154.131
+[HTTP] NTLMv2 Username : MANGO\neo
+[HTTP] NTLMv2 Hash     : neo::MANGO:1122334455667788:2F6CC22CFDC387CFEEB2D325E8997564:0101000000000000C79708D95F14D2011D717D511A761654000000000200060053004D0042000100160053004D0042002D0054004F004F004C004B00490054000400120073006D0062002E006C006F00630061006C000300280073006500720076006500720032003000300033002E0073006D0062002E006C006F00630061006C000500120073006D0062002E006C006F00630061006C0008003000300000000000000000000000001000001047325384B3A000DD5138E15668CB4F44DA5471DAF7A327B5B4E3C19DC485120A001000000000000000000000000000000000000900120048005400540050002F0077007000610064000000000000000000
+</code></pre>
+
+<p>where,</p>
+
+<p>MANGO is my domain name and neo is the user who was logged into the system.</p>
+
+<p>I saved the response into a text file named hash.txt in the <strong>hashes</strong> folder created earlier.</p>
+
+<h3 id="cracking-using-hashcat">Cracking using hashcat</h3>
+
+<p>The hashcat developers have done a wonderful job in simplifying the cracking process. All you need is a fast  cracking machine and patience. :)</p>
+
+<p><img src="/images/hash.txt" alt="hash" /></p>
+
+<p>Since this is a dictionary based cracking, there are two scenarios here:</p>
+
+<ol>
+<li>Your password list does not contain the user password</li>
+<li>Your password list has the user password</li>
+</ol>
+
+<p>I wanted to show both scenarios here, starting with the worst case - not having the password in the list.</p>
+
+<p>For the sake of the the demo, I extracted a subset of the passwords from example.dict that comes with hashcat and saved it as <strong>password_list.txt</strong> in the hashcat folder. For this run, the <strong>password_list.txt</strong> does not have the user password.</p>
+
+<p>Open a command prompt at the extracted hashcat folder. For NTLMv2 cracking, the hashcat can be run as,</p>
+
+<pre><code>hashcat64.exe -m 5600 hashes\hash.txt password_list.txt -o cracked\cracked.txt
+</code></pre>
+
+<blockquote>
+<p>If you don&rsquo;t specify -o switch, the password (if cracked) will be stored in <strong>hashcat.pot</strong> file in the hashcat folder.</p>
+</blockquote>
+
+<p>If the password is not found, this is what you see once hashcat completes the cracking.</p>
+
+<p>Status: <strong>Exhausted</strong></p>
+
+<p><img src="/images/password_not_found.png" alt="password_not_found" /></p>
+
+<p>Now, the case if I have the user password in my password list. I edited the password_list.txt and appended the user password (I created the user, remember :)).</p>
+
+<p>Running the hashcat tool again,</p>
+
+<pre><code>hashcat64.exe -m 5600 hashes\hash.txt password_list.txt -o cracked\cracked.txt
+</code></pre>
+
+<p>Status: <strong>Cracked</strong></p>
+
+<p><img src="/images/password_found.png" alt="password_found" /></p>
+
+<p>To view the cracked password, see the <strong>cracked.txt</strong> file in the folder named <strong>cracked</strong>.</p>
+
+<p><img src="/images/cracked_out.png" alt="cracked_out" /></p>
+
+<p>The success of cracking the password using this method solely depends on whether or not your password list is good enough.</p>
+
+	        </section>
+
+	        <section class="post-tags" style="padding-bottom:60px;">
+	            <div class="post-meta tags">
+	            <i class="fa fa-fw fa-tag"></i>
+	            
+	            <a href="https://zone13.io/tags/Responder,%20NTLM,%20Cracking">Responder, NTLM, Cracking </a>
+	            
+	            </div>
+	        </section>
+			
+			
+	        	<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zone13-io';
+    var disqus_identifier = 'https:\/\/zone13.io\/post\/cracking-ntlmv2-responses-captured-using-responder\/';
+    var disqus_title = 'Cracking NTLMv2 responses captured using responder';
+    var disqus_url = 'https:\/\/zone13.io\/post\/cracking-ntlmv2-responses-captured-using-responder\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	        
+			
+			
+
+	        <section class="share">
+	            <p class="backtotop"><a data-scroll href="#site-head"><i class="fa fa-lg fa-fw fa-angle-double-up"></i></a><a data-scroll class="backtotoptext" href="#site-head"> Back to top</a></p>
+	            <p class="info prompt">Share</p>
+	            <a href="http://twitter.com/share?text=Cracking%20NTLMv2%20responses%20captured%20using%20responder&url=https%3a%2f%2fzone13.io%2fpost%2fcracking-ntlmv2-responses-captured-using-responder%2f" title="Share on Twitter"
+	                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+	                <i class="fa fa-2x fa-fw fa-twitter-square"></i> <span class="hidden">Twitter</span>
+	            </a>
+	            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fcracking-ntlmv2-responses-captured-using-responder%2f" title="Share on Facebook"
+	                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+	                <i class="fa fa-2x fa-fw fa-facebook-square" style="margin-left: -8px"></i> <span class="hidden">Facebook</span>
+	            </a>
+	            <a href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fcracking-ntlmv2-responses-captured-using-responder%2f" title="Share on Google+"
+	               onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+	                <i class="fa fa-2x fa-fw fa-google-plus-square" style="margin-left: -8px"></i> <span class="hidden">Google+</span>
+	            </a>
+	        </section>
+
+	        <footer class="post-footer">
+	            <section class="author">
+    <div class="authorimage" style="background: url(https://zone13.io/img/avatar.jpg)"></div>
+    <h4>Zone13.io</h4>
+    <p class="bio">Blog dedicated to Information Security, Social Engineering, Python, Raspberry Pi..</p>
+    <p class="meta">
+      
+    </p>
+</section>
+	        </footer>
+	    </article>
+	</main>
+
+    <footer class="site-footer">
+	<div class="inner">
+		<section class="footer-social">
+			
+		    <a href="//twitter.com/zone13_io" target="_blank" title="Twitter"><i class="fa fa-2x fa-fw fa-twitter"></i> <span class="hidden">Twitter</span></a>&nbsp;
+		    
+		    
+		    <a href="//github.com/zone13" target="_blank" title="GitHub"><i class="fa fa-2x fa-fw fa-github"></i> <span class="hidden">GitHub</span></a>&nbsp;
+		    
+			
+			<a href="//reddit.com/user/zone13_io" target="_blank" title="Reddit"><i class="fa fa-2x fa-fw fa-reddit"></i> <span class="hidden">GitHub</span></a>&nbsp;
+		    
+			
+		
+		</section>
+
+		<section class="copyright">&copy; 2016 <a href="https://zone13.io/">Zone13.io</a>. zone13.io</section>
+	</div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://zone13.io/js/index.js"></script>
+<script src="https://zone13.io/js/smooth-scroll.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+
+<script>
+    smoothScroll.init({
+        speed: 800,
+        easing: 'easeInOutCubic',
+        updateURL: false,
+        offset: 125,
+    });
+</script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<!-- Google Analytics -->
+<script>
+  var _gaq=[['_setAccount','UA-84537506-1'],['_trackPageview']];
+  (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+  g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+  s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+
+</body>
+</html>
