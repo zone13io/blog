@@ -1,70 +1,170 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-US">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>Raspberry Pi Zero for credential snagging (Step-by-Step) &middot; zone13.io</title>
-    <meta name="author" content="Zone13.io">
-    <meta name="description" content="Cyber Security blog">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Raspberry Pi Zero for credential snagging &middot;  Zone13.io" />
+  	<meta property="og:site_name" content="Zone13.io" />
+  	<meta property="og:url" content="https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/" />
+
+    
+  	<meta property="og:type" content="article" />
+
+    <meta property="og:article:published_time" content="2016-09-18T12:13:05&#43;01:00" />
+
+    
+    <meta property="og:article:tag" content="Raspberry Pi" />
+    
+    <meta property="og:article:tag" content="Pi Zero" />
+    
+    <meta property="og:article:tag" content="Responder" />
+    
+    
+
+  <title>
+     Raspberry Pi Zero for credential snagging &middot;  Zone13.io
+  </title>
+
+    <meta name="description" content="Information Security Blog" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://zone13.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://zone13.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/nav.css" />
+	
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	
+	
+	
+	
+	
+	
+
+    
+      
+          <link href="https://zone13.io/index.xml" rel="alternate" type="application/rss+xml" title="Zone13.io" />
+      
+      
+    
     <meta name="generator" content="Hugo 0.16" />
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    <!-- RSS autodiscovery -->
+    <link rel="canonical" href="https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-84537506-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
     
 
-    <link rel="shortcut icon" href="https://zone13.io/img/favicon.ico">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.2/normalize.min.css">
+    
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="https://zone13.io/css/screen.css">
-    <link rel="stylesheet" href="https://zone13.io/css/github.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+	
 
-    <!-- Stylesheet for theme color -->
-    <style type="text/css">
-    a, a:visited {color: #22A7F0;}
-    .pagination a {color: #22A7F0;}
-    .gist .gist-file .gist-meta a:visited {color: #22A7F0 !important;}
-    a:focus, a:hover {color: #000000;}
-    h1.post-title a:focus, h1.post-title a:hover, h1.blog-title a:focus, h1.blog-title a:hover {color: #000000;}
-    .older-posts:hover, .newer-posts:hover {color: #000000;}
-</style>
 </head>
-<script src="https://use.fontawesome.com/017c0af656.js"></script>
-<body class="post-template">
 
-    <header id="site-head">
-	
-	<h1 class="blog-title"><a href="https://zone13.io/">Zone13.io</a></h1>
-	
-	
-	<h1 class="blog-subtitle">InfoSec Blog</h1>
-	
-</header>
-    
-<nav class="menu" role="nav">
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
     <ul>
         
-        	<li class="nav nav-current"><a href="/info/about-me/">about me</a></li>
-      	
-        	<li class="nav nav-current"><a href="/info/Disclaimer/">Disclaimer</a></li>
-      	
+        
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/">Home</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/Disclaimer/">Disclaimer</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/about-me/">About me</a>
+            </li>
+        
     </ul>
-</nav>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://zone13.io/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
 
 
-    <main class="content" role="main">
-	    <article class="post">
-	        <header>
-	        <h1 class="post-title">Raspberry Pi Zero for credential snagging (Step-by-Step)</h1>
-	        <div class="post-meta"><time datetime="18 September 2016">18 September 2016</time></div>
-	        </header>
+ <div class="site-wrapper">
 
-	        <section class="post-content">
-	            
+ 
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://zone13.io/" /><span class="icon-home" style="color:blue;font-size:3em"></span></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Raspberry Pi Zero for credential snagging</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2016-09-18T12:13:05&#43;01:00">
+            Sep 18, 2016
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/raspberry-pi/">#Raspberry Pi</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/pi-zero/">#Pi Zero</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/responder/">#Responder</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
 
 <blockquote>
 <p>Update: <strong>CVE-2016-3302</strong> / <strong>MS16-112</strong> patch was released by Microsoft to fix the issue.</p>
@@ -74,7 +174,7 @@
 
 <p>This post is an extension to Rob Fuller&rsquo;s (@mubix) work - <a href="https://room362.com/post/2016/snagging-creds-from-locked-machines/">https://room362.com/post/2016/snagging-creds-from-locked-machines/</a> to see how a Raspberry Pi Zero can be used for credential snagging. All credits go to @mubix for the original research. It is recommended to read mubix&rsquo;s post (if you haven&rsquo;t already !) before proceeding.</p>
 
-<p><img src="/images/pizero.jpeg" alt="Pi Zero 1.3" /></p>
+<p><img src="https://zone13.io/images/pizero.jpeg" alt="" style="width:600px" /></p>
 
 <h3 id="prerequisites">Prerequisites</h3>
 
@@ -84,11 +184,11 @@
 
 <h4 id="hardware">Hardware</h4>
 
-<p>Raspberry Pi Zero (I have v1.3)</p>
-
-<p>Micro SD card (4GB or more) with <a href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian Jessie</a> (I used Jessie Lite, Release date: 2016-05-27)</p>
-
-<p>Micro USB cable (any cable that supports data transfer - try those coming with mobiles)</p>
+<ol>
+<li>Raspberry Pi Zero (I have v1.3)</li>
+<li>Micro SD card (4GB or more) with <a href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian Jessie</a> (I used Jessie Lite, Release date: 2016-05-27)<br /></li>
+<li>Micro USB cable (any cable that supports data transfer - try those coming with mobiles)</li>
+</ol>
 
 <h3 id="procedure">Procedure</h3>
 
@@ -102,24 +202,20 @@
 
 <p>Two files need to be edited here:</p>
 
-<ol>
-<li>config.txt</li>
-</ol>
+<p><strong>config.txt</strong></p>
 
 <p>Append the following on a new line:</p>
 
-<pre><code>   dtoverlay=dwc2
+<pre><code>dtoverlay=dwc2
 </code></pre>
 
 <p>The resulting file looks like <a href="https://github.com/zone13/pi-Zero-USB-Ethernet/blob/master/config.txt">this</a>.</p>
 
-<ol>
-<li>cmdline.txt</li>
-</ol>
+<p><strong>cmdline.txt</strong></p>
 
 <p>Insert the following after <strong>rootwait</strong>:</p>
 
-<pre><code>   modules-load=dwc2,g_ether
+<pre><code>modules-load=dwc2,g_ether
 </code></pre>
 
 <p>Be careful with the formatting on this one, the values are separated by spaces.</p>
@@ -138,7 +234,7 @@
 
 <p>Once the RNDIS devices are installed, the new USB Ethernet will be visible under <strong>Network Connections</strong>.</p>
 
-<p><img src="/images/net_conns_adapter.png" alt="net_conns_adapter" /></p>
+<p><img src="https://zone13.io/images/net_conns_adapter.png" alt="net_conns_adapter" /></p>
 
 <blockquote>
 <p>Note: I have renamed my adapter as <strong>PiZero</strong> and hence displayed above.</p>
@@ -148,11 +244,11 @@
 
 <p>I decided to share my LAN Internet with Pi Zero for this purpose. You can do the same or even share your Wi-Fi Internet.</p>
 
-<p><img src="/images/share_internet.png" alt="share_internet" /></p>
+<p><img src="https://zone13.io/images/share_internet.png" alt="share_internet" /></p>
 
 <p>At this stage you should be able to ping Pi Zero (hostname: <em>raspberrypi.local</em>)</p>
 
-<p><img src="/images/ping_pizero_local.png" alt="ping_pizero_local" /></p>
+<p><img src="https://zone13.io/images/ping_pizero_local.png" alt="ping_pizero_local" /></p>
 
 <p>Now, you can SSH to Pi Zero using the hostname.</p>
 
@@ -164,7 +260,7 @@
 <p>password: raspberry</p>
 </blockquote>
 
-<p><img src="/images/putty_settings.png" alt="putty_settings" /></p>
+<p><img src="https://zone13.io/images/putty_settings.png" alt="putty_settings" /></p>
 
 <p>At this point, it is a good idea to check Internet connectivity for the Pi Zero (e.g. try pinging google.com). If the ping can resolve to IP (not getting a ping response is alright), you are good to go. If there is some connectivity error, try running:</p>
 
@@ -198,7 +294,7 @@ iface usb0 inet static
   gateway 192.168.2.1
 </code></pre>
 
-<p><img src="/images/etc_interfaces.png" alt="etc_interfaces" /></p>
+<p><img src="https://zone13.io/images/etc_interfaces.png" alt="etc_interfaces" /></p>
 
 <h4 id="dhcp-server-setup">DHCP server setup</h4>
 
@@ -289,120 +385,98 @@ logfile /root/logs/screenlog_$USER_.%H.%n.%Y%m%d-%0c:%s.%t.log
 <p>The captured hashes can be viewed using <strong>sqlite3</strong>.</p>
 
 <pre><code class="language-sh">sqlite3 /home/pi/tools/responder/Responder.db
-
 select * from responder;
 </code></pre>
 
-<p><img src="/images/sqlite3_out.png" alt="sqlite3_out" /></p>
+<p><img src="https://zone13.io/images/sqlite3_out.png" alt="sqlite3_out" /></p>
 
-	        </section>
+    </section>
 
-	        <section class="post-tags" style="padding-bottom:60px;">
-	            <div class="post-meta tags">
-	            <i class="fa fa-fw fa-tag"></i>
-	            
-	            <a href="https://zone13.io/tags/Raspberry-Pi">Raspberry-Pi </a>
-	            
-	            <a href="https://zone13.io/tags/Pi-Zero">Pi-Zero </a>
-	            
-	            <a href="https://zone13.io/tags/Responder">Responder </a>
-	            
-	            </div>
-	        </section>
-			
-			
-	        	<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'zone13-io';
-    var disqus_identifier = 'https:\/\/zone13.io\/post\/Raspberry-Pi-Zero-for-credential-snagging\/';
-    var disqus_title = 'Raspberry Pi Zero for credential snagging (Step-by-Step)';
-    var disqus_url = 'https:\/\/zone13.io\/post\/Raspberry-Pi-Zero-for-credential-snagging\/';
 
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-	        
-			
-			
+  <footer class="post-footer">
 
-	        <section class="share">
-	            <p class="backtotop"><a data-scroll href="#site-head"><i class="fa fa-lg fa-fw fa-angle-double-up"></i></a><a data-scroll class="backtotoptext" href="#site-head"> Back to top</a></p>
-	            <p class="info prompt">Share</p>
-	            <a href="http://twitter.com/share?text=Raspberry%20Pi%20Zero%20for%20credential%20snagging%20%28Step-by-Step%29&url=https%3a%2f%2fzone13.io%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f" title="Share on Twitter"
-	                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-	                <i class="fa fa-2x fa-fw fa-twitter-square"></i> <span class="hidden">Twitter</span>
-	            </a>
-	            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f" title="Share on Facebook"
-	                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-	                <i class="fa fa-2x fa-fw fa-facebook-square" style="margin-left: -8px"></i> <span class="hidden">Facebook</span>
-	            </a>
-	            <a href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f" title="Share on Google+"
-	               onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-	                <i class="fa fa-2x fa-fw fa-google-plus-square" style="margin-left: -8px"></i> <span class="hidden">Google+</span>
-	            </a>
-	        </section>
 
-	        <footer class="post-footer">
-	            <section class="author">
-    <div class="authorimage" style="background: url(https://zone13.io/img/avatar.jpg)"></div>
-    <h4>Zone13.io</h4>
-    <p class="bio">Blog dedicated to Information Security, Social Engineering, Python, Raspberry Pi..</p>
-    <p class="meta">
-      
-    </p>
+    
+    <figure class="author-image">
+        <a class="img" href="https://zone13.io/" style="background-image: url(https://zone13.io/images/thumbnail.png)"><span class="hidden">Sid's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://zone13.io/">Sid</a></h4>
+  
+  <p>Information Security Professional</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Dublin, Ireland</span>
+   
+	<span class="author-link icon-linkedin" style="color:white;font-size:1em"><a href="https://www.linkedin.com/in/siddhuy">siddhuy</a></span>
+  </div>
 </section>
-	        </footer>
-	    </article>
-	</main>
 
-    <footer class="site-footer">
-	<div class="inner">
-		<section class="footer-social">
-			
-		    <a href="//twitter.com/zone13_io" target="_blank" title="Twitter"><i class="fa fa-2x fa-fw fa-twitter"></i> <span class="hidden">Twitter</span></a>&nbsp;
-		    
-		    
-		    <a href="//github.com/zone13" target="_blank" title="GitHub"><i class="fa fa-2x fa-fw fa-github"></i> <span class="hidden">GitHub</span></a>&nbsp;
-		    
-			
-			<a href="//reddit.com/user/zone13_io" target="_blank" title="Reddit"><i class="fa fa-2x fa-fw fa-reddit"></i> <span class="hidden">GitHub</span></a>&nbsp;
-		    
-			
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Raspberry%20Pi%20Zero%20for%20credential%20snagging&nbsp;-&nbsp;Zone13.io&amp;url=https%3a%2f%2fzone13.io%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzone13.io%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f&amp;description=Raspberry%20Pi%20Zero%20for%20credential%20snagging"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fRaspberry-Pi-Zero-for-credential-snagging%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'zone13-io';
+  var disqus_url = 'https:\/\/zone13.io\/post\/Raspberry-Pi-Zero-for-credential-snagging\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Zone13.io</a> All rights reserved - 2016</section>
 		
-		</section>
-
-		<section class="copyright">&copy; 2016 <a href="https://zone13.io/">Zone13.io</a>. zone13.io</section>
-	</div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://zone13.io/js/index.js"></script>
-<script src="https://zone13.io/js/smooth-scroll.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
-
-<script>
-    smoothScroll.init({
-        speed: 800,
-        easing: 'easeInOutCubic',
-        updateURL: false,
-        offset: 125,
-    });
-</script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-<!-- Google Analytics -->
-<script>
-  var _gaq=[['_setAccount','UA-84537506-1'],['_trackPageview']];
-  (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-  g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-  s.parentNode.insertBefore(g,s)}(document,'script'));
-</script>
-
-
+        <section class="poweredby"> Powered by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/index.js"></script>
+    
 </body>
 </html>
+

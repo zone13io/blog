@@ -1,72 +1,170 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-US">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>Python code to retrieve the latest tweet from a user &middot; zone13.io</title>
-    <meta name="author" content="Zone13.io">
-    <meta name="description" content="Cyber Security blog">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Python code to retrieve the latest tweet from a user &middot;  Zone13.io" />
+  	<meta property="og:site_name" content="Zone13.io" />
+  	<meta property="og:url" content="https://zone13.io/post/python-code-latest-tweet/" />
+
+    
+  	<meta property="og:type" content="article" />
+
+    <meta property="og:article:published_time" content="2016-09-17T15:25:24&#43;01:00" />
+
+    
+    <meta property="og:article:tag" content="Python" />
+    
+    <meta property="og:article:tag" content="Twitter" />
+    
+    
+
+  <title>
+     Python code to retrieve the latest tweet from a user &middot;  Zone13.io
+  </title>
+
+    <meta name="description" content="Information Security Blog" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://zone13.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://zone13.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/nav.css" />
+	
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	
+	
+	
+	
+	
+	
+
+    
+      
+          <link href="https://zone13.io/index.xml" rel="alternate" type="application/rss+xml" title="Zone13.io" />
+      
+      
+    
     <meta name="generator" content="Hugo 0.16" />
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    <!-- RSS autodiscovery -->
+    <link rel="canonical" href="https://zone13.io/post/python-code-latest-tweet/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-84537506-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
     
 
-    <link rel="shortcut icon" href="https://zone13.io/img/favicon.ico">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.2/normalize.min.css">
+    
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="https://zone13.io/css/screen.css">
-    <link rel="stylesheet" href="https://zone13.io/css/github.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+	
 
-    <!-- Stylesheet for theme color -->
-    <style type="text/css">
-    a, a:visited {color: #22A7F0;}
-    .pagination a {color: #22A7F0;}
-    .gist .gist-file .gist-meta a:visited {color: #22A7F0 !important;}
-    a:focus, a:hover {color: #000000;}
-    h1.post-title a:focus, h1.post-title a:hover, h1.blog-title a:focus, h1.blog-title a:hover {color: #000000;}
-    .older-posts:hover, .newer-posts:hover {color: #000000;}
-</style>
 </head>
-<script src="https://use.fontawesome.com/017c0af656.js"></script>
-<body class="post-template">
 
-    <header id="site-head">
-	
-	<h1 class="blog-title"><a href="https://zone13.io/">Zone13.io</a></h1>
-	
-	
-	<h1 class="blog-subtitle">InfoSec Blog</h1>
-	
-</header>
-    
-<nav class="menu" role="nav">
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
     <ul>
         
-        	<li class="nav nav-current"><a href="/info/about-me/">about me</a></li>
-      	
-        	<li class="nav nav-current"><a href="/info/Disclaimer/">Disclaimer</a></li>
-      	
+        
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/">Home</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/Disclaimer/">Disclaimer</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/about-me/">About me</a>
+            </li>
+        
     </ul>
-</nav>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://zone13.io/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
 
 
-    <main class="content" role="main">
-	    <article class="post">
-	        <header>
-	        <h1 class="post-title">Python code to retrieve the latest tweet from a user</h1>
-	        <div class="post-meta"><time datetime="17 September 2016">17 September 2016</time></div>
-	        </header>
+ <div class="site-wrapper">
 
-	        <section class="post-content">
-	            <p>This is a Python code snippet to retrieve the latest tweet from a user by making use of the Twitter developer API.</p>
+ 
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://zone13.io/" /><span class="icon-home" style="color:blue;font-size:3em"></span></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Python code to retrieve the latest tweet from a user</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2016-09-17T15:25:24&#43;01:00">
+            Sep 17, 2016
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/python/">#Python</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/twitter/">#Twitter</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      <p>This is a Python code snippet to retrieve the latest tweet from a user by making use of the Twitter developer API.</p>
 
 <p>The Twitter API details can be obtained from the <a href="https://apps.twitter.com/">developer portal</a>.</p>
+
+<p>Github <a href="https://github.com/zone13/python_dev/blob/master/twitter_latest_tweet.py">link</a>.</p>
 
 <pre><code class="language-python">#!/usr/bin/env python
 
@@ -76,15 +174,12 @@
 #Usage - ./script.py &lt;twitter_handle&gt;
 #e.g. ./script.py rihanna
 #Adapted from https://github.com/bear/python-twitter
-
 #Requirement - pip install python-twitter
 
 import sys,twitter
-
 api = twitter.Api()
 
 #Populate your twitter API details below
-
 consumer_key = ''
 consumer_secret = ''
 access_token_key = ''
@@ -106,108 +201,93 @@ if __name__ == &quot;__main__&quot;:
 	print latest_tweet
 </code></pre>
 
-	        </section>
+    </section>
 
-	        <section class="post-tags" style="padding-bottom:60px;">
-	            <div class="post-meta tags">
-	            <i class="fa fa-fw fa-tag"></i>
-	            
-	            </div>
-	        </section>
-			
-			
-	        	<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'zone13-io';
-    var disqus_identifier = 'https:\/\/zone13.io\/post\/python-code-latest-tweet\/';
-    var disqus_title = 'Python code to retrieve the latest tweet from a user';
-    var disqus_url = 'https:\/\/zone13.io\/post\/python-code-latest-tweet\/';
 
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-	        
-			
-			
+  <footer class="post-footer">
 
-	        <section class="share">
-	            <p class="backtotop"><a data-scroll href="#site-head"><i class="fa fa-lg fa-fw fa-angle-double-up"></i></a><a data-scroll class="backtotoptext" href="#site-head"> Back to top</a></p>
-	            <p class="info prompt">Share</p>
-	            <a href="http://twitter.com/share?text=Python%20code%20to%20retrieve%20the%20latest%20tweet%20from%20a%20user&url=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f" title="Share on Twitter"
-	                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-	                <i class="fa fa-2x fa-fw fa-twitter-square"></i> <span class="hidden">Twitter</span>
-	            </a>
-	            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f" title="Share on Facebook"
-	                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-	                <i class="fa fa-2x fa-fw fa-facebook-square" style="margin-left: -8px"></i> <span class="hidden">Facebook</span>
-	            </a>
-	            <a href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f" title="Share on Google+"
-	               onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-	                <i class="fa fa-2x fa-fw fa-google-plus-square" style="margin-left: -8px"></i> <span class="hidden">Google+</span>
-	            </a>
-	        </section>
 
-	        <footer class="post-footer">
-	            <section class="author">
-    <div class="authorimage" style="background: url(https://zone13.io/img/avatar.jpg)"></div>
-    <h4>Zone13.io</h4>
-    <p class="bio">Blog dedicated to Information Security, Social Engineering, Python, Raspberry Pi..</p>
-    <p class="meta">
-      
-    </p>
+    
+    <figure class="author-image">
+        <a class="img" href="https://zone13.io/" style="background-image: url(https://zone13.io/images/thumbnail.png)"><span class="hidden">Sid's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://zone13.io/">Sid</a></h4>
+  
+  <p>Information Security Professional</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Dublin, Ireland</span>
+   
+	<span class="author-link icon-linkedin" style="color:white;font-size:1em"><a href="https://www.linkedin.com/in/siddhuy">siddhuy</a></span>
+  </div>
 </section>
-	        </footer>
-	    </article>
-	</main>
 
-    <footer class="site-footer">
-	<div class="inner">
-		<section class="footer-social">
-			
-		    <a href="//twitter.com/zone13_io" target="_blank" title="Twitter"><i class="fa fa-2x fa-fw fa-twitter"></i> <span class="hidden">Twitter</span></a>&nbsp;
-		    
-		    
-		    <a href="//github.com/zone13" target="_blank" title="GitHub"><i class="fa fa-2x fa-fw fa-github"></i> <span class="hidden">GitHub</span></a>&nbsp;
-		    
-			
-			<a href="//reddit.com/user/zone13_io" target="_blank" title="Reddit"><i class="fa fa-2x fa-fw fa-reddit"></i> <span class="hidden">GitHub</span></a>&nbsp;
-		    
-			
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Python%20code%20to%20retrieve%20the%20latest%20tweet%20from%20a%20user&nbsp;-&nbsp;Zone13.io&amp;url=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f&amp;description=Python%20code%20to%20retrieve%20the%20latest%20tweet%20from%20a%20user"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'zone13-io';
+  var disqus_url = 'https:\/\/zone13.io\/post\/python-code-latest-tweet\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Zone13.io</a> All rights reserved - 2016</section>
 		
-		</section>
-
-		<section class="copyright">&copy; 2016 <a href="https://zone13.io/">Zone13.io</a>. zone13.io</section>
-	</div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://zone13.io/js/index.js"></script>
-<script src="https://zone13.io/js/smooth-scroll.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
-
-<script>
-    smoothScroll.init({
-        speed: 800,
-        easing: 'easeInOutCubic',
-        updateURL: false,
-        offset: 125,
-    });
-</script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-<!-- Google Analytics -->
-<script>
-  var _gaq=[['_setAccount','UA-84537506-1'],['_trackPageview']];
-  (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-  g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-  s.parentNode.insertBefore(g,s)}(document,'script'));
-</script>
-
-
+        <section class="poweredby"> Powered by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/index.js"></script>
+    
 </body>
 </html>
+

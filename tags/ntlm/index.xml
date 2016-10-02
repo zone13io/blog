@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ntlm on zone13.io</title>
+    <title>Ntlm on Zone13.io</title>
     <link>https://zone13.io/tags/ntlm/</link>
-    <description>Recent content in Ntlm on zone13.io</description>
+    <description>Recent content in Ntlm on Zone13.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>en-US</language>
+    <copyright>All rights reserved - 2016</copyright>
     <lastBuildDate>Fri, 23 Sep 2016 19:55:06 +0100</lastBuildDate>
     <atom:link href="https://zone13.io/tags/ntlm/index.xml" rel="self" type="application/rss+xml" />
     
@@ -16,10 +17,6 @@
       
       <guid>https://zone13.io/post/cracking-ntlmv2-responses-captured-using-responder/</guid>
       <description>
-
-&lt;blockquote&gt;
-&lt;p&gt;Disclaimer: The contents of the post are meant for educational purposes only.&lt;/p&gt;
-&lt;/blockquote&gt;
 
 &lt;p&gt;In the previous &lt;a href=&#34;https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/&#34;&gt;post&lt;/a&gt;, a Raspberry Pi Zero was modified to capture hashes (or rather NTLMv2 responses from the client).&lt;/p&gt;
 

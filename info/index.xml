@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Infos on zone13.io</title>
+    <title>Infos on Zone13.io</title>
     <link>https://zone13.io/info/</link>
-    <description>Recent content in Infos on zone13.io</description>
+    <description>Recent content in Infos on Zone13.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 15 Sep 2016 14:17:17 +0100</lastBuildDate>
+    <language>en-US</language>
+    <copyright>All rights reserved - 2016</copyright>
+    <lastBuildDate>Thu, 15 Sep 2016 14:20:51 +0100</lastBuildDate>
     <atom:link href="https://zone13.io/info/index.xml" rel="self" type="application/rss+xml" />
-    
-    <item>
-      <title>about me</title>
-      <link>https://zone13.io/info/about-me/</link>
-      <pubDate>Thu, 15 Sep 2016 14:17:17 +0100</pubDate>
-      
-      <guid>https://zone13.io/info/about-me/</guid>
-      <description>&lt;p&gt;Consultant by day, Doer by night :)&lt;/p&gt;
-
-&lt;p&gt;I work as a Cyber Security Consultant and zone13.io is my personal blog to share some of the stuff I do as part of my job or passion towards Information Security.&lt;/p&gt;
-</description>
-    </item>
     
     <item>
       <title>Disclaimer</title>
@@ -27,9 +16,34 @@
       <pubDate>Thu, 15 Sep 2016 14:20:51 +0100</pubDate>
       
       <guid>https://zone13.io/info/Disclaimer/</guid>
-      <description>&lt;p&gt;This blog and any published content is only meant for research and educational purposes unless specified. The blog / owner cannot be held responsible for any malicious activities that the content is used for. The readers are solely responsible for any comments posted by them and the blog / author cannot be held responsible for any harm caused therewith – physical, emotional or technical. Any offensive comment that gets reported to the blog author will be appropriately reviewed and removed from the blog, if need be.&lt;/p&gt;
+      <description>&lt;p&gt; If you require any more information or have any questions about this website&#39;s disclaimer, please feel free to contact me by  &lt;a href=&#34;&amp;#109;&amp;#97;&amp;#105;&amp;#108;&amp;#116;&amp;#111;:&amp;#99;&amp;#111;&amp;#110;&amp;#116;&amp;#97;&amp;#99;&amp;#116;&amp;#64;&amp;#122;&amp;#111;&amp;#110;&amp;#101;13&amp;#46;&amp;#105;&amp;#111;&#34;&gt;email&lt;/a&gt;.
 
-&lt;p&gt;Finally, the views expressed by the author do not necessarily represent his employer’s.&lt;/p&gt;
+&lt;p&gt;
+All the information on this website is published in good faith and for general information purpose only.  **zone13.io** does not make any warranties about the completeness, reliability and accuracy of this information. Any action you take upon the information you find on this website **zone13.io**, is strictly at your own risk. **zone13.io**, website author or his employer will not be liable for any losses and/or damages in connection with the use of this website. Finally, the views expressed by the website owner does not necessarily represent his employer&#39;s.
+&lt;/p&gt;
+&lt;p&gt;
+From this website, you can visit other websites by following hyperlinks to such external sites. While I strive to provide only quality links to useful and ethical websites, I have no control over the content and nature of these sites. These links to other websites do not imply a recommendation for all the content found on these sites. The content may change without notice and may occur before I have the opportunity to remove a link which may have gone &#39;bad&#39;.
+&lt;/p&gt;
+&lt;p&gt;
+Please be also aware that when you leave this website, other sites may have different privacy policies and terms which are beyond my control. Please be sure to check the Privacy Policies of these sites as well as their &#34;Terms of Service&#34; before engaging in any business or uploading any information.
+&lt;/p&gt;
+
+&lt;p&gt;&lt;h3&gt;Consent&lt;/h3&gt;
+&lt;p&gt;
+By using this website, you hereby consent to this disclaimer and agree to its terms.
+&lt;/p&gt;&lt;h3&gt;Update&lt;/h3&gt;This site disclaimer was last updated on: Saturday, October 1st, 2016.&lt;br /&gt;&lt;em&gt; Should I update, amend or make any changes to this document, those changes will be prominently posted here.&lt;/em&gt;&lt;br /&gt;&lt;br /&gt;&lt;hr /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>About me</title>
+      <link>https://zone13.io/info/about-me/</link>
+      <pubDate>Thu, 15 Sep 2016 14:17:17 +0100</pubDate>
+      
+      <guid>https://zone13.io/info/about-me/</guid>
+      <description>&lt;p&gt;Consultant by day, Doer by night :)&lt;/p&gt;
+
+&lt;p&gt;I work as an Information Security Consultant and zone13.io is my personal blog to share some of the stuff I do as part of my job or random explorations.&lt;/p&gt;
 </description>
     </item>
     
