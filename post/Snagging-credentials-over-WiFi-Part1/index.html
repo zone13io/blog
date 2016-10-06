@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Snagging Active Directory credentials over WiFi - Part 1 &middot;  Zone13.io" />
+  	<meta property="og:site_name" content="Zone13.io" />
+  	<meta property="og:url" content="https://zone13.io/post/Snagging-credentials-over-WiFi-Part1/" />
+
+    
+  	<meta property="og:type" content="article" />
+
+    <meta property="og:article:published_time" content="2016-10-03T23:26:44&#43;01:00" />
+
+    
+    <meta property="og:article:tag" content="NTLM" />
+    
+    <meta property="og:article:tag" content="Credentials" />
+    
+    <meta property="og:article:tag" content="hashcat" />
+    
+    <meta property="og:article:tag" content="Active Directory" />
+    
+    <meta property="og:article:tag" content="WiFi" />
+    
+    
+
+  <title>
+     Snagging Active Directory credentials over WiFi - Part 1 &middot;  Zone13.io
+  </title>
+
+    <meta name="description" content="Information Security Blog" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://zone13.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://zone13.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/nav.css" />
+	
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	
+	
+	
+	
+	
+	
+
+    
+      
+          <link href="https://zone13.io/index.xml" rel="alternate" type="application/rss+xml" title="Zone13.io" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.16" />
+
+    <link rel="canonical" href="https://zone13.io/post/Snagging-credentials-over-WiFi-Part1/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-84537506-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+
+	
+
+</head>
+
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/">Home</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/Disclaimer/">Disclaimer</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/about-me/">About me</a>
+            </li>
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://zone13.io/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+ 
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://zone13.io/" /><span class="icon-home" style="color:blue;font-size:3em"></span></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Snagging Active Directory credentials over WiFi - Part 1</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2016-10-03T23:26:44&#43;01:00">
+            Oct 3, 2016
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/ntlm/">#NTLM</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/credentials/">#Credentials</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/hashcat/">#hashcat</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/active-directory/">#Active Directory</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/wifi/">#WiFi</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+
+<blockquote>
+<p>This issue has been fixed on Windows 8+ as part of MS16-112 issued in September 2016. I haven&rsquo;t checked this on a Windows 7 machine which isn&rsquo;t listed on the Microsoft page.</p>
+</blockquote>
+
+<h4 id="basics">Basics</h4>
+
+<p>The basic theory behind the attack is same as <a href="https://twitter.com/mubix">@mubix</a>&rsquo;s <a href="https://room362.com/post/2016/snagging-creds-from-locked-machines/">discovery</a> - if you connect a network interface to a Windows system and have <a href="https://github.com/lgandx/Responder">Responder tool</a> poisoning the network, you can obtain the hashes (NTML responses) from the machine without any user intervention. This works even with the computer in <strong>locked state</strong>.</p>
+
+<p>In my scenario, I&rsquo;m using a rogue Open WiFi network to grab the hashes. The result is the same and at times, I had better results than plugging in a <a href="https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/">Pi Zero</a>. The Responder tool captures the hashes which can then be cracked using tools like <a href="https://hashcat.net/hashcat/">hashcat</a>.</p>
+
+<blockquote>
+<p>Note: This only works with a domain joined computer. I haven&rsquo;t seen a local account sending out hashes without user intervention.</p>
+</blockquote>
+
+<h4 id="terminology">Terminology:</h4>
+
+<p><strong>LLMNR / NBT-NS poisoning</strong> - I assume this is familiar by now. If not, there are a number of good resources that explain how the Responder tool uses this to capture hashes. <a href="https://www.sternsecurity.com/blog/local-network-attacks-llmnr-and-nbt-ns-poisoning">Here</a> is a good write-up from Stern Security.</p>
+
+<p><strong>Open WiFi network</strong> - A WiFi network that allows clients to connect to it without needing any form of authentication and there is no channel encryption employed when the clients communicate. This includes public networks like Starbucks, Airport WiFi etc. which allows users to access internet either free or after paying a fee.</p>
+
+<p><strong>Rogue WiFi access point</strong> - An access point that masquerades as a legitimate access point by advertising the same SSID.</p>
+
+<h4 id="attack-scenario">Attack scenario</h4>
+
+<p>The catch about Open WiFi networks is that they allow clients to connect, get an IP over DHCP and share a common network with other clients. This means that an attacker waiting on the network can do things like ARP spoofing, Man-in-the-middle etc. to compromise the client. An attacker can always connect to a legitimate Open WiFi network and do poisoning attacks. However, in that case, the chances of him getting detected and logged are more. So, what are the options for an attacker?</p>
+
+<p><em>Create a rogue Open WiFi network and wait for the client to connect.</em></p>
+
+<p><strong>Why should the client connect to the rogue network anyway?</strong></p>
+
+<p>This is the important bit. On Windows, when a user connects to a WiFi network for the first time, he is presented with an option to &lsquo;remember&rsquo; the network so that the machine connects to the WiFi network every time it is in vicinity. So if you bring up a rogue open WiFi network, the client connects to it automatically without any user intervention. Also, it is to be noted that there are no notification pop-ups when the client connects to the rogue network, possibly a way to ensure seamless connectivity in an ESS network.</p>
+
+<p><img src="https://zone13.io/images/open_wifi.png" alt="open_wifi" /></p>
+
+<p><strong>So, why only Open WiFi networks for this attack?</strong></p>
+
+<p>A rogue Open access network can be created just by knowing the SSID of a legitimate network. This is unlike a WEP/WPA/WPA2 network which requires the attacker to know the WiFi passphrase in order to create a rogue network and make the client connect.</p>
+
+<p><strong>So you are telling me that the client must have connected to an Open WiFi access point. Why do you think anyone will connect a corporate laptop that is part of a Active Directory domain to an unsecure Open network?</strong></p>
+
+<p>Open WiFi networks are all around us. The whole point of enterprises distributing laptops is mobility. Users connect to various networks and establish a VPN connection back to the office network to access the resources. Imagine you are traveling for work. If you need internet access, one or the other time, you will most likely end up connecting to an Open WiFi network - like hotel WiFi, airport WiFi etc. Ask anyone who travels if you are still doubtful. :)</p>
+
+<p><strong>Ok, so if I travel and indeed connect to Open WiFi networks, how does the attacker know the SSID of the network I have connected to?</strong></p>
+
+<p>There are various ways for an attacker to find this:</p>
+
+<ol>
+<li>Monitor the client probes from the client machines that queries for stored WiFi SSIDs</li>
+<li>Resources like <a href="https://wigle.net">Wigle.NET</a> that serve as a database of SSIDs with locations. If needed, these SSID&rsquo;s can be scripted to see which ones elicits a response from client machines</li>
+<li>Google !! - basic recon stuff - search for the Hotel WiFi network name where the person has stayed (e.g. <strong>Marriott_Guest</strong>)</li>
+</ol>
+
+<h4 id="setup">Setup</h4>
+
+<h5 id="rogue-open-wifi-network">Rogue Open WiFi network</h5>
+
+<p>Rogue APs can be of two types:</p>
+
+<ul>
+<li>Software based - E.g. Hostapd, Airbase-ng</li>
+<li>Hardware based - E.g. Actual WiFi routers, <a href="https://www.wifipineapple.com/">WiFi Pineapple</a></li>
+</ul>
+
+<blockquote>
+<p>I have seen that WiFi Pineapple has a Responder <a href="https://www.wifipineapple.com/modules">module</a>, but I haven&rsquo;t tried it yet. I will leave it for another post.</p>
+</blockquote>
+
+<p>I decided to go with an actual hardware WiFi router, the <a href="http://www.tp-link.com/lk/products/details/cat-14_TL-MR3020.html">TP-LINK MR3020</a> for the following reasons:</p>
+
+<ul>
+<li><p>WiFi clients are getting smarter and they are able to detect and prevent connecting to software based APs. This can be bypassed using an actual WiFi router to which the clients connect willingly.</p></li>
+
+<li><p>MR3020 is a wonderful device that can be powered using a battery pack allowing you to even do a &lsquo;wardriving&rsquo; exercise.</p></li>
+
+<li><p>It has an <a href="https://wiki.openwrt.org/toh/tp-link/tl-mr3020">OpenWrt</a> firmware with more options. However, I have used the factory firmware in this case.</p></li>
+</ul>
+
+<p>​</p>
+
+<h5 id="a-linux-machine-to-run-responder">A Linux machine to run Responder</h5>
+
+<p>I used a Raspberry Pi 3 running Raspbian (referred to as RPi here on).</p>
+
+<h5 id="an-ssh-client-to-remote-into-rpi-and-view-the-live-capture">An SSH client to remote into RPi and view the live capture</h5>
+
+<p>I connected my laptop to the rogue WiFi and SSH&rsquo;ed into RPi.</p>
+
+<h4 id="execution">Execution</h4>
+
+<p><strong>Step1:</strong> Clone the Responder tool from <a href="https://github.com/lgandx/Responder">GitHub repo</a> on to the RPi.</p>
+
+<p><strong>Step 2:</strong> Configure the MR3020 using the SSID (<strong>Z13_guest_wifi</strong> in my case) of the Open WiFi network that the user has connected to in the past. Additionally, set the DNS server under DHCP options to the IP of the RPi so that we get all the DNS queries. The RPi can be given a static IP every time by doing an address reservation. Toggle the hardware switch to 3G/4G so that the RPi can be plugged into it&rsquo;s LAN port.</p>
+
+<p><img src="https://zone13.io/images/MR3020_open_wifi_config.png" alt="MR3020_open_wifi_config" /></p>
+
+<p><img src="https://zone13.io/images/mr3020_dns_server.png" alt="mr3020_dns_server" /></p>
+
+<p><strong>Step 3:</strong> Connect the RPi to MR3020 and power on both devices. The RPi boots up and gets an IP from the MR3020.</p>
+
+<p><strong>Step 4:</strong> Connect to the rogue WiFi network and SSH into RPi. Run the Responder tool.</p>
+
+<p><code>./Responder.py -I eth0 -f -w -r -d -F</code></p>
+
+<p><img src="https://zone13.io/images/run_responder.png" alt="run_responder" /></p>
+
+<p><strong>Step 5:</strong> Wait until the client connects to our rogue WiFi network. This can be done in a couple of ways:</p>
+
+<ol>
+<li>Wait until the client connects by virtue of higher signal strength</li>
+<li>De-auth the client from the legitimate network and connect to the rogue AP</li>
+</ol>
+
+<p>Once the client connects, the Responder tool does its magic and captures the hashes. It was observed that <em>if the client was made to re-connect to the rogue network, the hash was captured much quickly</em>.</p>
+
+<p><img src="https://zone13.io/images/hash_captured.png" alt="hash_captured" /></p>
+
+<p>The captured hashes can then be cracked using tools like hashcat.</p>
+
+<h4 id="advantages">Advantages</h4>
+
+<ol>
+<li>No physical access to the system required, only WiFi proximity is needed</li>
+<li>Plugging in USB devices like LAN Turtle can be disabled using AD policies. This attack vector has an edge in that case</li>
+<li>No driver installation required - use of Pi Zero for mubix&rsquo;s attack required the driver to be pre-installed on the target system.</li>
+<li>No logs recorded on the enterprise logging systems. The only place where this gets logged is Windows Event Viewer</li>
+<li>Less chances of discovering that the hashes were grabbed. This gives an attacker ample time to crack the hash on his cracking rig.</li>
+<li>Ability to do a wardriving exercise to capture hashes from multiple machines which has connected to the same Open WiFi network.</li>
+<li>The hash was observed to be captured quite quickly (often less than 30 seconds).</li>
+</ol>
+
+<h4 id="conclusion">Conclusion</h4>
+
+<p>This attack scenario can compromise the enterprise&rsquo;s AD domain without even touching the on premise network (wired or wireless). The only info that an attacker needs is the  SSID of &lsquo;<strong>any one</strong>&rsquo; Open WiFi network that the user has connected to in the past with &lsquo;Connect automatically&rsquo; option enabled. From a network admin perspective, this can be a nightmare. Of course, the success of obtaining the plaintext credentials depend on whether the NTLM hash can be cracked. With ever increasing computational power and plaintext passwords getting dumped every now and then from various sources, the chances of cracking the passwords are quite good.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://zone13.io/" style="background-image: url(https://zone13.io/images/thumbnail.png)"><span class="hidden">Sid's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://zone13.io/">Sid</a></h4>
+  
+  <p>Information Security Professional</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Dublin, Ireland</span>
+   
+	<span class="author-link icon-linkedin" style="color:white;font-size:1em"><a href="https://www.linkedin.com/in/siddhuy">siddhuy</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Snagging%20Active%20Directory%20credentials%20over%20WiFi%20-%20Part%201&nbsp;-&nbsp;Zone13.io&amp;url=https%3a%2f%2fzone13.io%2fpost%2fSnagging-credentials-over-WiFi-Part1%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fSnagging-credentials-over-WiFi-Part1%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzone13.io%2fpost%2fSnagging-credentials-over-WiFi-Part1%2f&amp;description=Snagging%20Active%20Directory%20credentials%20over%20WiFi%20-%20Part%201"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fSnagging-credentials-over-WiFi-Part1%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'zone13-io';
+  var disqus_url = 'https:\/\/zone13.io\/post\/Snagging-credentials-over-WiFi-Part1\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-3796585421208342"
+	 data-ad-slot="4191437919"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>	
+
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Zone13.io</a> All rights reserved - 2016</section>
+		
+        <section class="poweredby"> Powered by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/index.js"></script>
+    
+</body>
+</html>
+

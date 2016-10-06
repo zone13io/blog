@@ -7,8 +7,152 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2016</copyright>
-    <lastBuildDate>Fri, 23 Sep 2016 19:55:06 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 03 Oct 2016 23:26:44 +0100</lastBuildDate>
     <atom:link href="https://zone13.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Snagging Active Directory credentials over WiFi - Part 1</title>
+      <link>https://zone13.io/post/Snagging-credentials-over-WiFi-Part1/</link>
+      <pubDate>Mon, 03 Oct 2016 23:26:44 +0100</pubDate>
+      
+      <guid>https://zone13.io/post/Snagging-credentials-over-WiFi-Part1/</guid>
+      <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;This issue has been fixed on Windows 8+ as part of MS16-112 issued in September 2016. I haven&amp;rsquo;t checked this on a Windows 7 machine which isn&amp;rsquo;t listed on the Microsoft page.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&#34;basics&#34;&gt;Basics&lt;/h4&gt;
+
+&lt;p&gt;The basic theory behind the attack is same as &lt;a href=&#34;https://twitter.com/mubix&#34;&gt;@mubix&lt;/a&gt;&amp;rsquo;s &lt;a href=&#34;https://room362.com/post/2016/snagging-creds-from-locked-machines/&#34;&gt;discovery&lt;/a&gt; - if you connect a network interface to a Windows system and have &lt;a href=&#34;https://github.com/lgandx/Responder&#34;&gt;Responder tool&lt;/a&gt; poisoning the network, you can obtain the hashes (NTML responses) from the machine without any user intervention. This works even with the computer in &lt;strong&gt;locked state&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;In my scenario, I&amp;rsquo;m using a rogue Open WiFi network to grab the hashes. The result is the same and at times, I had better results than plugging in a &lt;a href=&#34;https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/&#34;&gt;Pi Zero&lt;/a&gt;. The Responder tool captures the hashes which can then be cracked using tools like &lt;a href=&#34;https://hashcat.net/hashcat/&#34;&gt;hashcat&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Note: This only works with a domain joined computer. I haven&amp;rsquo;t seen a local account sending out hashes without user intervention.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&#34;terminology&#34;&gt;Terminology:&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;LLMNR / NBT-NS poisoning&lt;/strong&gt; - I assume this is familiar by now. If not, there are a number of good resources that explain how the Responder tool uses this to capture hashes. &lt;a href=&#34;https://www.sternsecurity.com/blog/local-network-attacks-llmnr-and-nbt-ns-poisoning&#34;&gt;Here&lt;/a&gt; is a good write-up from Stern Security.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Open WiFi network&lt;/strong&gt; - A WiFi network that allows clients to connect to it without needing any form of authentication and there is no channel encryption employed when the clients communicate. This includes public networks like Starbucks, Airport WiFi etc. which allows users to access internet either free or after paying a fee.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Rogue WiFi access point&lt;/strong&gt; - An access point that masquerades as a legitimate access point by advertising the same SSID.&lt;/p&gt;
+
+&lt;h4 id=&#34;attack-scenario&#34;&gt;Attack scenario&lt;/h4&gt;
+
+&lt;p&gt;The catch about Open WiFi networks is that they allow clients to connect, get an IP over DHCP and share a common network with other clients. This means that an attacker waiting on the network can do things like ARP spoofing, Man-in-the-middle etc. to compromise the client. An attacker can always connect to a legitimate Open WiFi network and do poisoning attacks. However, in that case, the chances of him getting detected and logged are more. So, what are the options for an attacker?&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Create a rogue Open WiFi network and wait for the client to connect.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Why should the client connect to the rogue network anyway?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This is the important bit. On Windows, when a user connects to a WiFi network for the first time, he is presented with an option to &amp;lsquo;remember&amp;rsquo; the network so that the machine connects to the WiFi network every time it is in vicinity. So if you bring up a rogue open WiFi network, the client connects to it automatically without any user intervention. Also, it is to be noted that there are no notification pop-ups when the client connects to the rogue network, possibly a way to ensure seamless connectivity in an ESS network.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/open_wifi.png&#34; alt=&#34;open_wifi&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;So, why only Open WiFi networks for this attack?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;A rogue Open access network can be created just by knowing the SSID of a legitimate network. This is unlike a WEP/WPA/WPA2 network which requires the attacker to know the WiFi passphrase in order to create a rogue network and make the client connect.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;So you are telling me that the client must have connected to an Open WiFi access point. Why do you think anyone will connect a corporate laptop that is part of a Active Directory domain to an unsecure Open network?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Open WiFi networks are all around us. The whole point of enterprises distributing laptops is mobility. Users connect to various networks and establish a VPN connection back to the office network to access the resources. Imagine you are traveling for work. If you need internet access, one or the other time, you will most likely end up connecting to an Open WiFi network - like hotel WiFi, airport WiFi etc. Ask anyone who travels if you are still doubtful. :)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Ok, so if I travel and indeed connect to Open WiFi networks, how does the attacker know the SSID of the network I have connected to?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;There are various ways for an attacker to find this:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Monitor the client probes from the client machines that queries for stored WiFi SSIDs&lt;/li&gt;
+&lt;li&gt;Resources like &lt;a href=&#34;https://wigle.net&#34;&gt;Wigle.NET&lt;/a&gt; that serve as a database of SSIDs with locations. If needed, these SSID&amp;rsquo;s can be scripted to see which ones elicits a response from client machines&lt;/li&gt;
+&lt;li&gt;Google !! - basic recon stuff - search for the Hotel WiFi network name where the person has stayed (e.g. &lt;strong&gt;Marriott_Guest&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;setup&#34;&gt;Setup&lt;/h4&gt;
+
+&lt;h5 id=&#34;rogue-open-wifi-network&#34;&gt;Rogue Open WiFi network&lt;/h5&gt;
+
+&lt;p&gt;Rogue APs can be of two types:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Software based - E.g. Hostapd, Airbase-ng&lt;/li&gt;
+&lt;li&gt;Hardware based - E.g. Actual WiFi routers, &lt;a href=&#34;https://www.wifipineapple.com/&#34;&gt;WiFi Pineapple&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;I have seen that WiFi Pineapple has a Responder &lt;a href=&#34;https://www.wifipineapple.com/modules&#34;&gt;module&lt;/a&gt;, but I haven&amp;rsquo;t tried it yet. I will leave it for another post.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I decided to go with an actual hardware WiFi router, the &lt;a href=&#34;http://www.tp-link.com/lk/products/details/cat-14_TL-MR3020.html&#34;&gt;TP-LINK MR3020&lt;/a&gt; for the following reasons:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;WiFi clients are getting smarter and they are able to detect and prevent connecting to software based APs. This can be bypassed using an actual WiFi router to which the clients connect willingly.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;MR3020 is a wonderful device that can be powered using a battery pack allowing you to even do a &amp;lsquo;wardriving&amp;rsquo; exercise.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;It has an &lt;a href=&#34;https://wiki.openwrt.org/toh/tp-link/tl-mr3020&#34;&gt;OpenWrt&lt;/a&gt; firmware with more options. However, I have used the factory firmware in this case.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;​&lt;/p&gt;
+
+&lt;h5 id=&#34;a-linux-machine-to-run-responder&#34;&gt;A Linux machine to run Responder&lt;/h5&gt;
+
+&lt;p&gt;I used a Raspberry Pi 3 running Raspbian (referred to as RPi here on).&lt;/p&gt;
+
+&lt;h5 id=&#34;an-ssh-client-to-remote-into-rpi-and-view-the-live-capture&#34;&gt;An SSH client to remote into RPi and view the live capture&lt;/h5&gt;
+
+&lt;p&gt;I connected my laptop to the rogue WiFi and SSH&amp;rsquo;ed into RPi.&lt;/p&gt;
+
+&lt;h4 id=&#34;execution&#34;&gt;Execution&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;Step1:&lt;/strong&gt; Clone the Responder tool from &lt;a href=&#34;https://github.com/lgandx/Responder&#34;&gt;GitHub repo&lt;/a&gt; on to the RPi.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Step 2:&lt;/strong&gt; Configure the MR3020 using the SSID (&lt;strong&gt;Z13_guest_wifi&lt;/strong&gt; in my case) of the Open WiFi network that the user has connected to in the past. Additionally, set the DNS server under DHCP options to the IP of the RPi so that we get all the DNS queries. The RPi can be given a static IP every time by doing an address reservation. Toggle the hardware switch to 3G/4G so that the RPi can be plugged into it&amp;rsquo;s LAN port.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/MR3020_open_wifi_config.png&#34; alt=&#34;MR3020_open_wifi_config&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/mr3020_dns_server.png&#34; alt=&#34;mr3020_dns_server&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Step 3:&lt;/strong&gt; Connect the RPi to MR3020 and power on both devices. The RPi boots up and gets an IP from the MR3020.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Step 4:&lt;/strong&gt; Connect to the rogue WiFi network and SSH into RPi. Run the Responder tool.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;./Responder.py -I eth0 -f -w -r -d -F&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/run_responder.png&#34; alt=&#34;run_responder&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Step 5:&lt;/strong&gt; Wait until the client connects to our rogue WiFi network. This can be done in a couple of ways:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Wait until the client connects by virtue of higher signal strength&lt;/li&gt;
+&lt;li&gt;De-auth the client from the legitimate network and connect to the rogue AP&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Once the client connects, the Responder tool does its magic and captures the hashes. It was observed that &lt;em&gt;if the client was made to re-connect to the rogue network, the hash was captured much quickly&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/hash_captured.png&#34; alt=&#34;hash_captured&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The captured hashes can then be cracked using tools like hashcat.&lt;/p&gt;
+
+&lt;h4 id=&#34;advantages&#34;&gt;Advantages&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;No physical access to the system required, only WiFi proximity is needed&lt;/li&gt;
+&lt;li&gt;Plugging in USB devices like LAN Turtle can be disabled using AD policies. This attack vector has an edge in that case&lt;/li&gt;
+&lt;li&gt;No driver installation required - use of Pi Zero for mubix&amp;rsquo;s attack required the driver to be pre-installed on the target system.&lt;/li&gt;
+&lt;li&gt;No logs recorded on the enterprise logging systems. The only place where this gets logged is Windows Event Viewer&lt;/li&gt;
+&lt;li&gt;Less chances of discovering that the hashes were grabbed. This gives an attacker ample time to crack the hash on his cracking rig.&lt;/li&gt;
+&lt;li&gt;Ability to do a wardriving exercise to capture hashes from multiple machines which has connected to the same Open WiFi network.&lt;/li&gt;
+&lt;li&gt;The hash was observed to be captured quite quickly (often less than 30 seconds).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h4&gt;
+
+&lt;p&gt;This attack scenario can compromise the enterprise&amp;rsquo;s AD domain without even touching the on premise network (wired or wireless). The only info that an attacker needs is the  SSID of &amp;lsquo;&lt;strong&gt;any one&lt;/strong&gt;&amp;rsquo; Open WiFi network that the user has connected to in the past with &amp;lsquo;Connect automatically&amp;rsquo; option enabled. From a network admin perspective, this can be a nightmare. Of course, the success of obtaining the plaintext credentials depend on whether the NTLM hash can be cracked. With ever increasing computational power and plaintext passwords getting dumped every now and then from various sources, the chances of cracking the passwords are quite good.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Cracking NTLMv2 responses captured using responder</title>
