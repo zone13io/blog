@@ -32,6 +32,14 @@
 &lt;p&gt;Note: This only works with a domain joined computer. I haven&amp;rsquo;t seen a local account sending out hashes without user intervention.&lt;/p&gt;
 &lt;/blockquote&gt;
 
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Who is affected by this vulnerability and the related attack?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;This vulnerability is applicable to Windows machines (7+) that are part of an Active Directory domain and connects to Open WiFi access points with &amp;lsquo;Connect automatically&amp;rsquo; option enabled. The vulnerability can be exploited if &lt;a href=&#34;https://technet.microsoft.com/en-us/library/security/ms16-112.aspx&#34;&gt;MS16-112&lt;/a&gt; patch is not installed on the system.&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
 &lt;h4 id=&#34;terminology&#34;&gt;Terminology:&lt;/h4&gt;
 
 &lt;p&gt;&lt;strong&gt;LLMNR / NBT-NS poisoning&lt;/strong&gt; - I assume this is familiar by now. If not, there are a number of good resources that explain how the Responder tool uses this to capture hashes. &lt;a href=&#34;https://www.sternsecurity.com/blog/local-network-attacks-llmnr-and-nbt-ns-poisoning&#34;&gt;Here&lt;/a&gt; is a good write-up from Stern Security.&lt;/p&gt;
@@ -88,7 +96,7 @@
 &lt;p&gt;I decided to go with an actual hardware WiFi router, the &lt;a href=&#34;http://www.tp-link.com/lk/products/details/cat-14_TL-MR3020.html&#34;&gt;TP-LINK MR3020&lt;/a&gt; for the following reasons:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;WiFi clients are getting smarter and they are able to detect and prevent connecting to software based APs. This can be bypassed using an actual WiFi router to which the clients connect willingly.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;del&gt;WiFi clients are getting smarter and they are able to detect and prevent connecting to software based APs. This can be bypassed using an actual WiFi router to which the clients connect willingly.&lt;/del&gt; &lt;font color=&#34;red&#34;&gt;Tried &lt;a href=&#34;https://github.com/sensepost/hostapd-mana&#34;&gt;hostapd-mana&lt;/a&gt; as pointed by &lt;a href=&#34;https://twitter.com/singe/status/784290909206646786&#34;&gt;@singe&lt;/a&gt; and it works well as an Evil twin.&lt;/font&gt;&lt;/p&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;p&gt;MR3020 is a wonderful device that can be powered using a battery pack allowing you to even do a &amp;lsquo;wardriving&amp;rsquo; exercise.&lt;/p&gt;&lt;/li&gt;
 

@@ -188,6 +188,14 @@
 <p>Note: This only works with a domain joined computer. I haven&rsquo;t seen a local account sending out hashes without user intervention.</p>
 </blockquote>
 
+<hr />
+
+<p><strong>Who is affected by this vulnerability and the related attack?</strong></p>
+
+<p><em>This vulnerability is applicable to Windows machines (7+) that are part of an Active Directory domain and connects to Open WiFi access points with &lsquo;Connect automatically&rsquo; option enabled. The vulnerability can be exploited if <a href="https://technet.microsoft.com/en-us/library/security/ms16-112.aspx">MS16-112</a> patch is not installed on the system.</em></p>
+
+<hr />
+
 <h4 id="terminology">Terminology:</h4>
 
 <p><strong>LLMNR / NBT-NS poisoning</strong> - I assume this is familiar by now. If not, there are a number of good resources that explain how the Responder tool uses this to capture hashes. <a href="https://www.sternsecurity.com/blog/local-network-attacks-llmnr-and-nbt-ns-poisoning">Here</a> is a good write-up from Stern Security.</p>
@@ -244,7 +252,7 @@
 <p>I decided to go with an actual hardware WiFi router, the <a href="http://www.tp-link.com/lk/products/details/cat-14_TL-MR3020.html">TP-LINK MR3020</a> for the following reasons:</p>
 
 <ul>
-<li><p>WiFi clients are getting smarter and they are able to detect and prevent connecting to software based APs. This can be bypassed using an actual WiFi router to which the clients connect willingly.</p></li>
+<li><p><del>WiFi clients are getting smarter and they are able to detect and prevent connecting to software based APs. This can be bypassed using an actual WiFi router to which the clients connect willingly.</del> <font color="red">Tried <a href="https://github.com/sensepost/hostapd-mana">hostapd-mana</a> as pointed by <a href="https://twitter.com/singe/status/784290909206646786">@singe</a> and it works well as an Evil twin.</font></p></li>
 
 <li><p>MR3020 is a wonderful device that can be powered using a battery pack allowing you to even do a &lsquo;wardriving&rsquo; exercise.</p></li>
 
