@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Abusing social network APIs for Fun &amp; Profit - Facebook API &middot;  Zone13.io" />
+  	<meta property="og:site_name" content="Zone13.io" />
+  	<meta property="og:url" content="https://zone13.io/post/abusing-social-network-APIs-for-Fun-and-Profit1/" />
+
+    
+  	<meta property="og:type" content="article" />
+
+    <meta property="og:article:published_time" content="2017-01-31T23:58:30Z" />
+
+    
+    <meta property="og:article:tag" content="Data exfiltration" />
+    
+    <meta property="og:article:tag" content="Red team" />
+    
+    <meta property="og:article:tag" content="Python" />
+    
+    <meta property="og:article:tag" content="Facebook" />
+    
+    <meta property="og:article:tag" content="Penetration testing" />
+    
+    
+
+  <title>
+     Abusing social network APIs for Fun &amp; Profit - Facebook API &middot;  Zone13.io
+  </title>
+
+    <meta name="description" content="Information Security Blog" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://zone13.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://zone13.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/nav.css" />
+	
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	
+	
+	
+	
+	
+	
+
+    
+      
+          <link href="https://zone13.io/index.xml" rel="alternate" type="application/rss+xml" title="Zone13.io" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.16" />
+
+    <link rel="canonical" href="https://zone13.io/post/abusing-social-network-APIs-for-Fun-and-Profit1/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-84537506-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+
+	
+
+</head>
+
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/">Home</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/Disclaimer/">Disclaimer</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/about-me/">About me</a>
+            </li>
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://zone13.io/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+ 
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://zone13.io/" /><span class="icon-home" style="color:blue;font-size:3em"></span></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Abusing social network APIs for Fun &amp; Profit - Facebook API</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2017-01-31T23:58:30Z">
+            Jan 31, 2017
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/data-exfiltration/">#Data exfiltration</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/red-team/">#Red team</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/python/">#Python</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/facebook/">#Facebook</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/penetration-testing/">#Penetration testing</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      <p><strong><em>Question - In a controlled corporate environment with DLP solutions monitoring the HTTP and Email traffic, how would you perform data exfiltration during a Red Team Pentest ?</em></strong></p>
+
+<p><strong><em>&lsquo;One&rsquo; of the answers would be to use social networking sites, let&rsquo;s look at Facebook in this post.</em></strong></p>
+
+<p>Data exfiltration using Facebook (FB) and the like is nothing new. There has been various instances where these networks have been used as C&amp;C, data receivers etc..</p>
+
+<p>Why are social networking sites a good option - one major reason is that they are loosely controlled (not blocked in many organizations - is LinkedIn blocked at your workplace?)</p>
+
+<p>FB allows <a href="http://mashable.com/2012/01/04/facebook-character-limit/#s7MHOr9Q6Gqo">63,206 characters</a> in a single post, which is quite cool. So can we use that as a receiver, i.e, post data to a FB post from a corporate environment and then retrieve it from outside??</p>
+
+<p>Ok, as some of you are already thinking - that would mean giving up the data to Facebook. Solution - Use Encryption  - encrypt the data using AES or similar and then post to FB. (Maybe?)</p>
+
+<p>Well, 63,206 is not a big number. What if I want to send out a bigger file? - Split the file into chunks, say 50,000 characters into each post. Finally combine all of them.</p>
+
+<p>Surely you don&rsquo;t want to login to your personal Facebook to paste data to your wall (!). Let&rsquo;s use Facebook APIs.</p>
+
+<p>Now, I would assume that it is not always ASCII data that we would want to send out. E.g. Zip archives, image files or anything for that reason. So what do you do?</p>
+
+<p>The approach I took is as below:</p>
+
+<p>Read the file in binary mode &ndash;&gt; Do a base-64 encoding of the binary data which gives the ascii version &ndash;&gt; split them up as necessary and post to FB using API from inside the corporate network &ndash;&gt; Retrieve the data from the (multiple) FB posts from outside and combine them &ndash;&gt; do the base-64 decoding &ndash;&gt; write the output in binary mode to file &ndash;&gt; BINGO !!</p>
+
+<p>Now, one thing you can also do is to Unpublish the Page / control the viewing to which you are making the post. That way, it will ensure that only the Page owner can view the posted data.</p>
+
+<p><img src="https://zone13.io/images/unpublish_page.png" alt="unpublished_page" /></p>
+
+<p><strong><u>Red Team scenario</u></strong></p>
+
+<p>I would like to present the usage through a Red team exercise scenario where the task is to perform exfiltration of a sample file (of the order a few KBs magnitude). There is nothing to prevent the same method from being used to send out a large file; for the sake of the PoC, I will keep it simple. :)</p>
+
+<p><u>Explanation</u></p>
+
+<ol>
+<li>During a Red team exercise, you get access to a machine from where the data (file) needs to be pulled. Imagine that the DLP solutions would detect you from sending out data via webmail, file upload solutions and the only open ports for outside access are 80 and 443. Definitely you don&rsquo;t want to risk detection on port 80.</li>
+<li>That leaves us with port 443. Say for instance there is a whitelist policy in place that only allows access to specific websites and incidentally Facebook is one of them (!). [As a side note, the same method can be allowed to send out data by abusing APIs provided by other social media sites as well. Time to block LinkedIn API from corporate network? :) ]</li>
+<li>The method can be used as follows:
+
+<ol>
+<li>Suppose the data to be sent out is in the form of a zip file (<strong>secret.zip</strong>) on the target system that we have access to.</li>
+<li>Read the zip file (I&rsquo;m using Python for the PoC) in binary mode.</li>
+<li>Do a base-64 encode of the binary data</li>
+<li>Post the base-64 encode of the data to FB</li>
+<li>Retrieve the encoded data from outside the corporate network, again FB API can be used.</li>
+<li>Decode the base-64 encoded data to binary and write to file (zip)</li>
+</ol></li>
+</ol>
+
+<p>The base for the Python scripts have been adopted from <a href="http://nodotcom.org/python-facebook-tutorial.html">link 1</a> and <a href="https://github.com/minimaxir/facebook-page-post-scraper/blob/master/get_fb_posts_fb_page.py">link 2</a>. All credits to the original work for making this simple.</p>
+
+<p>Python script for data exfiltration - <a href="https://github.com/zone13/python_facebook/blob/master/put.py">here</a></p>
+
+<p>Python script for retrieving the FB post and writing to file - <a href="https://github.com/zone13/python_facebook/blob/master/get.py">here</a></p>
+
+<p>This also goes to demonstrate how Facebook APIs can be exploited for malicious purposes, e.g. a malware with API tokens that can post to a Facebook page / wall maintained by the bad guy.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://zone13.io/" style="background-image: url(https://zone13.io/images/thumbnail.png)"><span class="hidden">Sid's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://zone13.io/">Sid</a></h4>
+  
+  <p>Information Security Professional</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Dublin, Ireland</span>
+   
+	<span class="author-link icon-linkedin" style="color:white;font-size:1em"><a href="https://www.linkedin.com/in/siddhuy">siddhuy</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Abusing%20social%20network%20APIs%20for%20Fun%20%26%20Profit%20-%20Facebook%20API&nbsp;-&nbsp;Zone13.io&amp;url=https%3a%2f%2fzone13.io%2fpost%2fabusing-social-network-APIs-for-Fun-and-Profit1%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fabusing-social-network-APIs-for-Fun-and-Profit1%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzone13.io%2fpost%2fabusing-social-network-APIs-for-Fun-and-Profit1%2f&amp;description=Abusing%20social%20network%20APIs%20for%20Fun%20%26%20Profit%20-%20Facebook%20API"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fabusing-social-network-APIs-for-Fun-and-Profit1%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'zone13-io';
+  var disqus_url = 'https:\/\/zone13.io\/post\/abusing-social-network-APIs-for-Fun-and-Profit1\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-3796585421208342"
+	 data-ad-slot="4191437919"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>	
+
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Zone13.io</a> All rights reserved - 2016</section>
+		
+        <section class="poweredby"> Powered by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/index.js"></script>
+    
+</body>
+</html>
+
