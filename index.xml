@@ -7,8 +7,111 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2016</copyright>
-    <lastBuildDate>Tue, 31 Jan 2017 23:58:30 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 04 Feb 2017 23:58:30 +0000</lastBuildDate>
     <atom:link href="https://zone13.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Stealthy social network (Twitter / Facebook) based pentest drop box</title>
+      <link>https://zone13.io/post/social-media-based-pentest-dropbox/</link>
+      <pubDate>Sat, 04 Feb 2017 23:58:30 +0000</pubDate>
+      
+      <guid>https://zone13.io/post/social-media-based-pentest-dropbox/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;Pentest drop box&lt;/strong&gt; - a portable device that is plugged (or connected wirelessly) to the target network during pentests and can be controlled from a command and control (C&amp;amp;C) server to perform the following functions:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Network monitoring / sniffing&lt;/li&gt;
+&lt;li&gt;Scan /exploit other hosts in the network&lt;/li&gt;
+&lt;li&gt;ARP / DNS poisoning for MiTM attacks&lt;/li&gt;
+&lt;li&gt;Denial of service&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Drop boxes can call C&amp;amp;C using a number of methods, not limited to:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Reverse SSH (over OpenVPN)&lt;/li&gt;
+&lt;li&gt;SSH over HTTP(s)&lt;/li&gt;
+&lt;li&gt;DNS tunneling - &lt;a href=&#34;https://www.stevencampbell.info/2017/02/configure-pentest-dropbox-dns-tunneling/&#34;&gt;here&lt;/a&gt; is a good write-up&lt;/li&gt;
+&lt;li&gt;Route through TOR&lt;/li&gt;
+&lt;li&gt;ICMP based shell&lt;/li&gt;
+&lt;li&gt;Egress buster - try all outbound ports until you find an open port&lt;/li&gt;
+&lt;li&gt;Use a 3G dongle so that the C&amp;amp;C commands don&amp;rsquo;t touch the target network&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Most of the above methods will require a persistent connection (shell) with your C&amp;amp;C, increasing the chances of detection. Often your connection may get interrupted, so you may also need a re-connect mechanism.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;So, how can you create an near perfect C&amp;amp;C mechanism?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;It should blend with the rest of the network traffic and be asynchronous. Of course, encryption is a must.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Say hello to social media based drop boxes.. !!&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;I wrote a &lt;a href=&#34;https://zone13.io/post/abusing-social-network-APIs-for-Fun-and-Profit1/&#34;&gt;blog post&lt;/a&gt; earlier on using Facebook API for data exfiltration during Red team pentests. A similar method was used to create a C&amp;amp;C for the drop box here.&lt;/p&gt;
+
+&lt;p&gt;The advantage here is that it can be quite hard to distinguish the drop box C&amp;amp;C traffic from the legitimate social network traffic. The social network API calls offer HTTPS encryption, which is a huge advantage.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;design&#34;&gt;Design&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Upstream&lt;/strong&gt; - for receiving commands from C&amp;amp;C&lt;/p&gt;
+
+&lt;p&gt;Twitter - has a tweet limit of 140 characters, perfect for issuing commands to the drop box. The API calls uses HTTPS by default.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Downstream&lt;/strong&gt; - for receiving the results of commands, data exfiltration&lt;/p&gt;
+
+&lt;p&gt;Facebook - has a post limit of 63,206 characters - which in most cases can be sufficient to receive command outputs like nmap scan results.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Stealth&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;To prevents mining of C&amp;amp;C tweets and posts made to Facebook, it is advisable to limit the privacy options.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/twitter_privacy.png&#34; alt=&#34;Twitter privacy&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/unpublish_page.png&#34; alt=&#34;Facebook privacy&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;hardware&#34;&gt;Hardware&lt;/h5&gt;
+
+&lt;p&gt;The pentester&amp;rsquo;s life has become a lot easier during physical pentests, thanks to the single board computers and the support they get. This gives a lot of freedom in terms of customizing the drop box in terms of software that needs to be on the box. Essentially, you can now build a drop box from scratch with only the tools you need. The low price tags are also an added advantage.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m a big fan of Raspberry Pi (RPi), so my drop box builds have ben based on them till now. &lt;a href=&#34;http://www.blackhillsinfosec.com/&#34;&gt;Black Hills Information Security&lt;/a&gt; had published a &lt;a href=&#34;http://www.blackhillsinfosec.com/?p=5156&#34;&gt;blog post&lt;/a&gt; on building your own drop box along with the a detailed comparison of single board computers. They have been doing some really cool research stuff and this is no exception. If you are planning to build a box on your own, I would highly recommend reading their blog post to start with.&lt;/p&gt;
+
+&lt;h5 id=&#34;software&#34;&gt;Software&lt;/h5&gt;
+
+&lt;p&gt;There is a Kali build for RPi available and it is possible to use their metapackages to customize for your engagement - web, Wi-Fi etc. If you want to keep it really light weight, you can also start with the Raspbian Lite and then customize for your needs.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/drop_box_design.png&#34; alt=&#34;design&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;demos&#34;&gt;Demos&lt;/h4&gt;
+
+&lt;p&gt;For the sake of the demo, I will be running the scripts manually. During deployments, I simply start the script at boot and let it query for commands every minute or so.&lt;/p&gt;
+
+&lt;p&gt;During the demo, I will be showing how the commands are passed as tweets which are retrieved and executed by the drop box. The results of the command are then posted to Facebook page.&lt;/p&gt;
+
+&lt;p&gt;Demo video (YouTube link):&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=0VwMmq4XusE&#34;&gt;&lt;img src=&#34;http://img.youtube.com/vi/0VwMmq4XusE/0.jpg&#34; alt=&#34;Demo video&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Mitigations&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;It will be hard to come up with a solution to completely mitigate this from a Blue team perspective. DNS and deep packet inspection would be the way to go.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Follow-up&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Any suggestions / thoughts and mitigations are welcome.&lt;/p&gt;
+
+&lt;p&gt;Hope you find some use for this during pentests.&lt;/p&gt;
+
+&lt;p&gt;Cheers !!&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Abusing social network APIs for Fun &amp; Profit - Facebook API</title>
