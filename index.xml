@@ -83,7 +83,7 @@
 
 &lt;p&gt;The pentester&amp;rsquo;s life has become a lot easier during physical pentests, thanks to the single board computers and the support they get. This gives a lot of freedom in terms of customizing the drop box in terms of software that needs to be on the box. Essentially, you can now build a drop box from scratch with only the tools you need. The low price tags are also an added advantage.&lt;/p&gt;
 
-&lt;p&gt;I&amp;rsquo;m a big fan of Raspberry Pi (RPi), so my drop box builds have ben based on them till now. &lt;a href=&#34;http://www.blackhillsinfosec.com/&#34;&gt;Black Hills Information Security&lt;/a&gt; had published a &lt;a href=&#34;http://www.blackhillsinfosec.com/?p=5156&#34;&gt;blog post&lt;/a&gt; on building your own drop box along with the a detailed comparison of single board computers. They have been doing some really cool research stuff and this is no exception. If you are planning to build a box on your own, I would highly recommend reading their blog post to start with.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m a big fan of Raspberry Pi (RPi), so my drop box builds have been based on them till now. &lt;a href=&#34;http://www.blackhillsinfosec.com/&#34;&gt;Black Hills Information Security&lt;/a&gt; had published a &lt;a href=&#34;http://www.blackhillsinfosec.com/?p=5156&#34;&gt;blog post&lt;/a&gt; on building your own drop box along with the a detailed comparison of single board computers. They have been doing some really cool research stuff and this is no exception. If you are planning to build a box on your own, I would highly recommend reading their blog post to start with.&lt;/p&gt;
 
 &lt;h5 id=&#34;software&#34;&gt;Software&lt;/h5&gt;
 
