@@ -7,8 +7,43 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2016</copyright>
-    <lastBuildDate>Sat, 04 Feb 2017 23:58:30 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Feb 2017 22:37:30 +0000</lastBuildDate>
     <atom:link href="https://zone13.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Social network based backdoor for pentests</title>
+      <link>https://zone13.io/post/social_network_backdoor_windows/</link>
+      <pubDate>Tue, 21 Feb 2017 22:37:30 +0000</pubDate>
+      
+      <guid>https://zone13.io/post/social_network_backdoor_windows/</guid>
+      <description>
+
+&lt;p&gt;Once you gain access to a system during pentest, you might want to retain access by means of a backdoor. The most trivial method is to use &lt;a href=&#34;https://www.offensive-security.com/metasploit-unleashed/meterpreter-backdoor/&#34;&gt;metsvc&lt;/a&gt; which &amp;lsquo;unfortunately&amp;rsquo; is very well fingerprinted by anti-virus software.&lt;/p&gt;
+
+&lt;p&gt;In this post, let us look at how to use a backdoor that uses social network for communications. The method used by the backdoor is identical to what was mentioned in my previous &lt;a href=&#34;https://zone13.io/post/social-media-based-pentest-dropbox/&#34;&gt;post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/drop_box_design.png&#34; alt=&#34;design&#34; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;I&amp;rsquo;m going to assume that the pentester already has a meterpreter shell on the system that he wants to backdoor.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h5 id=&#34;steps&#34;&gt;Steps&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The Python code for the backdoor is compiled into &lt;strong&gt;exe&lt;/strong&gt; using &lt;a href=&#34;http://www.pyinstaller.org/&#34;&gt;PyInstaller&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The backdoor is uploaded to the system using the existing meterpreter shell and executed&lt;/li&gt;
+&lt;li&gt;The backdoor code polls the pentester&amp;rsquo;s Twitter handle every 30 seconds for commands&lt;/li&gt;
+&lt;li&gt;The command retrieved is executed on the system and the output is uploaded to the pentester&amp;rsquo;s Facebook page.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Even if the target network containing the system we are backdooring keeps a check on all traffic (HTTPS), the proxy will only notice the C&amp;amp;C traffic from the system as legitimate API calls to Facebook and Twitter - hence providing the necessary levels of stealth.&lt;/p&gt;
+
+&lt;h5 id=&#34;video-demo-youtube-link&#34;&gt;Video demo (YouTube link)&lt;/h5&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://youtu.be/RG5uQGGPDq4&#34;&gt;&lt;img src=&#34;http://img.youtube.com/vi/RG5uQGGPDq4/0.jpg&#34; alt=&#34;Demo video&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Stealthy social network (Twitter / Facebook) based pentest drop box</title>
