@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Twitter on Zone13.io</title>
-    <link>https://zone13.io/tags/twitter/</link>
-    <description>Recent content in Twitter on Zone13.io</description>
+    <title>Pi 3 on Zone13.io</title>
+    <link>https://zone13.io/tags/pi-3/</link>
+    <description>Recent content in Pi 3 on Zone13.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2016</copyright>
     <lastBuildDate>Mon, 27 Mar 2017 21:18:17 +0100</lastBuildDate>
-    <atom:link href="https://zone13.io/tags/twitter/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://zone13.io/tags/pi-3/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Twitter notifications for MotionEyeOS video surveillance system</title>
@@ -82,90 +82,6 @@
 &lt;/ol&gt;
 
 &lt;p&gt;Hope this post is useful for those who wish to setup Twitter notifications for MotionEyeOS. If you run into problems, please post a comment below and I will try my best to help.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Social network based backdoor for pentests</title>
-      <link>https://zone13.io/post/social_network_backdoor_windows/</link>
-      <pubDate>Tue, 21 Feb 2017 22:37:30 +0000</pubDate>
-      
-      <guid>https://zone13.io/post/social_network_backdoor_windows/</guid>
-      <description>
-
-&lt;p&gt;Once you gain access to a system during pentest, you might want to retain access by means of a backdoor. The most trivial method is to use &lt;a href=&#34;https://www.offensive-security.com/metasploit-unleashed/meterpreter-backdoor/&#34;&gt;metsvc&lt;/a&gt; which &amp;lsquo;unfortunately&amp;rsquo; is very well fingerprinted by anti-virus software.&lt;/p&gt;
-
-&lt;p&gt;In this post, let us look at how to use a backdoor that uses social network for communications. The method used by the backdoor is identical to what was mentioned in my previous &lt;a href=&#34;https://zone13.io/post/social-media-based-pentest-dropbox/&#34;&gt;post&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/drop_box_design.png&#34; alt=&#34;design&#34; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;I&amp;rsquo;m going to assume that the pentester already has a meterpreter shell on the system that he wants to backdoor.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h5 id=&#34;steps&#34;&gt;Steps&lt;/h5&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The Python code for the backdoor is compiled into &lt;strong&gt;exe&lt;/strong&gt; using &lt;a href=&#34;http://www.pyinstaller.org/&#34;&gt;PyInstaller&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;The backdoor is uploaded to the system using the existing meterpreter shell and executed&lt;/li&gt;
-&lt;li&gt;The backdoor code polls the pentester&amp;rsquo;s Twitter handle every 30 seconds for commands&lt;/li&gt;
-&lt;li&gt;The command retrieved is executed on the system and the output is uploaded to the pentester&amp;rsquo;s Facebook page.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Even if the target network containing the system we are backdooring keeps a check on all traffic (HTTPS), the proxy will only notice the C&amp;amp;C traffic from the system as legitimate API calls to Facebook and Twitter - hence providing the necessary levels of stealth.&lt;/p&gt;
-
-&lt;h5 id=&#34;video-demo-youtube-link&#34;&gt;Video demo (YouTube link)&lt;/h5&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://youtu.be/RG5uQGGPDq4&#34;&gt;&lt;img src=&#34;http://img.youtube.com/vi/RG5uQGGPDq4/0.jpg&#34; alt=&#34;Demo video&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Python code to retrieve the latest tweet from a user</title>
-      <link>https://zone13.io/post/python-code-latest-tweet/</link>
-      <pubDate>Sat, 17 Sep 2016 15:25:24 +0100</pubDate>
-      
-      <guid>https://zone13.io/post/python-code-latest-tweet/</guid>
-      <description>&lt;p&gt;This is a Python code snippet to retrieve the latest tweet from a user by making use of the Twitter developer API.&lt;/p&gt;
-
-&lt;p&gt;The Twitter API details can be obtained from the &lt;a href=&#34;https://apps.twitter.com/&#34;&gt;developer portal&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Github &lt;a href=&#34;https://github.com/zone13/python_dev/blob/master/twitter_latest_tweet.py&#34;&gt;link&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/env python
-
-#Python script to retrive the latest tweet from a user
-#Created by zone13.io (https://www.zone13.io)
-#Version 1.0
-#Usage - ./script.py &amp;lt;twitter_handle&amp;gt;
-#e.g. ./script.py rihanna
-#Adapted from https://github.com/bear/python-twitter
-#Requirement - pip install python-twitter
-
-import sys,twitter
-api = twitter.Api()
-
-#Populate your twitter API details below
-consumer_key = &#39;&#39;
-consumer_secret = &#39;&#39;
-access_token_key = &#39;&#39;
-access_token_secret = &#39;&#39;
-
-api = twitter.Api(
-    consumer_key=consumer_key,
-    consumer_secret=consumer_secret,
-    access_token_key=access_token_key,
-    access_token_secret=access_token_secret
-)
-
-def user_tweet(thandle):
-	statuses = api.GetUserTimeline(screen_name=thandle)
-	return statuses[0].text
-	
-if __name__ == &amp;quot;__main__&amp;quot;:
-	latest_tweet = user_tweet(sys.argv[1])
-	print latest_tweet
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

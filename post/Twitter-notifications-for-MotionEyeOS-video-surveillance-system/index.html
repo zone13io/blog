@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Twitter notifications for MotionEyeOS video surveillance system &middot;  Zone13.io" />
+  	<meta property="og:site_name" content="Zone13.io" />
+  	<meta property="og:url" content="https://zone13.io/post/Twitter-notifications-for-MotionEyeOS-video-surveillance-system/" />
+
+    
+  	<meta property="og:type" content="article" />
+
+    <meta property="og:article:published_time" content="2017-03-27T21:18:17&#43;01:00" />
+
+    
+    <meta property="og:article:tag" content="motioneyeOS" />
+    
+    <meta property="og:article:tag" content="Raspberry Pi" />
+    
+    <meta property="og:article:tag" content="video surveillance" />
+    
+    <meta property="og:article:tag" content="physical security" />
+    
+    <meta property="og:article:tag" content="Twitter" />
+    
+    <meta property="og:article:tag" content="Python" />
+    
+    <meta property="og:article:tag" content="Pi Zero" />
+    
+    <meta property="og:article:tag" content="Pi 3" />
+    
+    
+
+  <title>
+     Twitter notifications for MotionEyeOS video surveillance system &middot;  Zone13.io
+  </title>
+
+    <meta name="description" content="Information Security Blog" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://zone13.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://zone13.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/nav.css" />
+	
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	
+	
+	
+	
+	
+	
+
+    
+      
+          <link href="https://zone13.io/index.xml" rel="alternate" type="application/rss+xml" title="Zone13.io" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.16" />
+
+    <link rel="canonical" href="https://zone13.io/post/Twitter-notifications-for-MotionEyeOS-video-surveillance-system/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-84537506-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+
+	
+
+</head>
+
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/">Home</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/Disclaimer/">Disclaimer</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/about-me/">About me</a>
+            </li>
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://zone13.io/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+ 
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://zone13.io/" /><span class="icon-home" style="color:blue;font-size:3em"></span></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Twitter notifications for MotionEyeOS video surveillance system</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2017-03-27T21:18:17&#43;01:00">
+            Mar 27, 2017
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/motioneyeos/">#motioneyeOS</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/raspberry-pi/">#Raspberry Pi</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/video-surveillance/">#video surveillance</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/physical-security/">#physical security</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/twitter/">#Twitter</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/python/">#Python</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/pi-zero/">#Pi Zero</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/pi-3/">#Pi 3</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+
+<p><a href="https://github.com/ccrisan/motioneyeos">MotionEyeOS</a> is a wonderful project by Calin Crisan that converts your single board computer into a video surveillance system in a matter of minutes. It is <a href="https://github.com/ccrisan/motioneyeos/wiki/Supported-Devices">supported</a> on a number of devices and is well maintained with good community support.</p>
+
+<p>Now that the latest <a href="https://www.raspberrypi.org/products/pi-zero-w/">Raspberry Pi Zero version (W)</a> comes with onboard Wi-Fi, it makes an ideal candidate to deploy MotionEyeOS across your perimeter and run a cheap video surveillance system with lesser clutter of having to attach a Wi-Fi dongle as in the previous versions of Pi Zero.</p>
+
+<h3 id="motion-notifications">Motion notifications</h3>
+
+<p>MotionEyeOS offers push notifications in the form of email alerts and custom scripts upon detection of motion. The community has already chipped in with options like <a href="https://www.pi-supply.com/make/adding-push-notifications-motioneyeos-formerly-motionpie/">Pushover and IFTTT</a>. I was playing around with the software on Raspberry Pi over the last few days and thought that Twitter notifications on mobile would be nice to have. I did some basic search to see if someone already implemented this, however couldn&rsquo;t find any and decided I will code my own.</p>
+
+<p>Now the <a href="https://github.com/ccrisan/motioneyeos/releases">SD card images</a> supplied by MotionEyeOS are stripped down versions of the Raspbian OS with only the necessary features for performance reasons. To enable Twitter notifications using my method below, you will have to install MotionEyeOS on top of Raspbian (<a href="https://www.raspberrypi.org/downloads/raspbian/">lite version</a> preferred). This is to ensure that the <a href="https://github.com/bear/python-twitter">Python Twitter</a> module can be installed.</p>
+
+<h3 id="installation-steps">Installation steps</h3>
+
+<p>I assume that you have the latest version of Raspbian Jessie Lite <a href="https://www.raspberrypi.org/documentation/installation/installing-images/README.md">written</a> to the Micro SD card. I have tested the following method on Pi Zero and Pi 3B and works fine. Use <strong>sudo</strong> where necessary.</p>
+
+<p>1&gt; Power ON the Pi and open a SSH session.</p>
+
+<p>2&gt; Use <strong>raspi-config</strong> to enable the camera module.</p>
+
+<p><img src="https://zone13.io/images/raspi-config1.png" alt="raspi-config" /></p>
+
+<p><img src="https://zone13.io/images/raspi-config2.png" alt="raspi-config" /></p>
+
+<p><img src="https://zone13.io/images/raspi-config3.png" alt="raspi-config" /></p>
+
+<p>3&gt; Open the <strong>/etc/modules</strong> file and add <strong>bcm2835-v4l2</strong> on a new line.</p>
+
+<p><img src="https://zone13.io/images/etc_modules_cam.png" alt="" /></p>
+
+<p>4&gt; Follow the steps mentioned <a href="https://github.com/ccrisan/motioneye/wiki/Install-On-Raspbian">here</a> under &lsquo;Instructions&rsquo; to complete the installation of MotionEyeOS on Raspbian.</p>
+
+<p>5&gt; Create a dummy Twitter account and setup the API keys. <a href="https://www.slickremix.com/docs/how-to-get-api-keys-and-tokens-for-twitter/">Here</a> is a good resource on generating the Twitter API keys to use in the script.</p>
+
+<p>6&gt; Install <a href="https://github.com/bear/python-twitter">Python Twitter</a></p>
+
+<p><code>pip install python-twitter</code></p>
+
+<p>7&gt; There are a couple of ways of receiving the push notifications on your Twitter account:</p>
+
+<p>​   a) Setup the dummy Twitter account to post a Tweet every time motion is detected - <a href="https://gist.github.com/zone13/947e9eea96294a6e070b630378349e70">script 1</a>. Configure your Twitter account to follow the dummy account and receive push notifications on your mobile device using the steps <a href="https://support.twitter.com/articles/20169887">here</a>.</p>
+
+<p>​   b) Script variant that tweets the latest captured image along with the tweet - <a href="https://gist.github.com/zone13/48a4a918331eda4be50afed6eb5f4f2c">script 2</a>.</p>
+
+<p><strong>IMPORTANT</strong>: If you are planning to use this, make sure that your tweets are <a href="https://support.twitter.com/articles/20169886">protected</a> so that only you or those accounts that you permit can view your tweets. <img src="https://zone13.io/images/protected_tweets.png" alt="Protected tweets" /></p>
+
+<p>​   c) Setup the dummy Twitter account to send Direct Messages (DM) to your Twitter account - <a href="https://gist.github.com/zone13/308d5b39f9f968e21041a53cc9644d22">script 3</a>. Enable notifications for DMs on your mobile device.</p>
+
+<p>Using b) above has the added advantage of adding the latest image captured by MotionEyeOS to the Tweet. DMs do not support attaching an image though.</p>
+
+<p>8&gt; Once you finalize the script to use, create folder at <strong>/var/lib/motioneye</strong> and store the python script there. Ensure that the script has execute permissions.</p>
+
+<p><img src="https://zone13.io/images/motion_notifications.png" alt="Motion notifications" /></p>
+
+<p>9&gt; Login to the web GUI for MotionEyeOS and configure to run the script under &lsquo;Motion Notifications&rsquo;</p>
+
+<h3 id="caveats">Caveats</h3>
+
+<ol>
+<li>The Twitter API has limits on the number of tweets and direct messages. However during my tests, none of these limits were hit and I have a fully functional surveillance system at home using this method.</li>
+<li>In one of the scripts (2), I have added a method to upload the latest image capture to the motion alert tweet. This method has its own privacy implications which is the same as uploading your data to any other cloud service. Make sure that you know what you are doing. :)</li>
+<li>Do not expose your live feed to internet using port forwarding. In my case, I OpenVPN into my Raspberry instance to view the live feed.</li>
+<li>Needless to say, use strong passwords for SSH and other service that you enable with MotionEyeOS. Do not re-use the passwords. Also remember that MotionEyeOS stores the password in plaintext in config files.</li>
+</ol>
+
+<p>Hope this post is useful for those who wish to setup Twitter notifications for MotionEyeOS. If you run into problems, please post a comment below and I will try my best to help.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://zone13.io/" style="background-image: url(https://zone13.io/images/thumbnail.png)"><span class="hidden">Sid's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://zone13.io/">Sid</a></h4>
+  
+  <p>Information Security Professional</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Dublin, Ireland</span>
+   
+	<span class="author-link icon-linkedin" style="color:white;font-size:1em"><a href="https://www.linkedin.com/in/siddhuy">siddhuy</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Twitter%20notifications%20for%20MotionEyeOS%20video%20surveillance%20system&nbsp;-&nbsp;Zone13.io&amp;url=https%3a%2f%2fzone13.io%2fpost%2fTwitter-notifications-for-MotionEyeOS-video-surveillance-system%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fTwitter-notifications-for-MotionEyeOS-video-surveillance-system%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzone13.io%2fpost%2fTwitter-notifications-for-MotionEyeOS-video-surveillance-system%2f&amp;description=Twitter%20notifications%20for%20MotionEyeOS%20video%20surveillance%20system"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fTwitter-notifications-for-MotionEyeOS-video-surveillance-system%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'zone13-io';
+  var disqus_url = 'https:\/\/zone13.io\/post\/Twitter-notifications-for-MotionEyeOS-video-surveillance-system\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-3796585421208342"
+	 data-ad-slot="4191437919"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>	
+
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Zone13.io</a> All rights reserved - 2016</section>
+		
+        <section class="poweredby"> Powered by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/index.js"></script>
+    
+</body>
+</html>
+
