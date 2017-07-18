@@ -5,24 +5,26 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  	<meta property="og:title" content=" Python code to retrieve the latest tweet from a user &middot;  Zone13.io" />
+  	<meta property="og:title" content=" Connecting USB devices to VirtualBox using USB 3.0 ports &middot;  Zone13.io" />
   	<meta property="og:site_name" content="Zone13.io" />
-  	<meta property="og:url" content="https://zone13.io/post/python-code-latest-tweet/" />
+  	<meta property="og:url" content="https://zone13.io/post/Connecting_devices_to_VirtualBox_using_USB_3.0_ports/" />
 
     
   	<meta property="og:type" content="article" />
 
-    <meta property="og:article:published_time" content="2016-09-17T15:25:24&#43;01:00" />
+    <meta property="og:article:published_time" content="2017-07-18T22:19:34&#43;01:00" />
 
     
-    <meta property="og:article:tag" content="Python" />
+    <meta property="og:article:tag" content="Oracle VirtualBox" />
     
-    <meta property="og:article:tag" content="Twitter" />
+    <meta property="og:article:tag" content="Kali 2017" />
+    
+    <meta property="og:article:tag" content="wifi security" />
     
     
 
   <title>
-     Python code to retrieve the latest tweet from a user &middot;  Zone13.io
+     Connecting USB devices to VirtualBox using USB 3.0 ports &middot;  Zone13.io
   </title>
 
     <meta name="description" content="Information Security Blog" />
@@ -57,7 +59,7 @@
     
     <meta name="generator" content="Hugo 0.16" />
 
-    <link rel="canonical" href="https://zone13.io/post/python-code-latest-tweet/" />
+    <link rel="canonical" href="https://zone13.io/post/Connecting_devices_to_VirtualBox_using_USB_3.0_ports/" />
 
     
     <script>
@@ -142,19 +144,21 @@
   <article class="post post">
 
     <header class="post-header">
-        <h1 class="post-title">Python code to retrieve the latest tweet from a user</h1>
+        <h1 class="post-title">Connecting USB devices to VirtualBox using USB 3.0 ports</h1>
         <small></small>
 		
         <section class="post-meta">
         
-          <time class="post-date" datetime="2016-09-17T15:25:24&#43;01:00">
-            Sep 17, 2016
+          <time class="post-date" datetime="2017-07-18T22:19:34&#43;01:00">
+            Jul 18, 2017
           </time>
         
          
-          <span class="post-tag small"><a href="https://zone13.io/tags/python/">#Python</a></span>
+          <span class="post-tag small"><a href="https://zone13.io/tags/oracle-virtualbox/">#Oracle VirtualBox</a></span>
          
-          <span class="post-tag small"><a href="https://zone13.io/tags/twitter/">#Twitter</a></span>
+          <span class="post-tag small"><a href="https://zone13.io/tags/kali-2017/">#Kali 2017</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/wifi-security/">#wifi security</a></span>
          
         </section>
 		
@@ -169,46 +173,27 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
     <section class="post-content">
-      <p>This is a Python code snippet to retrieve the latest tweet from a user by making use of the Twitter developer API.</p>
+      <p>This took me quite a bit of time to figure out, hopefully someone finds the steps useful.</p>
 
-<p>The Twitter API details can be obtained from the <a href="https://apps.twitter.com/">developer portal</a>.</p>
+<p>Many of the wireless cards that support monitor mode are all USB 2.0 devices - e.g. Alfa AWUS036NHA, TP-LINK TL-WN722N and run into problems while connecting to newer laptops that come with only USB 3.0 ports. If you try to connect the wireless card to the USB 3.0 port and then try to attach it to VirtualBox VMs like Kali, it will not work straightaway. To fix this issue, follow the below steps.</p>
 
-<p>Github <a href="https://github.com/zone13/python_dev/blob/master/twitter_latest_tweet.py">link</a>.</p>
+<ul>
+<li><p>Power-off the Kali VM and then connect the wireless card to the USB 3.0 port.</p></li>
 
-<pre><code class="language-python">#!/usr/bin/env python
+<li><p>Under the Kali VM Settings on VirtualBox, find the Vendor ID and Product ID by hovering the mouse pointer over the wireless card name as shown below (click the USB icon with &lsquo;+&rsquo; sign to list the connected devices). In this case the Vendor ID is 0CF3 and the Product ID is 9271.</p></li>
+</ul>
 
-#Python script to retrive the latest tweet from a user
-#Created by zone13.io (https://www.zone13.io)
-#Version 1.0
-#Usage - ./script.py &lt;twitter_handle&gt;
-#e.g. ./script.py rihanna
-#Adapted from https://github.com/bear/python-twitter
-#Requirement - pip install python-twitter
+<p><img src="https://zone13.io/images/vbox-1.png" alt="vbox-1" /></p>
 
-import sys,twitter
-api = twitter.Api()
+<ul>
+<li>Add a new USB filter using the Vendor ID and Product ID of the device that needs to be connected. Make sure USB 3.0 is selected as the controller.</li>
+</ul>
 
-#Populate your twitter API details below
-consumer_key = ''
-consumer_secret = ''
-access_token_key = ''
-access_token_secret = ''
+<p><img src="https://zone13.io/images/vbox-2.png" alt="vbox-2" /></p>
 
-api = twitter.Api(
-    consumer_key=consumer_key,
-    consumer_secret=consumer_secret,
-    access_token_key=access_token_key,
-    access_token_secret=access_token_secret
-)
-
-def user_tweet(thandle):
-	statuses = api.GetUserTimeline(screen_name=thandle)
-	return statuses[0].text
-	
-if __name__ == &quot;__main__&quot;:
-	latest_tweet = user_tweet(sys.argv[1])
-	print latest_tweet
-</code></pre>
+<ul>
+<li>Unplug the wireless card from the USB 3.0 port and power on the Kali VM. Once the Kali VM is powered on, re-attach the wireless card to the USB 3.0 port and it should automatically connect to the Kali VM.</li>
+</ul>
 
     </section>
 
@@ -245,19 +230,19 @@ if __name__ == &quot;__main__&quot;:
     
 <section class="share">
   <h4>Share this post</h4>
-  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Python%20code%20to%20retrieve%20the%20latest%20tweet%20from%20a%20user&nbsp;-&nbsp;Zone13.io&amp;url=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f"
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Connecting%20USB%20devices%20to%20VirtualBox%20using%20USB%203.0%20ports&nbsp;-&nbsp;Zone13.io&amp;url=https%3a%2f%2fzone13.io%2fpost%2fConnecting_devices_to_VirtualBox_using_USB_3.0_ports%2f"
       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
       <span class="hidden">Twitter</span>
   </a>
-  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f"
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fConnecting_devices_to_VirtualBox_using_USB_3.0_ports%2f"
       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
       <span class="hidden">Facebook</span>
   </a>
-  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f&amp;description=Python%20code%20to%20retrieve%20the%20latest%20tweet%20from%20a%20user"
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzone13.io%2fpost%2fConnecting_devices_to_VirtualBox_using_USB_3.0_ports%2f&amp;description=Connecting%20USB%20devices%20to%20VirtualBox%20using%20USB%203.0%20ports"
       onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
       <span class="hidden">Pinterest</span>
   </a>
-  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fpython-code-latest-tweet%2f"
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fConnecting_devices_to_VirtualBox_using_USB_3.0_ports%2f"
      onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
       <span class="hidden">Google+</span>
   </a>
@@ -271,7 +256,7 @@ if __name__ == &quot;__main__&quot;:
 <div id="disqus_thread"></div>
 <script type="text/javascript">
   var disqus_shortname = 'zone13-io';
-  var disqus_url = 'https:\/\/zone13.io\/post\/python-code-latest-tweet\/';
+  var disqus_url = 'https:\/\/zone13.io\/post\/Connecting_devices_to_VirtualBox_using_USB_3.0_ports\/';
   (function() {
     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';

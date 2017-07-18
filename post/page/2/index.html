@@ -153,6 +153,56 @@
 	   
 <article class="post post">
     <header class="post-header">
+        <h2 class="post-title"><a href="https://zone13.io/post/Snagging-credentials-over-WiFi-Part1/">Snagging Active Directory credentials over WiFi - Part 1</a></h2>
+    </header>
+    <section class="post-excerpt">
+        <p><blockquote>
+<p>This issue has been fixed on Windows 8+ as part of MS16-112 issued in September 2016. I haven&rsquo;t checked this on a Windows 7 machine which isn&rsquo;t listed on the Microsoft page.</p>
+</blockquote>
+
+<h4 id="basics">Basics</h4>
+
+<p>The basic theory behind the attack is same as <a href="https://twitter.com/mubix">@mubix</a>&rsquo;s <a href="https://room362.com/post/2016/snagging-creds-from-locked-machines/">discovery</a> - if you connect a network interface to a Windows system and have <a href="https://github.com/lgandx/Responder">Responder tool</a> poisoning the network, you can obtain the hashes (NTML responses) from the machine without any user intervention. This works even with the computer in <strong>locked state</strong>.</p>
+
+<p>In my scenario, I&rsquo;m using a rogue Open WiFi network to grab the hashes. The result is the same and at times, I had better results than plugging in a <a href="https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/">Pi Zero</a>. The Responder tool captures the hashes which can then be cracked using tools like <a href="https://hashcat.net/hashcat/">hashcat</a>.</p>
+  <a class="read-more" href="https://zone13.io/post/Snagging-credentials-over-WiFi-Part1/">&rarrhk; </a></p>
+    </section>
+    <footer class="post-meta">
+        
+        
+
+        
+            <img class="author-thumb" src="https://zone13.io/images/thumbnail.png" alt="Author image" nopin="nopin" />
+        
+		
+		
+		
+        
+            Sid
+        
+        on
+            
+                <a href="https://zone13.io/tags/ntlm/">#NTLM</a>,
+            
+                <a href="https://zone13.io/tags/credentials/">#Credentials</a>,
+            
+                <a href="https://zone13.io/tags/hashcat/">#hashcat</a>,
+            
+                <a href="https://zone13.io/tags/active-directory/">#Active Directory</a>,
+            
+                <a href="https://zone13.io/tags/wifi/">#WiFi</a>,
+            
+        
+        <time class="post-date" datetime="2016-10-03T23:26:44&#43;01:00">
+            3 Oct 2016
+        </time>
+    </footer>
+</article>
+
+	
+	   
+<article class="post post">
+    <header class="post-header">
         <h2 class="post-title"><a href="https://zone13.io/post/cracking-ntlmv2-responses-captured-using-responder/">Cracking NTLMv2 responses captured using responder</a></h2>
     </header>
     <section class="post-excerpt">

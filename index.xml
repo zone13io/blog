@@ -7,8 +7,38 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2016</copyright>
-    <lastBuildDate>Mon, 27 Mar 2017 21:18:17 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 18 Jul 2017 22:19:34 +0100</lastBuildDate>
     <atom:link href="https://zone13.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Connecting USB devices to VirtualBox using USB 3.0 ports</title>
+      <link>https://zone13.io/post/Connecting_devices_to_VirtualBox_using_USB_3.0_ports/</link>
+      <pubDate>Tue, 18 Jul 2017 22:19:34 +0100</pubDate>
+      
+      <guid>https://zone13.io/post/Connecting_devices_to_VirtualBox_using_USB_3.0_ports/</guid>
+      <description>&lt;p&gt;This took me quite a bit of time to figure out, hopefully someone finds the steps useful.&lt;/p&gt;
+
+&lt;p&gt;Many of the wireless cards that support monitor mode are all USB 2.0 devices - e.g. Alfa AWUS036NHA, TP-LINK TL-WN722N and run into problems while connecting to newer laptops that come with only USB 3.0 ports. If you try to connect the wireless card to the USB 3.0 port and then try to attach it to VirtualBox VMs like Kali, it will not work straightaway. To fix this issue, follow the below steps.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Power-off the Kali VM and then connect the wireless card to the USB 3.0 port.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Under the Kali VM Settings on VirtualBox, find the Vendor ID and Product ID by hovering the mouse pointer over the wireless card name as shown below (click the USB icon with &amp;lsquo;+&amp;rsquo; sign to list the connected devices). In this case the Vendor ID is 0CF3 and the Product ID is 9271.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/vbox-1.png&#34; alt=&#34;vbox-1&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add a new USB filter using the Vendor ID and Product ID of the device that needs to be connected. Make sure USB 3.0 is selected as the controller.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/vbox-2.png&#34; alt=&#34;vbox-2&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Unplug the wireless card from the USB 3.0 port and power on the Kali VM. Once the Kali VM is powered on, re-attach the wireless card to the USB 3.0 port and it should automatically connect to the Kali VM.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Twitter notifications for MotionEyeOS video surveillance system on Raspberry Pi</title>
