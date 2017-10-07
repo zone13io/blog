@@ -216,7 +216,7 @@ sudo apt-get install -y python git python-pip python-dev screen sqlite3 isc-dhcp
 
 sudo mkdir tools
 cd tools
-sudo git clone https://github.com/lgandx/Responder.git
+sudo git clone https://github.com/lgandx/Responder.git responder
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4 id=&#34;configure-a-static-ip&#34;&gt;Configure a static IP&lt;/h4&gt;
@@ -331,6 +331,8 @@ select * from responder;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://zone13.io/images/sqlite3_out.png&#34; alt=&#34;sqlite3_out&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Also, check out &lt;a href=&#34;https://github.com/wismna/HackPi&#34;&gt;Hackpi&lt;/a&gt; from wismna which automates all of the above and works without driver installation on Windows, Linux and MacOS. :)&lt;/p&gt;
 </description>
     </item>
     
