@@ -154,7 +154,7 @@
 &lt;ul&gt;
 &lt;li&gt;Not plug n play like Wimonitor. Some initial setup (2 lines at cmd :)) is required to get it up and running.&lt;/li&gt;
 &lt;li&gt;No web interface for configuration changes.&lt;/li&gt;
-&lt;li&gt;No channel hopping capabilities for now.&lt;/li&gt;
+&lt;li&gt;No channel subset hopping capabilities for now.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Hope you find the post useful.&lt;/p&gt;
