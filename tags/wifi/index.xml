@@ -69,9 +69,11 @@
 
 &lt;p&gt;&lt;code&gt;interface eth0&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;static ip_address=192.168.137.100/24&lt;/code&gt;
-&lt;code&gt;static routers=192.168.137.1&lt;/code&gt;
-&lt;code&gt;static domain_name_servers=192.168.137.1&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;static ip_address=192.168.137.100/24&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;static routers=192.168.137.1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;static domain_name_servers=192.168.137.1&lt;/code&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;I prefer to use key based authentication for the SSH login. To do that open PuTTYgen that comes with PuTTYgen and generate a key pair.&lt;/li&gt;
