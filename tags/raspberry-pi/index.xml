@@ -7,8 +7,141 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Mon, 27 Mar 2017 21:18:17 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 08 Oct 2017 11:15:12 +0100</lastBuildDate>
     <atom:link href="https://zone13.io/tags/raspberry-pi/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Wi-Fi packet sniffing / monitoring on Windows using Raspberry Pi - inspired by Wimonitor</title>
+      <link>https://zone13.io/post/wifi-monitoring-using-raspberry-pi/</link>
+      <pubDate>Sun, 08 Oct 2017 11:15:12 +0100</pubDate>
+      
+      <guid>https://zone13.io/post/wifi-monitoring-using-raspberry-pi/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://www.hackerarsenal.com/products/wimonitor&#34;&gt;Wimonitor&lt;/a&gt; is a wonderful product from Hacker Arsenal that saves pentesters the hassle of having to configure VMs, carry compatible wireless cards that support monitor mode etc. and comes with a web interface to do the configurations. It gives you the flexibility to plug in the device into the Ethernet port and start Wi-Fi monitoring on any OS. Basically it is a &lt;a href=&#34;http://www.tp-link.com/il/products/details/cat-14_TL-MR3020.html&#34;&gt;tp-link TL-MR3020&lt;/a&gt; router with a custom firmware that does all the monitoring part and sends the packets to the host laptop (or Mac !) where you can start Wireshark and concentrate on the packet analysis.&lt;/p&gt;
+
+&lt;p&gt;I haven&amp;rsquo;t got one yet, but have been hearing good reviews about the product since launch. The shipping cost to EU is a bummer :(. Hopefully they will start shipping from EU soon.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Meanwhile - why not try this on a Raspberry Pi ?&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Pi can run a variety of OS including Kali and I have had good success using Pi&amp;rsquo;s during Wi-Fi pentests. The Raspberry Pi 3B is powerful enough to do stable monitoring and with a few simple steps can be converted to a Wimonitor (well, almost !).&lt;/p&gt;
+
+&lt;p&gt;The awesome folks at Hacker Arsenal have done a brilliant job in building Wimonitor. It is a stable plug n play device with firmware support expected. So if you are a beginner to Wi-Fi security or need a trouble free monitoring tool, I would recommend going with Wimonitor.&lt;/p&gt;
+
+&lt;h4 id=&#34;required-hardware&#34;&gt;&lt;strong&gt;Required hardware&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Host laptop running Windows(tests and screenshots done on Windows 8.1)&lt;/li&gt;
+&lt;li&gt;Raspberry Pi 3B, micro SD card, power adapter (USB 3.0 power should be enough to power the Pi + wireless card)&lt;/li&gt;
+&lt;li&gt;Ethernet cable to connect the Pi to host laptop&lt;/li&gt;
+&lt;li&gt;Wi-Fi card supporting monitor mode (e.g. TL-WN722N v1)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;setup&#34;&gt;&lt;strong&gt;Setup&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;Burn &lt;a href=&#34;https://www.raspberrypi.org/downloads/raspbian/&#34;&gt;RASPBIAN STRETCH LITE&lt;/a&gt; on to the micro SD card. The OS is light weight and comes with out of the box monitor mode support for cards like TL-WN722N. If you are not sure on how to burn the OS, steps can be found &lt;a href=&#34;http://www.raspberry-projects.com/pi/pi-operating-systems/win32diskimager&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once Raspbian is written to the micro SD card, enable SSH on the Pi. This can be done by creating a blank file named &lt;em&gt;ssh&lt;/em&gt; (note: no file extension) on the micro SD card.&lt;/p&gt;
+
+&lt;p&gt;In order to make the host laptop communicate with the Pi, the easiest method is to share the host laptop Wi-Fi with the Pi over Ethernet. This will ensure that the Pi gets an IP address in the range 192.168.137.x. To do this, go to network connections (ncpa.cpl), right-click on the Wi-Fi adapter and select Properties. Under the Sharing tab, select the Ethernet adapter to which you will plug in the Pi. Click OK.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-wifi-properties.png&#34; alt=&#34;pi-monitor-wifi-properties&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It is now time to connect the Pi to the host laptop. Insert the micro SD card into the Pi&amp;rsquo;s slot, Wi-Fi card into the USB port, connect the Ethernet cable between the host laptop and Pi and power ON.&lt;/p&gt;
+
+&lt;p&gt;Once the Pi boots up, it should get an IP using the shared connection. The easiest way to discover Pi&amp;rsquo;s IP address is to use &lt;a href=&#34;https://nmap.org/download.html&#34;&gt;nmap&lt;/a&gt; on the host laptop and do a host discovery on 192.168.137.1 /24 subnet.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-nmap-scan.png&#34; alt=&#34;pi-monitor-nmap-scan&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Open &lt;a href=&#34;https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html&#34;&gt;PuTTY&lt;/a&gt; and ssh into Pi. The default username / password is &lt;strong&gt;pi&lt;/strong&gt; / &lt;strong&gt;raspberry&lt;/strong&gt; for the Raspbian OS we are using.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-putty-login.png&#34; alt=&#34;pi-monitor-putty-login&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To set a static IP for the Pi, open up &lt;em&gt;/etc/dhcpcd.conf&lt;/em&gt; and add the following lines at the end of the file:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;interface eth0&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;static ip_address=192.168.137.100/24&lt;/code&gt;
+&lt;code&gt;static routers=192.168.137.1&lt;/code&gt;
+&lt;code&gt;static domain_name_servers=192.168.137.1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;I prefer to use key based authentication for the SSH login. To do that open PuTTYgen that comes with PuTTYgen and generate a key pair.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-puttygen.png&#34; alt=&#34;pi-monitor-puttygen&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Create a &lt;strong&gt;.ssh&lt;/strong&gt; folder inside the Pi&amp;rsquo;s home folder. Then create a file named &lt;strong&gt;authorized_keys&lt;/strong&gt; inside the &lt;strong&gt;.ssh&lt;/strong&gt; folder. Paste the public key from PuTTYgen into the &lt;strong&gt;authorized_keys&lt;/strong&gt; file. Save the private key from PuTTYgen. Restart SSH service on the Pi. Also change the user &lt;strong&gt;pi&amp;rsquo;&lt;/strong&gt;s default password on the Pi.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-ssh-setup.png&#34; alt=&#34;pi-monitor-ssh-setup&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The Raspbian lite OS by default does not ship with the necessary packages to do the monitoring. So to install them, follow the steps below:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo apt update&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo apt install aircrack-ng tcpdump -y&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Test that the wireless card is capable of doing monitoring on the Pi.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-test-monitor.png&#34; alt=&#34;pi-monitor-test-monitor&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now that we verified that the monitoring is working on the Pi, we can SSH into the Pi, run tcpdump on Pi and feed it to Wireshark running on the host laptop. &lt;a href=&#34;https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html&#34;&gt;plink.exe&lt;/a&gt; is command line interface to PuTTY.exe that makes all of this possible on Windows. For ease, I have put plink.exe, the SSH private key from PuTTYgen in the same folder. If they are in different folders, change the paths in the below command appropriately.&lt;/p&gt;
+
+&lt;p&gt;The one-liner to do all of this is:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;plink.exe -ssh -i pi-monitor-ssh-key.ppk pi@192.168.137.234 &amp;quot;sudo tcpdump -ni wlan1mon -s 0 -w -&amp;quot; | &amp;quot;C:\Program Files\Wireshark\Wireshark.exe&amp;quot; -k -i -&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-start-command.png&#34; alt=&#34;pi-monitor-start-command&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-wireshark.png&#34; alt=&#34;pi-monitor-wireshark&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-handshake-capture.png&#34; alt=&#34;pi-monitor-handshake-capture&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To monitor only channel 1,&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo iwconfig wlan1mon channel 1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see, a Raspberry Pi can be used to do Wi-Fi monitoring with minimal effort and pipe the output for viewing using Wireshark on Windows or any OS using the same method.&lt;/p&gt;
+
+&lt;h4 id=&#34;the-minimal-setup-to-get-up-and-running&#34;&gt;&lt;strong&gt;The &amp;ldquo;minimal&amp;rdquo; setup to get up and running&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;The above steps are a one time setup. For subsequent monitoring, plug in the Pi with wireless card, power ON the Pi and run the below command to create a monitor mode on the Pi.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;plink.exe -ssh -i pi-monitor-ssh-key.ppk pi@192.168.137.100 &amp;quot;sudo airmon-ng start wlan1&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Fire up Wireshark to start the monitoring.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;plink.exe -ssh -i pi-monitor-ssh-key.ppk pi@192.168.137.100 &amp;quot;sudo tcpdump -ni wlan1mon -s 0 -w -&amp;quot; | &amp;quot;C:\Program Files\Wireshark\Wireshark.exe&amp;quot; -k -i -&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-setup-1.png&#34; alt=&#34;pi-monitor-setup-1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-setup-2.png&#34; alt=&#34;pi-monitor-setup-2&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/pi-monitor-setup-3.png&#34; alt=&#34;pi-monitor-setup-3&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That&amp;rsquo;s it. :)&lt;/p&gt;
+
+&lt;h4 id=&#34;summary&#34;&gt;Summary&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;Pros&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;No need to worry about chunky VMs. Wi-Fi monitoring can be performed on Windows with Wireshark and plink.exe. I haven&amp;rsquo;t tried on Linux / Mac OS yet, but should be able to pipe the SSH output to Wireshark (?).&lt;/li&gt;
+&lt;li&gt;Cheap Wi-Fi monitoring. If you are already into pentesting or similar, you should be having a RPi, Wireless card lying around. :)&lt;/li&gt;
+&lt;li&gt;Wimonitor is limited to the onboard Wi-Fi chipset (?). Raspberry Pi in this setup has the ability to use any (multiple) wireless card with monitor mode support. Only needs to plug the Pi into a power socket or use a batter pack with more juice than a USB hub to power the cards. How about a Yagi–Uda antenna with RPi&amp;rsquo;s wireless card ?&lt;/li&gt;
+&lt;li&gt;Minimal setup required. Raspbian, Kali comes with out-of-the-box support for cards like Alfa AWUS036NHA, TL-WN722N etc. Once the above steps are done, it is just a matter of plugging in the Pi with wireless card, and running the two lines of commands to start packet analysis.&lt;/li&gt;
+&lt;li&gt;RPi has enough firepower to do the monitoring comfortably. In a relatively busy Wi-Fi neighborhood, the Pi hardly consumes 35 MB of RAM in total with the above setup.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Cons&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Not plug n play like Wimonitor. Some initial setup (2 lines at cmd :)) is required to get it up and running.&lt;/li&gt;
+&lt;li&gt;No web interface for configuration changes.&lt;/li&gt;
+&lt;li&gt;No channel hopping capabilities for now.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Hope you find the post useful.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Twitter notifications for MotionEyeOS video surveillance system on Raspberry Pi</title>
