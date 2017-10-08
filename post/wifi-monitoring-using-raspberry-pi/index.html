@@ -224,25 +224,30 @@
 
 <h4 id="setup"><strong>Setup</strong></h4>
 
-<p>Burn <a href="https://www.raspberrypi.org/downloads/raspbian/">RASPBIAN STRETCH LITE</a> on to the micro SD card. The OS is light weight and comes with out of the box monitor mode support for cards like TL-WN722N. If you are not sure on how to burn the OS, steps can be found <a href="http://www.raspberry-projects.com/pi/pi-operating-systems/win32diskimager">here</a>.</p>
-
-<p>Once Raspbian is written to the micro SD card, enable SSH on the Pi. This can be done by creating a blank file named <em>ssh</em> (note: no file extension) on the micro SD card.</p>
-
-<p>In order to make the host laptop communicate with the Pi, the easiest method is to share the host laptop Wi-Fi with the Pi over Ethernet. This will ensure that the Pi gets an IP address in the range 192.168.137.x. To do this, go to network connections (ncpa.cpl), right-click on the Wi-Fi adapter and select Properties. Under the Sharing tab, select the Ethernet adapter to which you will plug in the Pi. Click OK.</p>
+<ol>
+<li>Burn <a href="https://www.raspberrypi.org/downloads/raspbian/">RASPBIAN STRETCH LITE</a> on to the micro SD card. The OS is light weight and comes with out of the box monitor mode support for cards like TL-WN722N. If you are not sure on how to burn the OS, steps can be found <a href="http://www.raspberry-projects.com/pi/pi-operating-systems/win32diskimager">here</a>.</li>
+<li>Once Raspbian is written to the micro SD card, enable SSH on the Pi. This can be done by creating a blank file named <em>ssh</em> (note: no file extension) on the micro SD card.</li>
+<li>In order to make the host laptop communicate with the Pi, the easiest method is to share the host laptop Wi-Fi with the Pi over Ethernet. This will ensure that the Pi gets an IP address in the range 192.168.137.x. To do this, go to network connections (ncpa.cpl), right-click on the Wi-Fi adapter and select Properties. Under the Sharing tab, select the Ethernet adapter to which you will plug in the Pi. Click OK.</li>
+</ol>
 
 <p><img src="https://zone13.io/images/pi-monitor-wifi-properties.png" alt="pi-monitor-wifi-properties" /></p>
 
-<p>It is now time to connect the Pi to the host laptop. Insert the micro SD card into the Pi&rsquo;s slot, Wi-Fi card into the USB port, connect the Ethernet cable between the host laptop and Pi and power ON.</p>
-
-<p>Once the Pi boots up, it should get an IP using the shared connection. The easiest way to discover Pi&rsquo;s IP address is to use <a href="https://nmap.org/download.html">nmap</a> on the host laptop and do a host discovery on 192.168.137.1 /24 subnet.</p>
+<ol>
+<li>It is now time to connect the Pi to the host laptop. Insert the micro SD card into the Pi&rsquo;s slot, Wi-Fi card into the USB port, connect the Ethernet cable between the host laptop and Pi and power ON.</li>
+<li>Once the Pi boots up, it should get an IP using the shared connection. The easiest way to discover Pi&rsquo;s IP address is to use <a href="https://nmap.org/download.html">nmap</a> on the host laptop and do a host discovery on 192.168.137.1 /24 subnet.</li>
+</ol>
 
 <p><img src="https://zone13.io/images/pi-monitor-nmap-scan.png" alt="pi-monitor-nmap-scan" /></p>
 
-<p>Open <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">PuTTY</a> and ssh into Pi. The default username / password is <strong>pi</strong> / <strong>raspberry</strong> for the Raspbian OS we are using.</p>
+<ol>
+<li>Open <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">PuTTY</a> and ssh into Pi. The default username / password is <strong>pi</strong> / <strong>raspberry</strong> for the Raspbian OS we are using.</li>
+</ol>
 
 <p><img src="https://zone13.io/images/pi-monitor-putty-login.png" alt="pi-monitor-putty-login" /></p>
 
-<p>To set a static IP for the Pi, open up <em>/etc/dhcpcd.conf</em> and add the following lines at the end of the file:</p>
+<ol>
+<li>To set a static IP for the Pi, open up <em>/etc/dhcpcd.conf</em> and add the following lines at the end of the file:</li>
+</ol>
 
 <p><code>interface eth0</code></p>
 
@@ -250,7 +255,9 @@
 <code>static routers=192.168.137.1</code>
 <code>static domain_name_servers=192.168.137.1</code></p>
 
-<p>I prefer to use key based authentication for the SSH login. To do that open PuTTYgen that comes with PuTTYgen and generate a key pair.</p>
+<ol>
+<li>I prefer to use key based authentication for the SSH login. To do that open PuTTYgen that comes with PuTTYgen and generate a key pair.</li>
+</ol>
 
 <p><img src="https://zone13.io/images/pi-monitor-puttygen.png" alt="pi-monitor-puttygen" /></p>
 
@@ -258,19 +265,24 @@
 
 <p><img src="https://zone13.io/images/pi-monitor-ssh-setup.png" alt="pi-monitor-ssh-setup" /></p>
 
-<p>The Raspbian lite OS by default does not ship with the necessary packages to do the monitoring. So to install them, follow the steps below:</p>
+<ol>
+<li>The Raspbian lite OS by default does not ship with the necessary packages to do the monitoring. So to install them, follow the steps below:</li>
+</ol>
 
 <p><code>sudo apt update</code></p>
 
 <p><code>sudo apt install aircrack-ng tcpdump -y</code></p>
 
-<p>Test that the wireless card is capable of doing monitoring on the Pi.</p>
+<ol>
+<li>Test that the wireless card is capable of doing monitoring on the Pi.</li>
+</ol>
 
 <p><img src="https://zone13.io/images/pi-monitor-test-monitor.png" alt="pi-monitor-test-monitor" /></p>
 
-<p>Now that we verified that the monitoring is working on the Pi, we can SSH into the Pi, run tcpdump on Pi and feed it to Wireshark running on the host laptop. <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">plink.exe</a> is command line interface to PuTTY.exe that makes all of this possible on Windows. For ease, I have put plink.exe, the SSH private key from PuTTYgen in the same folder. If they are in different folders, change the paths in the below command appropriately.</p>
-
-<p>The one-liner to do all of this is:</p>
+<ol>
+<li>Now that we verified that the monitoring is working on the Pi, we can SSH into the Pi, run tcpdump on Pi and feed it to Wireshark running on the host laptop. <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">plink.exe</a> is command line interface to PuTTY.exe that makes all of this possible on Windows. For ease, I have put plink.exe, the SSH private key from PuTTYgen in the same folder. If they are in different folders, change the paths in the below command appropriately.</li>
+<li>The one-liner to do all of this is:</li>
+</ol>
 
 <p><code>plink.exe -ssh -i pi-monitor-ssh-key.ppk pi@192.168.137.234 &quot;sudo tcpdump -ni wlan1mon -s 0 -w -&quot; | &quot;C:\Program Files\Wireshark\Wireshark.exe&quot; -k -i -</code></p>
 
