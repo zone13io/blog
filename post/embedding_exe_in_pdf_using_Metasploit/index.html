@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Embedding EXE payload in PDF using Metasploit - fixing PDF template errors &middot;  Zone13.io" />
+  	<meta property="og:site_name" content="Zone13.io" />
+  	<meta property="og:url" content="https://zone13.io/post/embedding_exe_in_pdf_using_Metasploit/" />
+
+    
+  	<meta property="og:type" content="article" />
+
+    <meta property="og:article:published_time" content="2017-11-05T13:59:51Z" />
+
+    
+    <meta property="og:article:tag" content="Metasploit" />
+    
+    <meta property="og:article:tag" content="Kali" />
+    
+    <meta property="og:article:tag" content="Pentest" />
+    
+    <meta property="og:article:tag" content="Social Engineering" />
+    
+    <meta property="og:article:tag" content="Adobe PDF EXE" />
+    
+    
+
+  <title>
+     Embedding EXE payload in PDF using Metasploit - fixing PDF template errors &middot;  Zone13.io
+  </title>
+
+    <meta name="description" content="Information Security Blog" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://zone13.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://zone13.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://zone13.io/css/nav.css" />
+	
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	
+	
+	
+	
+	
+	
+
+    
+      
+          <link href="https://zone13.io/index.xml" rel="alternate" type="application/rss+xml" title="Zone13.io" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.16" />
+
+    <link rel="canonical" href="https://zone13.io/post/embedding_exe_in_pdf_using_Metasploit/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-84537506-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+
+	
+
+</head>
+
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/">Home</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/Disclaimer/">Disclaimer</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="https://zone13.io/info/about-me/">About me</a>
+            </li>
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://zone13.io/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+ 
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://zone13.io/" /><span class="icon-home" style="color:blue;font-size:3em"></span></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Embedding EXE payload in PDF using Metasploit - fixing PDF template errors</h1>
+        <small></small>
+		
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2017-11-05T13:59:51Z">
+            Nov 5, 2017
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/metasploit/">#Metasploit</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/kali/">#Kali</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/pentest/">#Pentest</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/social-engineering/">#Social Engineering</a></span>
+         
+          <span class="post-tag small"><a href="https://zone13.io/tags/adobe-pdf-exe/">#Adobe PDF EXE</a></span>
+         
+        </section>
+		
+    </header>
+	
+    <section class="post-content">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-3796585421208342"
+	 data-ad-slot="4191437919"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>	
+	<br>
+	<br>
+	<br>
+      <p>If you have ever tried embedding EXEs in an existing PDF file using Metasploit, most likely you might have come across the error:</p>
+
+<p><code>[-] Sorry, I'm picky. Incompatible PDF structure: key not found: &quot;Root&quot;. Please try a different PDF template.</code></p>
+
+<p><img src="https://zone13.io/images/pdf_before.png" alt="Load PDF" /></p>
+
+<p>Details on the &lsquo;Adobe PDF Embedded EXE Social Engineering&rsquo; Metasploit module can be found <a href="https://www.rapid7.com/db/modules/exploit/windows/fileformat/adobe_pdf_embedded_exe">here</a>.</p>
+
+<p>This is quite an old exploit but still useful in security awareness demonstrations. Recently I had to do one and ran into errors embedding an EXE payload.</p>
+
+<p>To solve the error, open the clean PDF file in Microsoft Word <sup>2013</sup>&frasl;<sub>2016</sub> and again save the file in PDF format.</p>
+
+<p><img src="https://zone13.io/images/save_as_pdf" alt="Save PDF Using MS Word" /></p>
+
+<p>Load the EXE into the modified PDF and it works !!</p>
+
+<p><img src="https://zone13.io/images/pdf_before.png" alt="Load PDF" /></p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://zone13.io/" style="background-image: url(https://zone13.io/images/thumbnail.png)"><span class="hidden">Sid's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://zone13.io/">Sid</a></h4>
+  
+  <p>Information Security Professional</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Dublin, Ireland</span>
+   
+	<span class="author-link icon-linkedin" style="color:white;font-size:1em"><a href="https://www.linkedin.com/in/siddhuy">siddhuy</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Embedding%20EXE%20payload%20in%20PDF%20using%20Metasploit%20-%20fixing%20PDF%20template%20errors&nbsp;-&nbsp;Zone13.io&amp;url=https%3a%2f%2fzone13.io%2fpost%2fembedding_exe_in_pdf_using_Metasploit%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzone13.io%2fpost%2fembedding_exe_in_pdf_using_Metasploit%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzone13.io%2fpost%2fembedding_exe_in_pdf_using_Metasploit%2f&amp;description=Embedding%20EXE%20payload%20in%20PDF%20using%20Metasploit%20-%20fixing%20PDF%20template%20errors"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fzone13.io%2fpost%2fembedding_exe_in_pdf_using_Metasploit%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'zone13-io';
+  var disqus_url = 'https:\/\/zone13.io\/post\/embedding_exe_in_pdf_using_Metasploit\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-3796585421208342"
+	 data-ad-slot="4191437919"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>	
+
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Zone13.io</a> All rights reserved - 2017</section>
+		
+        <section class="poweredby"> Powered by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://zone13.io/js/index.js"></script>
+    
+</body>
+</html>
+
