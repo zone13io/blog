@@ -7,8 +7,51 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Sun, 05 Nov 2017 13:59:51 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Mar 2018 20:47:25 +0200</lastBuildDate>
     <atom:link href="https://zone13.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Restoring real IP address from Cloudflare in logs when using nginx-proxy with Docker</title>
+      <link>https://zone13.io/post/docker-nginx-proxy-cloudflare-restore-real-ip/</link>
+      <pubDate>Mon, 19 Mar 2018 20:47:25 +0200</pubDate>
+      
+      <guid>https://zone13.io/post/docker-nginx-proxy-cloudflare-restore-real-ip/</guid>
+      <description>&lt;p&gt;While using &lt;a href=&#34;https://github.com/jwilder/nginx-proxy&#34;&gt;nginx-proxy from jwilder&lt;/a&gt; with Cloudflare, one of the common issues you run into is that the logs contain the Docker internal IP rather than the real external IP passed by Cloudflare.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/cf-nginx-proxy-1.png&#34; alt=&#34;Internal IP&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note - During my tests, this only applies when nginx-proxy is run as two separate containers -  &lt;a href=&#34;jwilder/docker-gen&#34;&gt;jwilder/docker-gen&lt;/a&gt; and the official nginx image. Also, I have whitelisted my server to accept connections only from &lt;a href=&#34;https://www.cloudflare.com/ips&#34;&gt;Cloudflare IP range&lt;/a&gt; to port 443 (Full - Strict config).&lt;/p&gt;
+
+&lt;p&gt;Basically nginx-proxy serves as a high performance reverse proxy that lets you run multiple websites behind it. For more info, please read &lt;a href=&#34;http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/&#34;&gt;this&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Coming back to the issue, all you need to do to fix the IP is to edit the &lt;a href=&#34;https://github.com/jwilder/nginx-proxy/blob/master/nginx.tmpl&#34;&gt;nginx.tmpl&lt;/a&gt; file that comes with the nginx-proxy.&lt;/p&gt;
+
+&lt;p&gt;Original snippet (line 63)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;log_format vhost &#39;$host $remote_addr - $remote_user [$time_local] &#39;
+                 &#39;&amp;quot;$request&amp;quot; $status $body_bytes_sent &#39;
+                 &#39;&amp;quot;$http_referer&amp;quot; &amp;quot;$http_user_agent&amp;quot;&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Change  &lt;strong&gt;remote_addr&lt;/strong&gt; to either &lt;strong&gt;http_cf_connecting_ip&lt;/strong&gt; or &lt;strong&gt;http_x_forwarded_for&lt;/strong&gt; as &lt;a href=&#34;https://support.cloudflare.com/hc/en-us/articles/200170706-How-do-I-restore-original-visitor-IP-with-Nginx-&#34;&gt;explained&lt;/a&gt; by Cloudflare.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;log_format vhost &#39;$host $http_cf_connecting_ip - $remote_user [$time_local] &#39;
+                 &#39;&amp;quot;$request&amp;quot; $status $body_bytes_sent &#39;
+                 &#39;&amp;quot;$http_referer&amp;quot; &amp;quot;$http_user_agent&amp;quot;&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;OR&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;log_format vhost &#39;$host $http_x_forwarded_for - $remote_user [$time_local] &#39;
+                 &#39;&amp;quot;$request&amp;quot; $status $body_bytes_sent &#39;
+                 &#39;&amp;quot;$http_referer&amp;quot; &amp;quot;$http_user_agent&amp;quot;&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now start the containers and you will see that logs report the real IP.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/cf-nginx-proxy-2.png&#34; alt=&#34;External IP&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Embedding EXE payload in PDF using Metasploit - fixing PDF template errors</title>

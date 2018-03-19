@@ -153,6 +153,53 @@
 	   
 <article class="post post">
     <header class="post-header">
+        <h2 class="post-title"><a href="https://zone13.io/post/docker-nginx-proxy-cloudflare-restore-real-ip/">Restoring real IP address from Cloudflare in logs when using nginx-proxy with Docker</a></h2>
+    </header>
+    <section class="post-excerpt">
+        <p><p>While using <a href="https://github.com/jwilder/nginx-proxy">nginx-proxy from jwilder</a> with Cloudflare, one of the common issues you run into is that the logs contain the Docker internal IP rather than the real external IP passed by Cloudflare.</p>
+
+<p><img src="https://zone13.io/images/cf-nginx-proxy-1.png" alt="Internal IP" /></p>
+
+<p>Note - During my tests, this only applies when nginx-proxy is run as two separate containers -  <a href="jwilder/docker-gen">jwilder/docker-gen</a> and the official nginx image. Also, I have whitelisted my server to accept connections only from <a href="https://www.cloudflare.com/ips">Cloudflare IP range</a> to port 443 (Full - Strict config).</p>
+  <a class="read-more" href="https://zone13.io/post/docker-nginx-proxy-cloudflare-restore-real-ip/">&rarrhk; </a></p>
+    </section>
+    <footer class="post-meta">
+        
+        
+            
+            
+        
+
+        
+            <img class="author-thumb" src="https://zone13.io/images/thumbnail.png" alt="Author image" nopin="nopin" />
+        
+		
+		
+		
+        
+            Sid
+        
+        on
+            
+                <a href="https://zone13.io/tags/docker/">#docker</a>,
+            
+                <a href="https://zone13.io/tags/cloudflare/">#cloudflare</a>,
+            
+                <a href="https://zone13.io/tags/nginx/">#nginx</a>,
+            
+                <a href="https://zone13.io/tags/nginx-proxy/">#nginx proxy</a>,
+            
+        
+        <time class="post-date" datetime="2018-03-19T20:47:25&#43;02:00">
+            19 Mar 2018
+        </time>
+    </footer>
+</article>
+
+	
+	   
+<article class="post post">
+    <header class="post-header">
         <h2 class="post-title"><a href="https://zone13.io/post/embedding_exe_in_pdf_using_Metasploit/">Embedding EXE payload in PDF using Metasploit - fixing PDF template errors</a></h2>
     </header>
     <section class="post-excerpt">
@@ -338,61 +385,6 @@
         
         <time class="post-date" datetime="2017-03-27T21:18:17&#43;01:00">
             27 Mar 2017
-        </time>
-    </footer>
-</article>
-
-	
-	   
-<article class="post post">
-    <header class="post-header">
-        <h2 class="post-title"><a href="https://zone13.io/post/social_network_backdoor_windows/">Social network based backdoor for pentests</a></h2>
-    </header>
-    <section class="post-excerpt">
-        <p><p>Once you gain access to a system during pentest, you might want to retain access by means of a backdoor. The most trivial method is to use <a href="https://www.offensive-security.com/metasploit-unleashed/meterpreter-backdoor/">metsvc</a> which &lsquo;unfortunately&rsquo; is very well fingerprinted by anti-virus software.</p>
-
-<p>In this post, let us look at how to use a backdoor that uses social network for communications. The method used by the backdoor is identical to what was mentioned in my previous <a href="https://zone13.io/post/social-media-based-pentest-dropbox/">post</a>.</p>
-  <a class="read-more" href="https://zone13.io/post/social_network_backdoor_windows/">&rarrhk; </a></p>
-    </section>
-    <footer class="post-meta">
-        
-        
-            
-            
-        
-
-        
-            <img class="author-thumb" src="https://zone13.io/images/thumbnail.png" alt="Author image" nopin="nopin" />
-        
-		
-		
-		
-        
-            Sid
-        
-        on
-            
-                <a href="https://zone13.io/tags/data-exfiltration/">#Data exfiltration</a>,
-            
-                <a href="https://zone13.io/tags/red-team/">#Red team</a>,
-            
-                <a href="https://zone13.io/tags/python/">#Python</a>,
-            
-                <a href="https://zone13.io/tags/facebook/">#Facebook</a>,
-            
-                <a href="https://zone13.io/tags/twitter/">#Twitter</a>,
-            
-                <a href="https://zone13.io/tags/penetration-testing/">#Penetration testing</a>,
-            
-                <a href="https://zone13.io/tags/stealth/">#stealth</a>,
-            
-                <a href="https://zone13.io/tags/windows/">#windows</a>,
-            
-                <a href="https://zone13.io/tags/backdoor/">#backdoor</a>,
-            
-        
-        <time class="post-date" datetime="2017-02-21T22:37:30Z">
-            21 Feb 2017
         </time>
     </footer>
 </article>
