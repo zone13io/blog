@@ -5,16 +5,16 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="msvalidate.01" content="F4F335DE035AC531D6A76647249D959C" />
-  	<meta property="og:title" content=" Posts &middot;  Zone13.io" />
+  	<meta property="og:title" content=" Pi Hole &middot;  Zone13.io" />
   	<meta property="og:site_name" content="Zone13.io" />
-  	<meta property="og:url" content="https://zone13.io/post/" />
+  	<meta property="og:url" content="https://zone13.io/tags/pi-hole/" />
 
     
     <meta property="og:type" content="website" />
     
 
   <title>
-     Posts &middot;  Zone13.io
+     Pi Hole &middot;  Zone13.io
   </title>
 
     <meta name="description" content="Information Security Blog" />
@@ -46,12 +46,12 @@
           <link href="https://zone13.io/index.xml" rel="alternate" type="application/rss+xml" title="Zone13.io" />
       
       
-        <link href="https://zone13.io/post/index.xml" rel="alternate" type="application/rss+xml" title="Posts &middot; Zone13.io" />
+        <link href="https://zone13.io/tags/pi-hole/index.xml" rel="alternate" type="application/rss+xml" title="Pi Hole &middot; Zone13.io" />
       
     
     <meta name="generator" content="Hugo 0.16" />
 
-    <link rel="canonical" href="https://zone13.io/post/" />
+    <link rel="canonical" href="https://zone13.io/tags/pi-hole/" />
 
     
     <script>
@@ -101,7 +101,7 @@
     </ul>
     
     
-    <a class="subscribe-button icon-feed" href="https://zone13.io/post/index.xml">Subscribe</a>
+    <a class="subscribe-button icon-feed" href="https://zone13.io/tags/pi-hole/index.xml">Subscribe</a>
     
 </div>
 <span class="nav-cover"></span>
@@ -127,7 +127,7 @@
     </nav>
     <div class="vertical">
         <div class="main-header-content inner">
-            <h1 class="page-title">Posts</h1>
+            <h1 class="page-title">Pi Hole</h1>
             <h2 class="page-description">
                 
             </h2>
@@ -141,9 +141,7 @@
 	<div class="extra-pagination inner">
     <nav class="pagination" role="navigation">
 	
-	    <a class="newer-posts" href="https://zone13.io/post/page/2/">&larr; Newer Posts</a>
-	
-	<span class="page-number">Page 3 of 3</span>
+	<span class="page-number">Page 1 of 1</span>
 	
 </nav>
 
@@ -153,16 +151,17 @@
 	   
 <article class="post post">
     <header class="post-header">
-        <h2 class="post-title"><a href="https://zone13.io/post/cracking-ntlmv2-responses-captured-using-responder/">Cracking NTLMv2 responses captured using responder</a></h2>
+        <h2 class="post-title"><a href="https://zone13.io/post/raspberry-pi-vpn-gateway-for-nordvpn/">Configuring Raspberry Pi as a VPN gateway using NordVPN with best server selection (Pi-hole with DoH setup optional)</a></h2>
     </header>
     <section class="post-excerpt">
-        <p><p>In the previous <a href="https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/">post</a>, a Raspberry Pi Zero was modified to capture hashes (or rather NTLMv2 responses from the client).</p>
-
-<p>Let&rsquo;s see how <a href="https://hashcat.net/hashcat/">hashcat</a> can be used to crack these responses to obtain the user password. I will be using dictionary based cracking for this exercise on a Windows system.</p>
-  <a class="read-more" href="https://zone13.io/post/cracking-ntlmv2-responses-captured-using-responder/">&rarrhk; </a></p>
+        <p><p>This is going to be a quick tutorial (/self-reference) to set up Raspberry Pi as a VPN router for NordVPN. I ran into so many issues (!) specially with the kill-switch part, so just wanted to write this up in case someone else is looking for the same. Obviously there are better ways of getting this done documented out there, but I wanted a custom setup with a few modifications as you will see. As an add-on, I installed Pi-hole for ad  &amp; malicious domain blocking with <a href="https://docs.pi-hole.net/guides/dns-over-https/">DNS over HTTPS (DoH)</a>, with the DNS queries now tunneled over VPN.</p>
+  <a class="read-more" href="https://zone13.io/post/raspberry-pi-vpn-gateway-for-nordvpn/">&rarrhk; </a></p>
     </section>
     <footer class="post-meta">
         
+        
+            
+            
         
 
         
@@ -176,95 +175,31 @@
         
         on
             
-                <a href="https://zone13.io/tags/responder/">#Responder</a>,
-            
-                <a href="https://zone13.io/tags/ntlm/">#NTLM</a>,
-            
-                <a href="https://zone13.io/tags/cracking/">#cracking</a>,
-            
-        
-        <time class="post-date" datetime="2016-09-23T19:55:06&#43;01:00">
-            23 Sep 2016
-        </time>
-    </footer>
-</article>
-
-	
-	   
-<article class="post post">
-    <header class="post-header">
-        <h2 class="post-title"><a href="https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/">Raspberry Pi Zero for credential snagging</a></h2>
-    </header>
-    <section class="post-excerpt">
-        <p><blockquote>
-<p>Update: <strong>CVE-2016-3302</strong> / <strong>MS16-112</strong> patch was released by Microsoft to fix the issue.</p>
-</blockquote>
-
-<h3 id="introduction">Introduction</h3>
-
-<p>This post is an extension to Rob Fuller&rsquo;s (@mubix) work - <a href="https://room362.com/post/2016/snagging-creds-from-locked-machines/">https://room362.com/post/2016/snagging-creds-from-locked-machines/</a> to see how a Raspberry Pi Zero can be used for credential snagging. All credits go to @mubix for the original research. It is recommended to read mubix&rsquo;s post (if you haven&rsquo;t already !) before proceeding.</p>
-  <a class="read-more" href="https://zone13.io/post/Raspberry-Pi-Zero-for-credential-snagging/">&rarrhk; </a></p>
-    </section>
-    <footer class="post-meta">
-        
-        
-
-        
-            <img class="author-thumb" src="https://zone13.io/images/thumbnail.png" alt="Author image" nopin="nopin" />
-        
-		
-		
-		
-        
-            Sid
-        
-        on
+                <a href="https://zone13.io/tags/nordvpn/">#NordVPN</a>,
             
                 <a href="https://zone13.io/tags/raspberry-pi/">#Raspberry Pi</a>,
             
+                <a href="https://zone13.io/tags/vpn-gateway/">#VPN gateway</a>,
+            
+                <a href="https://zone13.io/tags/vpn-kill-switch/">#VPN kill switch</a>,
+            
+                <a href="https://zone13.io/tags/cloudflared/">#Cloudflared</a>,
+            
+                <a href="https://zone13.io/tags/pi-hole/">#Pi-hole</a>,
+            
+                <a href="https://zone13.io/tags/dns-over-https/">#DNS over HTTPS</a>,
+            
+                <a href="https://zone13.io/tags/doh/">#DoH</a>,
+            
                 <a href="https://zone13.io/tags/pi-zero/">#Pi Zero</a>,
             
-                <a href="https://zone13.io/tags/responder/">#Responder</a>,
+                <a href="https://zone13.io/tags/rpi/">#RPI</a>,
+            
+                <a href="https://zone13.io/tags/privacy/">#Privacy</a>,
             
         
-        <time class="post-date" datetime="2016-09-18T12:13:05&#43;01:00">
-            18 Sep 2016
-        </time>
-    </footer>
-</article>
-
-	
-	   
-<article class="post post">
-    <header class="post-header">
-        <h2 class="post-title"><a href="https://zone13.io/post/python-code-latest-tweet/">Python code to retrieve the latest tweet from a user</a></h2>
-    </header>
-    <section class="post-excerpt">
-        <p><p>This is a Python code snippet to retrieve the latest tweet from a user by making use of the Twitter developer API.</p>
-  <a class="read-more" href="https://zone13.io/post/python-code-latest-tweet/">&rarrhk; </a></p>
-    </section>
-    <footer class="post-meta">
-        
-        
-
-        
-            <img class="author-thumb" src="https://zone13.io/images/thumbnail.png" alt="Author image" nopin="nopin" />
-        
-		
-		
-		
-        
-            Sid
-        
-        on
-            
-                <a href="https://zone13.io/tags/python/">#Python</a>,
-            
-                <a href="https://zone13.io/tags/twitter/">#Twitter</a>,
-            
-        
-        <time class="post-date" datetime="2016-09-17T15:25:24&#43;01:00">
-            17 Sep 2016
+        <time class="post-date" datetime="2019-12-30T20:24:11Z">
+            30 Dec 2019
         </time>
     </footer>
 </article>
@@ -273,9 +208,7 @@
 
 	<nav class="pagination" role="navigation">
 	
-	    <a class="newer-posts" href="https://zone13.io/post/page/2/">&larr; Newer Posts</a>
-	
-	<span class="page-number">Page 3 of 3</span>
+	<span class="page-number">Page 1 of 1</span>
 	
 </nav>
 

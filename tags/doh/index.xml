@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Doh on Zone13.io</title>
+    <link>https://zone13.io/tags/doh/</link>
+    <description>Recent content in Doh on Zone13.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <lastBuildDate>Mon, 30 Dec 2019 20:24:11 +0000</lastBuildDate>
+    <atom:link href="https://zone13.io/tags/doh/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Configuring Raspberry Pi as a VPN gateway using NordVPN with best server selection (Pi-hole with DoH setup optional)</title>
+      <link>https://zone13.io/post/raspberry-pi-vpn-gateway-for-nordvpn/</link>
+      <pubDate>Mon, 30 Dec 2019 20:24:11 +0000</pubDate>
+      
+      <guid>https://zone13.io/post/raspberry-pi-vpn-gateway-for-nordvpn/</guid>
+      <description>
+
+&lt;p&gt;This is going to be a quick tutorial (/self-reference) to set up Raspberry Pi as a VPN router for NordVPN. I ran into so many issues (!) specially with the kill-switch part, so just wanted to write this up in case someone else is looking for the same. Obviously there are better ways of getting this done documented out there, but I wanted a custom setup with a few modifications as you will see. As an add-on, I installed Pi-hole for ad  &amp;amp; malicious domain blocking with &lt;a href=&#34;https://docs.pi-hole.net/guides/dns-over-https/&#34;&gt;DNS over HTTPS (DoH)&lt;/a&gt;, with the DNS queries now tunneled over VPN.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: I&amp;rsquo;m doing this on a fresh RPi installation with no firewall rules setup etc. So make sure to adapt the steps if you plan to do it on an existing RPi. Also the code snippets will need to be amended to include input validations and sanitizations if you want to run it on any critical / production system. Also hardcoding of credentials in plaintext is not that great either, but pursued in the interest of a test lab setup only and may not be fully suitable for real world use.&lt;/p&gt;
+
+&lt;h3 id=&#34;requirements&#34;&gt;Requirements&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The RPi will be connected to the LAN network with a static IP address. Those devices wanting to use the RPi gateway should be able to edit the &amp;lsquo;gateway&amp;rsquo; field under network settings and must be able to connect to the VPN seamlessly.&lt;/li&gt;
+&lt;li&gt;The RPi will use NordVPN as the provider with a kill-switch to disable Internet in the event of VPN failure. NordVPN provides the kill-switch feature with their apps but not for RPi.&lt;/li&gt;
+&lt;li&gt;Ability to find the best server from NordVPN and establish the connection&lt;/li&gt;
+&lt;li&gt;Ad blocking using Pi-hole for the devices using the gateway&lt;/li&gt;
+&lt;li&gt;DNS over HTTPS (on Pi-hole)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;hardware&#34;&gt;Hardware&lt;/h3&gt;
+
+&lt;p&gt;Raspberry Pi 3B&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.samsung.com/uk/memory-storage/evo-microsd-card/MB-MP16DEU/&#34;&gt;Micro SD card - 16 GB - Samsung EVO&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;configuration&#34;&gt;Configuration&lt;/h3&gt;
+
+&lt;h5 id=&#34;set-up-rpi&#34;&gt;Set up RPi&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Official documentation &lt;a href=&#34;https://www.raspberrypi.org/documentation/installation/installing-images/README.md&#34;&gt;link&lt;/a&gt; to burn Raspbian on to the Micro SD card. . I will be using
+&lt;a href=&#34;https://www.raspberrypi.org/downloads/raspbian/&#34;&gt;Raspbian Buster Lite (Version:September 2019)&lt;/a&gt;  for this tutorial.&lt;/li&gt;
+&lt;li&gt;The rest of the tutorial will require ssh to be enabled. So create a blank file named &amp;lsquo;ssh&amp;rsquo; and place in the root folder of the SD card. More details here - &lt;a href=&#34;https://www.raspberrypi.org/documentation/remote-access/ssh/&#34;&gt;[3. Enable SSH on a headless Raspberry Pi (add file to SD card on another machine)]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Eject the SD card, insert into the RPi and power it ON&lt;/li&gt;
+&lt;li&gt;I&amp;rsquo;m not covering securing the RPi in this tutorial, so please make sure you do the necessary&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;connect-to-the-rpi-using-a-tool-like-putty&#34;&gt;Connect to the RPi using a tool like PuTTY&lt;/h5&gt;
+
+&lt;h5 id=&#34;br&#34;&gt;&lt;br/&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;run-raspi-config-https-www-raspberrypi-org-documentation-configuration-raspi-config-md-utility-to-resize-the-partition-and-reboot&#34;&gt;Run &lt;a href=&#34;https://www.raspberrypi.org/documentation/configuration/raspi-config.md&#34;&gt;raspi-config&lt;/a&gt; utility to resize the partition and reboot&lt;/h5&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;configure-static-ip-address-for-the-rpi&#34;&gt;Configure static IP address for the RPI&lt;/h5&gt;
+
+&lt;p&gt;Open &lt;strong&gt;/etc/network/interfaces&lt;/strong&gt; and add the below lines. Make sure to adapt the info for your network setup.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;auto eth0
+    iface eth0 inet static
+    address 192.168.0.100
+    netmask 255.255.255.0
+    gateway 192.168.0.1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Set DNS servers (To make the DNS servers persist on reboot)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;echo &amp;quot;nameserver 1.1.1.1&amp;quot; | sudo tee /etc/resolv.conf 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;install-updates-upgrades&#34;&gt;Install updates, upgrades..&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;install-necessary-packages&#34;&gt;Install necessary packages&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt install openvpn iptables-persistent python-requests -y
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;While installing iptables-persistent, it might ask if you want to backup the iptables rules. Go ahead and select Yes. This will be overwritten anyway at a later stage.&lt;/p&gt;
+
+&lt;h5 id=&#34;nordvpn-setup&#34;&gt;NordVPN setup&lt;/h5&gt;
+
+&lt;p&gt;Download and unzip the NordVPN config files to &lt;strong&gt;/etc/openvpn&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /etc/openvpn
+sudo wget https://nordvpn.com/api/files/zip
+sudo unzip zip
+sudo rm zip
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Create a file named &lt;strong&gt;/etc/openvpn/login.txt&lt;/strong&gt; and insert the NordVPN credentials&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/rpi-gw-creds.png&#34; alt=&#34;Credentials&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Chmod the login.txt file to 600 so that it is only accessible by root user&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo chmod 600 /etc/openvpn/login.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Edit the NordVPN&amp;rsquo;s ovpn files to use login.txt. This is done by replacing &lt;strong&gt;auth-user-pass&lt;/strong&gt; with &lt;strong&gt;auth-user-pass login.txt&lt;/strong&gt; Here is a small python code snippet to do that.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/env python
+
+import fileinput
+import glob
+import os
+
+os.chdir(&amp;quot;/etc/openvpn&amp;quot;)
+
+file_list = glob.glob(&amp;quot;*.ovpn&amp;quot;)
+
+for item in file_list:
+    for line in fileinput.input(item, inplace = 1):
+        print line.replace(&amp;quot;auth-user-pass&amp;quot;, &amp;quot;auth-user-pass login.txt&amp;quot;),
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;now-which-nordvpn-location-do-you-want-to-connect-to-you-need-to-find-the-corresponding-url&#34;&gt;Now, which NordVPN location do you want to connect to? You need to find the corresponding URL.&lt;/h5&gt;
+
+&lt;p&gt;Visit the &lt;a href=&#34;https://nordvpn.com/servers/tools/&#34;&gt;NordVPN server tools&lt;/a&gt; page where you can find the most optimal server&lt;/p&gt;
+
+&lt;p&gt;Open Developer Tools in your browser and click on XHR&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/rpi-gw-server-locate-1.png&#34; alt=&#34;XHR enable&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now select the country that you want to use for the VPN connection and observe the XHR request that gets generated. Right click on the XHR request and copy the URL. The URL will be used in the next step.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/rpi-gw-server-locate-2.png&#34; alt=&#34;Get URL&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;e.g. for Australia, the URL would be&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations&amp;amp;filters={&amp;quot;country_id&amp;quot;:13}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;nordvpn-connection-script&#34;&gt;NordVPN connection script&lt;/h5&gt;
+
+&lt;p&gt;Now we need to tell the RPi to connect to the NordVPN server on boot. Here is a Python script that does that. Save it on your RPi - e.g. &lt;strong&gt;/home/pi/vpn/connector.py&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;u&gt;Make sure you fill in the url field in script from previous step.&lt;/u&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/env python
+
+import os
+import json
+import subprocess
+import time
+import requests
+
+os.chdir(&amp;quot;/etc/openvpn&amp;quot;)
+
+# Command to kill any running instances of OpenVPN
+kill_command = &amp;quot;sudo killall openvpn&amp;quot;
+
+# URL to the NordVPN server connection tool obtained from the browser
+url = &amp;quot;&amp;quot; # Insert URL here
+
+def start_openvpn_connection():
+    response = requests.get(url)
+
+    if len(response.text) != 2:
+        nvpn_response = json.loads(response.text)
+        vpn_info = nvpn_response[0]
+        vpn_info_hostname = vpn_info[&amp;quot;hostname&amp;quot;]
+        vpn_file = vpn_info_hostname + &amp;quot;.udp1194.ovpn&amp;quot;
+
+        # Command to start Openvpn
+        ov_command = &amp;quot;sudo openvpn --config &amp;quot; + vpn_file
+
+        # Start the NordVPN connection
+        subprocess.Popen(ov_command.split())
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    subprocess.Popen(kill_command.split())
+    time.sleep(2)
+    start_openvpn_connection()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Run the script at startup. There are various ways to do this. Here we will be using rc.local.&lt;/p&gt;
+
+&lt;p&gt;Open &lt;strong&gt;/etc/rc.local&lt;/strong&gt; and insert the script before &amp;lsquo;exit 0&amp;rsquo; line.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/rpi-gw-rc-local.png&#34; alt=&#34;rc.local&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;find-nordvpn-server-ips&#34;&gt;Find NordVPN server IPs&lt;/h5&gt;
+
+&lt;p&gt;In the next step, we will be locking down the RPi to block all outgoing traffic and allow only NordVPN IPs. The NordVPN IPs will be used to fetch the best server for the location you opted. (This is not a very scalable approach to hardcode IPs but for the sake of this tutorial, we will use this. If NordVPN changes their IPs in future, make sure you update the iptables rules.)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Use nslookup to find NordVPN IPs&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://zone13.io/images/rpi-gw-nv-ips.png&#34; alt=&#34;nvpn ips&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;iptables-rules-for-allowing-ssh-routing-traffic-kill-switch-whitelist-nordvpn-ips&#34;&gt;Iptables rules for allowing SSH, routing traffic, kill-switch, whitelist NordVPN IPs..&lt;/h5&gt;
+
+&lt;p&gt;&lt;u&gt;Note: This will flush all your existing iptables rules.&lt;/u&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;u&gt;Note: Make sure to replace 192.168.0.0/24 with the RPi&amp;rsquo;s LAN subnet from where you expect the devices to connect and use the gateway.&lt;/u&gt;&lt;/p&gt;
+
+&lt;p&gt;Save the following into a bash file and execute or run one by one.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo iptables -F
+sudo iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+sudo iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE
+sudo iptables -A FORWARD -i tun0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i eth0 -o tun0 -j ACCEPT
+
+sudo iptables -A OUTPUT -o tun0 -m comment --comment &amp;quot;vpn&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -o eth0 -p icmp -m comment --comment &amp;quot;icmp&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -d 192.168.0.0/24 -o eth0 -m comment --comment &amp;quot;lan&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -o eth0 -p udp -m udp --dport 1194 -m comment --comment &amp;quot;allow vpn traffic&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -o eth0 -p tcp -m tcp --sport 22 -m comment --comment &amp;quot;ssh&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -o eth0 -p udp -m udp --dport 123 -m comment --comment &amp;quot;ntp&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -o eth0 -p udp -m udp --dport 53 -m comment --comment &amp;quot;dns&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -o eth0 -p tcp -m tcp --dport 53 -m comment --comment &amp;quot;dns&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -d 104.18.229.229 --dport 443 -m comment --comment &amp;quot;nordvpn IP&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -d 104.18.230.229 --dport 443 -m comment --comment &amp;quot;nordvpn IP&amp;quot; -j ACCEPT
+sudo iptables -A OUTPUT -o eth0 -j DROP
+sudo iptables -I FORWARD -i eth0 ! -o tun0 -j DROP
+
+sudo iptables-save | sudo tee /etc/iptables/rules.v4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Reboot the Pi and make sure the VPN gateway is working. If you run into issues, check /var/log/syslog to see the errors.&lt;/p&gt;
+
+&lt;p&gt;Also kill the openvpn process and ensure that the kill-switch works.&lt;/p&gt;
+
+&lt;h5 id=&#34;optional-pi-hole-with-dns-over-https&#34;&gt;Optional - Pi-hole with DNS over HTTPS&lt;/h5&gt;
+
+&lt;p&gt;Install &lt;a href=&#34;https://github.com/pi-hole/pi-hole/#one-step-automated-install&#34;&gt;Pi-hole&lt;/a&gt; (make sure to select eth0 as the listening interface)&lt;/p&gt;
+
+&lt;p&gt;Install &lt;a href=&#34;https://docs.pi-hole.net/guides/dns-over-https/&#34;&gt;cloudflared&lt;/a&gt; and configure Pi-hole to use it. &lt;u&gt;The Pi-hole configuration to use DoH needs to be done from the Pi-hole&amp;rsquo;s web UI.&lt;/u&gt;&lt;/p&gt;
+
+&lt;p&gt;Once Pi-hole is configured to use cloudflared, the DNS queries will now be tunneled over HTTPS over NordVPN.&lt;/p&gt;
+
+&lt;p&gt;NordVPN has its own ad blockers, I simply wanted to use Pi-hole for the ad blocking.&lt;/p&gt;
+
+&lt;p&gt;Hope you find the tutorial useful. If you have any queries, suggestions etc. please post a comment and I will try to answer.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
