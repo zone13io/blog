@@ -26,7 +26,7 @@
 
 &lt;ul&gt;
 &lt;li&gt;The RPi will be connected to the LAN network with a static IP address. Those devices wanting to use the RPi gateway should be able to edit the &amp;lsquo;gateway&amp;rsquo; field under network settings and must be able to connect to the VPN seamlessly.&lt;/li&gt;
-&lt;li&gt;The RPi will use NordVPN as the provider with a kill-switch to disable Internet in the event of VPN failure. NordVPN provides the kill-switch feature with their apps but not for RPi.&lt;/li&gt;
+&lt;li&gt;The RPi will use NordVPN as the provider with a kill-switch to disable Internet in the event of VPN failure. NordVPN provides the kill-switch feature with their apps &lt;del&gt;but not for RPi&lt;/del&gt;. &lt;em&gt;Correction - NordVPN provides &lt;a href=&#34;https://support.nordvpn.com/Connectivity/Linux/1325531132/Installing-and-using-NordVPN-on-Debian-Ubuntu-and-Linux-Mint.htm&#34;&gt;this&lt;/a&gt;. Thanks to u/4grams on Reddit for pointing that out.&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;Ability to find the best server from NordVPN and establish the connection&lt;/li&gt;
 &lt;li&gt;Ad blocking using Pi-hole for the devices using the gateway&lt;/li&gt;
 &lt;li&gt;DNS over HTTPS (on Pi-hole)&lt;/li&gt;
@@ -248,6 +248,44 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 
 &lt;p&gt;NordVPN has its own ad blockers, I simply wanted to use Pi-hole for the ad blocking.&lt;/p&gt;
 
+&lt;h5 id=&#34;speedtest-results&#34;&gt;Speedtest results&lt;/h5&gt;
+
+&lt;p&gt;All tests were averaged out over three runs on a 100 Mbps / 24 Mbps line. The VPN connection was made to the closest geographical server.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Connection method&lt;/th&gt;
+&lt;th&gt;VPN enabled&lt;/th&gt;
+&lt;th&gt;Download (Mbps)&lt;/th&gt;
+&lt;th&gt;Upload (Mbps)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;RPi -&amp;gt; router&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;77.8&lt;/td&gt;
+&lt;td&gt;3.5&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;RPi  -&amp;gt; router&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;61.0&lt;/td&gt;
+&lt;td&gt;3.5&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Mobile device -&amp;gt; RPi -&amp;gt;  router&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;45.1&lt;/td&gt;
+&lt;td&gt;23.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
 &lt;p&gt;Hope you find the tutorial useful. If you have any queries, suggestions etc. please post a comment and I will try to answer.&lt;/p&gt;
 
 &lt;p&gt;References:&lt;/p&gt;
@@ -261,6 +299,14 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 &lt;ul&gt;
 &lt;li&gt;Removed redundant iptables rules&lt;/li&gt;
 &lt;li&gt;Blocked outbound DNS queries on port 53, added NordVPN IPs to hosts file&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;update-2-31-12-2019&#34;&gt;Update 2 (31/12/2019):&lt;/h5&gt;
+
+&lt;p&gt;Change log:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Added Speedtest results&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

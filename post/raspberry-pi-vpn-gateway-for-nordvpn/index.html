@@ -219,7 +219,7 @@
 
 <ul>
 <li>The RPi will be connected to the LAN network with a static IP address. Those devices wanting to use the RPi gateway should be able to edit the &lsquo;gateway&rsquo; field under network settings and must be able to connect to the VPN seamlessly.</li>
-<li>The RPi will use NordVPN as the provider with a kill-switch to disable Internet in the event of VPN failure. NordVPN provides the kill-switch feature with their apps but not for RPi.</li>
+<li>The RPi will use NordVPN as the provider with a kill-switch to disable Internet in the event of VPN failure. NordVPN provides the kill-switch feature with their apps <del>but not for RPi</del>. <em>Correction - NordVPN provides <a href="https://support.nordvpn.com/Connectivity/Linux/1325531132/Installing-and-using-NordVPN-on-Debian-Ubuntu-and-Linux-Mint.htm">this</a>. Thanks to u/4grams on Reddit for pointing that out.</em></li>
 <li>Ability to find the best server from NordVPN and establish the connection</li>
 <li>Ad blocking using Pi-hole for the devices using the gateway</li>
 <li>DNS over HTTPS (on Pi-hole)</li>
@@ -441,6 +441,44 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 
 <p>NordVPN has its own ad blockers, I simply wanted to use Pi-hole for the ad blocking.</p>
 
+<h5 id="speedtest-results">Speedtest results</h5>
+
+<p>All tests were averaged out over three runs on a 100 Mbps / 24 Mbps line. The VPN connection was made to the closest geographical server.</p>
+
+<table>
+<thead>
+<tr>
+<th>Connection method</th>
+<th>VPN enabled</th>
+<th>Download (Mbps)</th>
+<th>Upload (Mbps)</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>RPi -&gt; router</td>
+<td>No</td>
+<td>77.8</td>
+<td>3.5</td>
+</tr>
+
+<tr>
+<td>RPi  -&gt; router</td>
+<td>Yes</td>
+<td>61.0</td>
+<td>3.5</td>
+</tr>
+
+<tr>
+<td>Mobile device -&gt; RPi -&gt;  router</td>
+<td>Yes</td>
+<td>45.1</td>
+<td>23.5</td>
+</tr>
+</tbody>
+</table>
+
 <p>Hope you find the tutorial useful. If you have any queries, suggestions etc. please post a comment and I will try to answer.</p>
 
 <p>References:</p>
@@ -454,6 +492,14 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 <ul>
 <li>Removed redundant iptables rules</li>
 <li>Blocked outbound DNS queries on port 53, added NordVPN IPs to hosts file</li>
+</ul>
+
+<h5 id="update-2-31-12-2019">Update 2 (31/12/2019):</h5>
+
+<p>Change log:</p>
+
+<ul>
+<li>Added Speedtest results</li>
 </ul>
 
     </section>
