@@ -398,6 +398,18 @@ if __name__ == &quot;__main__&quot;:
 104.18.230.229  nordvpn.com
 </code></pre>
 
+<h5 id="set-up-ip-forwarding">Set up IP forwarding</h5>
+
+<p>Open <strong>/etc/sysctl.conf</strong> and uncomment the below line.</p>
+
+<pre><code class="language-bash">net.ipv4.ip_forward=1
+</code></pre>
+
+<p>Run the following command to enable the changes.</p>
+
+<pre><code class="language-bash">sysctl -p /etc/sysctl.conf
+</code></pre>
+
 <h5 id="iptables-rules-for-allowing-ssh-routing-traffic-kill-switch-block-outbound-dns-whitelist-nordvpn-ips">Iptables rules for allowing SSH, routing traffic, kill-switch, block outbound DNS whitelist NordVPN IPs..</h5>
 
 <p><u>Note: This will flush all your existing iptables rules.</u></p>

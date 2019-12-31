@@ -205,6 +205,18 @@ if __name__ == &amp;quot;__main__&amp;quot;:
 104.18.230.229  nordvpn.com
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h5 id=&#34;set-up-ip-forwarding&#34;&gt;Set up IP forwarding&lt;/h5&gt;
+
+&lt;p&gt;Open &lt;strong&gt;/etc/sysctl.conf&lt;/strong&gt; and uncomment the below line.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;net.ipv4.ip_forward=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Run the following command to enable the changes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sysctl -p /etc/sysctl.conf
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h5 id=&#34;iptables-rules-for-allowing-ssh-routing-traffic-kill-switch-block-outbound-dns-whitelist-nordvpn-ips&#34;&gt;Iptables rules for allowing SSH, routing traffic, kill-switch, block outbound DNS whitelist NordVPN IPs..&lt;/h5&gt;
 
 &lt;p&gt;&lt;u&gt;Note: This will flush all your existing iptables rules.&lt;/u&gt;&lt;/p&gt;
