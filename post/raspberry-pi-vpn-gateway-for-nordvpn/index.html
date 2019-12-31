@@ -390,7 +390,15 @@ if __name__ == &quot;__main__&quot;:
 
 <p><img src="https://zone13.io/images/rpi-gw-nv-ips.png" alt="nvpn ips" /></p>
 
-<h5 id="iptables-rules-for-allowing-ssh-routing-traffic-kill-switch-whitelist-nordvpn-ips">Iptables rules for allowing SSH, routing traffic, kill-switch, whitelist NordVPN IPs..</h5>
+<h5 id="add-nordvpn-ip-addresses-to-hosts-file-and-block-outbound-dns">Add NordVPN IP addresses to hosts file and block outbound DNS</h5>
+
+<p>Open <strong>/etc/hosts</strong> file and add the below lines</p>
+
+<pre><code class="language-bash">104.18.229.229  nordvpn.com
+104.18.230.229  nordvpn.com
+</code></pre>
+
+<h5 id="iptables-rules-for-allowing-ssh-routing-traffic-kill-switch-block-outbound-dns-whitelist-nordvpn-ips">Iptables rules for allowing SSH, routing traffic, kill-switch, block outbound DNS whitelist NordVPN IPs..</h5>
 
 <p><u>Note: This will flush all your existing iptables rules.</u></p>
 
@@ -410,10 +418,7 @@ sudo iptables -A OUTPUT -o tun0 -m comment --comment &quot;vpn&quot; -j ACCEPT
 sudo iptables -A OUTPUT -o eth0 -p icmp -m comment --comment &quot;icmp&quot; -j ACCEPT
 sudo iptables -A OUTPUT -d 192.168.0.0/24 -o eth0 -m comment --comment &quot;lan&quot; -j ACCEPT
 sudo iptables -A OUTPUT -o eth0 -p udp -m udp --dport 1194 -m comment --comment &quot;allow vpn traffic&quot; -j ACCEPT
-sudo iptables -A OUTPUT -o eth0 -p tcp -m tcp --sport 22 -m comment --comment &quot;ssh&quot; -j ACCEPT
 sudo iptables -A OUTPUT -o eth0 -p udp -m udp --dport 123 -m comment --comment &quot;ntp&quot; -j ACCEPT
-sudo iptables -A OUTPUT -o eth0 -p udp -m udp --dport 53 -m comment --comment &quot;dns&quot; -j ACCEPT
-sudo iptables -A OUTPUT -o eth0 -p tcp -m tcp --dport 53 -m comment --comment &quot;dns&quot; -j ACCEPT
 sudo iptables -A OUTPUT -p tcp -d 104.18.229.229 --dport 443 -m comment --comment &quot;nordvpn IP&quot; -j ACCEPT
 sudo iptables -A OUTPUT -p tcp -d 104.18.230.229 --dport 443 -m comment --comment &quot;nordvpn IP&quot; -j ACCEPT
 sudo iptables -A OUTPUT -o eth0 -j DROP
@@ -441,6 +446,15 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 <p>References:</p>
 
 <p><a href="https://dietpi.com/phpbb/viewtopic.php?t=2185">https://dietpi.com/phpbb/viewtopic.php?t=2185</a></p>
+
+<h5 id="update-1-31-12-2019">Update 1 (31/12/2019):</h5>
+
+<p>Change log:</p>
+
+<ul>
+<li>Removed redundant iptables rules</li>
+<li>Blocked outbound DNS queries on port 53, added NordVPN IPs to hosts file</li>
+</ul>
 
     </section>
 
