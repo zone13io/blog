@@ -7,13 +7,13 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Tue, 31 Dec 2019 12:01:11 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 01 Jan 2020 12:01:11 +0000</lastBuildDate>
     <atom:link href="https://zone13.io/tags/pi-zero/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Configuring Raspberry Pi as a VPN gateway using NordVPN with best server selection (Pi-hole with DoH setup optional)</title>
       <link>https://zone13.io/post/raspberry-pi-vpn-gateway-for-nordvpn/</link>
-      <pubDate>Tue, 31 Dec 2019 12:01:11 +0000</pubDate>
+      <pubDate>Wed, 01 Jan 2020 12:01:11 +0000</pubDate>
       
       <guid>https://zone13.io/post/raspberry-pi-vpn-gateway-for-nordvpn/</guid>
       <description>
@@ -68,11 +68,6 @@
     address 192.168.0.100
     netmask 255.255.255.0
     gateway 192.168.0.1
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Set DNS servers (To make the DNS servers persist on reboot)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;echo &amp;quot;nameserver 1.1.1.1&amp;quot; | sudo tee /etc/resolv.conf 
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h5 id=&#34;install-updates-upgrades&#34;&gt;Install updates, upgrades..&lt;/h5&gt;
