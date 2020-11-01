@@ -7,16 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Wed, 01 Jan 2020 12:01:11 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 01 Nov 2020 12:01:11 +0000</lastBuildDate>
     <atom:link href="https://zone13.io/tags/raspberry-pi/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Configuring Raspberry Pi as a VPN gateway using NordVPN with best server selection (Pi-hole with DoH setup optional)</title>
       <link>https://zone13.io/post/raspberry-pi-vpn-gateway-for-nordvpn/</link>
-      <pubDate>Wed, 01 Jan 2020 12:01:11 +0000</pubDate>
+      <pubDate>Sun, 01 Nov 2020 12:01:11 +0000</pubDate>
       
       <guid>https://zone13.io/post/raspberry-pi-vpn-gateway-for-nordvpn/</guid>
       <description>
+
+&lt;h5 id=&#34;update-nov-2020-made-a-few-modifications-to-make-the-script-work-again&#34;&gt;Update (Nov/2020): Made a few modifications to make the script work again.&lt;/h5&gt;
 
 &lt;p&gt;This is going to be a quick tutorial (/self-reference) to set up Raspberry Pi as a VPN router for NordVPN. I ran into so many issues (!) specially with the kill-switch part, so just wanted to write this up in case someone else is looking for the same. Obviously there are better ways of getting this done documented out there, but I wanted a custom setup with a few modifications as you will see. As an add-on, I installed Pi-hole for ad  &amp;amp; malicious domain blocking with &lt;a href=&#34;https://docs.pi-hole.net/guides/dns-over-https/&#34;&gt;DNS over HTTPS (DoH)&lt;/a&gt;, with the DNS queries now tunneled over VPN.&lt;/p&gt;
 
@@ -87,9 +89,11 @@
 &lt;p&gt;Download and unzip the NordVPN config files to &lt;strong&gt;/etc/openvpn&lt;/strong&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /etc/openvpn
-sudo wget https://nordvpn.com/api/files/zip
-sudo unzip zip
-sudo rm zip
+sudo su
+wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+unzip ovpn.zip
+cp ovpn_udp/*.ovpn .
+rm -rf ovpn_tcp ovpn_udp # Only using the UDP connections here, so removing the TCP folder
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Create a file named &lt;strong&gt;/etc/openvpn/login.txt&lt;/strong&gt; and insert the NordVPN credentials&lt;/p&gt;
@@ -188,7 +192,7 @@ if __name__ == &amp;quot;__main__&amp;quot;:
 
 &lt;p&gt;In the next step, we will be locking down the RPi to block all outgoing traffic and allow only NordVPN IPs. The NordVPN IPs will be used to fetch the best server for the location you opted. (This is not a very scalable approach to hardcode IPs but for the sake of this tutorial, we will use this. If NordVPN changes their IPs in future, make sure you update the iptables rules.)&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Use nslookup to find NordVPN IPs&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Use nslookup to find NordVPN IPs&lt;/strong&gt; (&lt;strong&gt;IMPORTANT&lt;/strong&gt;: Make sure that you run nslookup when you set this up so that you are putting in the valid IP addresses for NordVPN servers)&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://zone13.io/images/rpi-gw-nv-ips.png&#34; alt=&#34;nvpn ips&#34; /&gt;&lt;/p&gt;
 
@@ -217,6 +221,8 @@ if __name__ == &amp;quot;__main__&amp;quot;:
 &lt;p&gt;&lt;u&gt;Note: This will flush all your existing iptables rules.&lt;/u&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;u&gt;Note: Make sure to replace 192.168.0.0/24 with the RPi&amp;rsquo;s LAN subnet from where you expect the devices to connect and use the gateway.&lt;/u&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;u&gt;Note: Make sure you replace the IP addresses for NordVPN as well.&lt;/u&gt;&lt;/p&gt;
 
 &lt;p&gt;Save the following into a bash file and execute or run one by one.&lt;/p&gt;
 
@@ -314,6 +320,14 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 
 &lt;ul&gt;
 &lt;li&gt;Added Speedtest results&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Update 3 (01/11/2020):&lt;/p&gt;
+
+&lt;p&gt;Change log:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Fixed script to make it work again&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

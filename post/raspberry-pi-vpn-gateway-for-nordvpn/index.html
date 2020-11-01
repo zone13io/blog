@@ -12,7 +12,7 @@
     
   	<meta property="og:type" content="article" />
 
-    <meta property="og:article:published_time" content="2020-01-01T12:01:11Z" />
+    <meta property="og:article:published_time" content="2020-11-01T12:01:11Z" />
 
     
     <meta property="og:article:tag" content="NordVPN" />
@@ -165,8 +165,8 @@
 		
         <section class="post-meta">
         
-          <time class="post-date" datetime="2020-01-01T12:01:11Z">
-            Jan 1, 2020
+          <time class="post-date" datetime="2020-11-01T12:01:11Z">
+            Nov 1, 2020
           </time>
         
          
@@ -210,6 +210,8 @@
 	<br>
 	<br>
       
+
+<h5 id="update-nov-2020-made-a-few-modifications-to-make-the-script-work-again">Update (Nov/2020): Made a few modifications to make the script work again.</h5>
 
 <p>This is going to be a quick tutorial (/self-reference) to set up Raspberry Pi as a VPN router for NordVPN. I ran into so many issues (!) specially with the kill-switch part, so just wanted to write this up in case someone else is looking for the same. Obviously there are better ways of getting this done documented out there, but I wanted a custom setup with a few modifications as you will see. As an add-on, I installed Pi-hole for ad  &amp; malicious domain blocking with <a href="https://docs.pi-hole.net/guides/dns-over-https/">DNS over HTTPS (DoH)</a>, with the DNS queries now tunneled over VPN.</p>
 
@@ -280,9 +282,11 @@
 <p>Download and unzip the NordVPN config files to <strong>/etc/openvpn</strong></p>
 
 <pre><code class="language-bash">cd /etc/openvpn
-sudo wget https://nordvpn.com/api/files/zip
-sudo unzip zip
-sudo rm zip
+sudo su
+wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+unzip ovpn.zip
+cp ovpn_udp/*.ovpn .
+rm -rf ovpn_tcp ovpn_udp # Only using the UDP connections here, so removing the TCP folder
 </code></pre>
 
 <p>Create a file named <strong>/etc/openvpn/login.txt</strong> and insert the NordVPN credentials</p>
@@ -381,7 +385,7 @@ if __name__ == &quot;__main__&quot;:
 
 <p>In the next step, we will be locking down the RPi to block all outgoing traffic and allow only NordVPN IPs. The NordVPN IPs will be used to fetch the best server for the location you opted. (This is not a very scalable approach to hardcode IPs but for the sake of this tutorial, we will use this. If NordVPN changes their IPs in future, make sure you update the iptables rules.)</p>
 
-<p><strong>Use nslookup to find NordVPN IPs</strong></p>
+<p><strong>Use nslookup to find NordVPN IPs</strong> (<strong>IMPORTANT</strong>: Make sure that you run nslookup when you set this up so that you are putting in the valid IP addresses for NordVPN servers)</p>
 
 <p><img src="https://zone13.io/images/rpi-gw-nv-ips.png" alt="nvpn ips" /></p>
 
@@ -410,6 +414,8 @@ if __name__ == &quot;__main__&quot;:
 <p><u>Note: This will flush all your existing iptables rules.</u></p>
 
 <p><u>Note: Make sure to replace 192.168.0.0/24 with the RPi&rsquo;s LAN subnet from where you expect the devices to connect and use the gateway.</u></p>
+
+<p><u>Note: Make sure you replace the IP addresses for NordVPN as well.</u></p>
 
 <p>Save the following into a bash file and execute or run one by one.</p>
 
@@ -507,6 +513,14 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 
 <ul>
 <li>Added Speedtest results</li>
+</ul>
+
+<p>Update 3 (01/11/2020):</p>
+
+<p>Change log:</p>
+
+<ul>
+<li>Fixed script to make it work again</li>
 </ul>
 
     </section>
